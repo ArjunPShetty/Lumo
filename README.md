@@ -13,9 +13,3 @@ Real-time voice feedback and responses
 Wi-Fi-enabled control via ESP8266 and Python
 Expandable storage for logs and data
 Offline voice recognition capability
-
-Team Size: 4 Members
-
-Tech Stack:
-Hardware: Arduino , ESP8266, Relays, Voice & Audio Modules
-Software: Python (AI backend), Arduino IDE
