@@ -1,25 +1,40 @@
-import speech_recognition as sr
+import os
+import io
+import uuid
+import wave
+import threading
 import datetime
+import speech_recognition as sr
 import webbrowser
 import sys
 import pywhatkit
 import pyttsx3
-import os
 import psutil
 import pyautogui
 import wikipedia
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from conv_db import get_conversational_response
 
+# ---------- CONFIG ----------
 APP_NAME = "LUMO"
+UPLOAD_DIR = "uploads"
+AUDIO_DIR = os.path.join(UPLOAD_DIR, "audio")
+REPLY_DIR = os.path.join(UPLOAD_DIR, "replies")
+os.makedirs(AUDIO_DIR, exist_ok=True)
+os.makedirs(REPLY_DIR, exist_ok=True)
 
-# TTS engine (used only in CLI mode)
+# Flask app
+app = Flask(__name__)
+CORS(app)
+
+# TTS engine (shared for both modes)
 engine = pyttsx3.init()
 voices = engine.getProperty("voices")
 if len(voices) > 1:
-    engine.setProperty("voice", voices[1].id)
+    engine.setProperty("voice", voices[1].id)  # Female voice by default
 engine.setProperty("rate", 170)
+tts_lock = threading.Lock()
 
 # Mode: will be set to 'cli' or 'api'
 SERVER_MODE = None
@@ -41,8 +56,8 @@ def take_command():
             query = r.recognize_google(audio, language="en-in")
             print(f"[{APP_NAME}] You said: {query}")
             return query.lower()
-    except Exception:
-        print(f"[{APP_NAME}] Voice not working. Please type your command below:")
+    except Exception as e:
+        print(f"[{APP_NAME}] Voice not working: {e}. Please type your command below:")
         return input(f"{APP_NAME} Command: ").lower()
 
 def show_help():
@@ -103,40 +118,47 @@ def handle_query(query):
     """Main command processor. Returns dict {displayText, speakText}."""
     query = (query or "").lower().strip()
     if not query:
-        speak("No command was detected. Please try again.")
-        return {"displayText": "No command detected.", "speakText": "No command was detected. Please try again."}
+        text = "No command was detected. Please try again."
+        if SERVER_MODE == "cli":
+            speak(text)
+        return {"displayText": "No command detected.", "speakText": text}
 
     # First, check for conversational responses
     chat_response = get_conversational_response(query)
     if chat_response:
-        speak(chat_response)
+        if SERVER_MODE == "cli":
+            speak(chat_response)
         return {"displayText": chat_response, "speakText": chat_response}
 
     # Time
     if "time" in query and query.strip() == "time":
         strTime = datetime.datetime.now().strftime("%H:%M:%S")
         text = f"The time is {strTime}"
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
     # Date
     if any(phrase in query for phrase in ["what day", "what date", "today's date"]):
         current_date = datetime.datetime.now().strftime("%A, %B %d, %Y")
         text = f"Today is {current_date}"
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
     # Open websites
     if "open youtube" in query:
         webbrowser.open("https://youtube.com")
         text = "Opening YouTube..."
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
     if "open google" in query:
         webbrowser.open("https://google.com")
         text = "Opening Google..."
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
     # Play song on YouTube
@@ -144,11 +166,13 @@ def handle_query(query):
         song = query.replace("play ", "", 1).strip()
         if not song:
             text = "Please specify a song to play."
-            speak(text)
+            if SERVER_MODE == "cli":
+                speak(text)
             return {"displayText": text, "speakText": text}
         pywhatkit.playonyt(song)
         text = f"Playing {song} on YouTube..."
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
     # Google search
@@ -156,11 +180,13 @@ def handle_query(query):
         search_query = query.replace("search ", "", 1).strip()
         if not search_query:
             text = "Please specify what to search."
-            speak(text)
+            if SERVER_MODE == "cli":
+                speak(text)
             return {"displayText": text, "speakText": text}
         webbrowser.open(f"https://www.google.com/search?q={search_query}")
         text = f"Searching Google for '{search_query}'..."
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
     # Open apps (Windows)
@@ -170,7 +196,8 @@ def handle_query(query):
             text = "Opening Notepad..."
         except Exception as e:
             text = f"Failed to open Notepad: {e}"
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
     if query == "open calculator":
@@ -179,7 +206,8 @@ def handle_query(query):
             text = "Opening Calculator..."
         except Exception as e:
             text = f"Failed to open Calculator: {e}"
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
     if query == "open chrome":
@@ -188,33 +216,37 @@ def handle_query(query):
             text = "Opening Chrome..."
         except Exception as e:
             text = f"Failed to open Chrome: {e}"
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
     # System controls (CLI only)
     if "shutdown" in query:
         if SERVER_MODE == "cli":
-            speak("Shutting down your computer.")
+            text = "Shutting down your computer."
+            speak(text)
             os.system("shutdown /s /t 1")
-            return {"displayText": "System shutting down...", "speakText": "Shutting down your computer."}
+            return {"displayText": "System shutting down...", "speakText": text}
         else:
             text = "Shutdown is only allowed in CLI mode."
             return {"displayText": text, "speakText": text}
 
     if "restart" in query:
         if SERVER_MODE == "cli":
-            speak("Restarting your computer.")
+            text = "Restarting your computer."
+            speak(text)
             os.system("shutdown /r /t 1")
-            return {"displayText": "Restarting system...", "speakText": "Restarting your computer."}
+            return {"displayText": "Restarting system...", "speakText": text}
         else:
             text = "Restart is only allowed in CLI mode."
             return {"displayText": text, "speakText": text}
 
     if "logout" in query:
         if SERVER_MODE == "cli":
-            speak("Logging out now.")
+            text = "Logging out now."
+            speak(text)
             os.system("shutdown -l")
-            return {"displayText": "Logging out...", "speakText": "Logging out now."}
+            return {"displayText": "Logging out...", "speakText": text}
         else:
             text = "Logout is only allowed in CLI mode."
             return {"displayText": text, "speakText": text}
@@ -233,7 +265,8 @@ def handle_query(query):
             text = f"Screenshot saved as {filepath}"
         except Exception as e:
             text = f"Could not take screenshot: {e}"
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
     # Mute system volume (Windows + nircmd)
@@ -243,7 +276,8 @@ def handle_query(query):
             text = "System muted."
         except Exception as e:
             text = f"Could not mute system: {e}"
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
     # Battery status
@@ -259,7 +293,8 @@ def handle_query(query):
             text = f"Battery is at {percent}% and it is {plugged}"
         else:
             text = "Battery information not available."
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
     # Notes
@@ -292,22 +327,25 @@ def handle_query(query):
                 text = "No notes found."
         except Exception as e:
             text = f"Could not read notes: {e}"
-        speak(text if SERVER_MODE == "cli" else "")
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
+    # Voice change
     if "voice" in query:
-            if "male" in query:
-                if len(voices) > 0:
-                    engine.setProperty("voice", voices[0].id)
-                text = "Voice changed to male."
-            elif "female" in query:
-                if len(voices) > 1:
-                    engine.setProperty("voice", voices[1].id)
-                text = "Voice changed to female."
-            else:
-                text = "Specify male or female voice."
+        if "male" in query:
+            if len(voices) > 0:
+                engine.setProperty("voice", voices[0].id)
+            text = "Voice changed to male."
+        elif "female" in query:
+            if len(voices) > 1:
+                engine.setProperty("voice", voices[1].id)
+            text = "Voice changed to female."
+        else:
+            text = "Specify male or female voice."
+        if SERVER_MODE == "cli":
             speak(text)
-            return {"displayText": text, "speakText": text}
+        return {"displayText": text, "speakText": text}
 
     # Help
     if "help" in query:
@@ -326,65 +364,224 @@ def handle_query(query):
     # Wikipedia / Info Fallback
     topic = query.replace("about ", "", 1).strip() if query.startswith("about ") else query.strip()
     try:
-        speak(f"Searching Wikipedia for {topic}")
+        if SERVER_MODE == "cli":
+            speak(f"Searching Wikipedia for {topic}")
         summary = wikipedia.summary(topic, sentences=2, auto_suggest=False, redirect=False)
-        speak(summary)
+        if SERVER_MODE == "cli":
+            speak(summary)
         return {"displayText": summary, "speakText": summary}
     except wikipedia.exceptions.PageError:
         text = f"Sorry, I couldn't find any page for {topic}. I will search for it on Google instead."
         webbrowser.open(f"https://www.google.com/search?q={topic}")
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
     except wikipedia.exceptions.DisambiguationError as e:
         option = e.options[0]
         summary = wikipedia.summary(option, sentences=2, auto_suggest=False, redirect=False)
-        speak(summary)
+        if SERVER_MODE == "cli":
+            speak(summary)
         return {"displayText": summary, "speakText": summary}
     except Exception:
         text = f"Couldn't find info for {topic}, searched online."
         webbrowser.open(f"https://www.google.com/search?q={topic}")
-        speak(text)
+        if SERVER_MODE == "cli":
+            speak(text)
         return {"displayText": text, "speakText": text}
 
-# ---------- Flask App ----------
-app = Flask(__name__)
-CORS(app)
+# ---------- Utility functions for audio processing ----------
+def raw8_to_wav_bytes(raw_bytes, sample_rate=2000):
+    """
+    raw_bytes: bytes with values 0..255 (as sent from ESP)
+    Convert to standard WAV (16-bit PCM, mono).
+    """
+    # Map 0..255 to -32768 .. 32767
+    import array
+    arr16 = array.array('h')  # 16-bit signed
+    for b in raw_bytes:
+        # convert unsigned to signed centered at 0
+        centered = int(b) - 128
+        val16 = int(centered * 256)  # scale to 16-bit range
+        arr16.append(val16)
+    # write wav to BytesIO
+    bio = io.BytesIO()
+    wf = wave.open(bio, 'wb')
+    wf.setnchannels(1)
+    wf.setsampwidth(2)  # 16-bit
+    wf.setframerate(sample_rate)
+    wf.writeframes(arr16.tobytes())
+    wf.close()
+    return bio.getvalue()
 
+def save_tts_mp3(text, out_filename):
+    """
+    Save TTS output to mp3 using pyttsx3's save_to_file.
+    Returns path to saved file.
+    """
+    # pyttsx3 can save to file in wav format
+    wav_path = os.path.join(REPLY_DIR, out_filename + ".wav")
+    mp3_path = os.path.join(REPLY_DIR, out_filename + ".mp3")
+    
+    with tts_lock:
+        engine.save_to_file(text, wav_path)
+        engine.runAndWait()
+    
+    # Try to convert wav -> mp3 using pydub if available
+    try:
+        from pydub import AudioSegment
+        audio = AudioSegment.from_wav(wav_path)
+        audio.export(mp3_path, format="mp3")
+        os.remove(wav_path)
+        return mp3_path
+    except ImportError:
+        print("Note: Install pydub for MP3 support. Using WAV format.")
+        return wav_path
+    except Exception:
+        return wav_path
+
+# ---------- Flask Routes ----------
 @app.route("/")
 def index():
     """Serve the main HTML page"""
     from flask import send_from_directory
-    return send_from_directory(".", "index.html")
+    try:
+        return send_from_directory(".", "index.html")
+    except:
+        return f"""
+        <html>
+        <head><title>{APP_NAME} Server</title></head>
+        <body>
+            <h1>{APP_NAME} Server is Running</h1>
+            <p>Endpoints available:</p>
+            <ul>
+                <li>POST /api/command - Send text command</li>
+                <li>POST /api/upload_audio - Upload audio from ESP8266</li>
+                <li>GET /reply_audio/&lt;filename&gt; - Get TTS audio responses</li>
+            </ul>
+        </body>
+        </html>
+        """
 
 @app.route("/api/command", methods=["POST"])
 def api_command():
+    """Handle text commands from web interface."""
     data = request.json or {}
     query = data.get("command", "")
     result = handle_query(query)
-    # Ensure the response is JSON serializable with keys frontend expects
     return jsonify({
         "displayText": result.get("displayText", ""),
         "speakText": result.get("speakText", "")
     })
 
+@app.route("/api/upload_audio", methods=["POST"])
+def api_upload_audio():
+    """
+    Receive raw PCM audio from ESP8266, convert to text, process command,
+    generate TTS response, and return audio URL.
+    """
+    try:
+        raw = request.get_data()
+        if not raw or len(raw) == 0:
+            return jsonify({
+                "displayText": "No audio received.",
+                "speakText": "No audio received.",
+                "audio_url": ""
+            }), 400
+
+        # Convert raw to wav bytes
+        wav_bytes = raw8_to_wav_bytes(raw, sample_rate=2000)
+
+        # Save incoming wav for debugging
+        unique = str(uuid.uuid4())
+        in_wav_path = os.path.join(AUDIO_DIR, f"{unique}.wav")
+        with open(in_wav_path, "wb") as f:
+            f.write(wav_bytes)
+
+        # Recognize speech
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(in_wav_path) as source:
+            audio = recognizer.record(source)
+        
+        try:
+            text = recognizer.recognize_google(audio, language="en-in")
+            print(f"[{APP_NAME}] Recognized: {text}")
+        except sr.UnknownValueError:
+            text = ""
+            print(f"[{APP_NAME}] Could not understand audio")
+        except sr.RequestError as e:
+            text = ""
+            print(f"[{APP_NAME}] Speech recognition error: {e}")
+
+        if text.strip() == "":
+            reply = {
+                "displayText": "Could not understand audio.",
+                "speakText": "I could not understand. Please try again.",
+                "audio_url": ""
+            }
+            return jsonify(reply)
+
+        # Process query
+        result = handle_query(text)
+        display = result.get("displayText", "")
+        speak_text = result.get("speakText", "")
+
+        # Generate TTS audio file
+        audio_url = ""
+        if speak_text:
+            out_name = f"reply_{unique}"
+            tts_path = save_tts_mp3(speak_text, out_name)
+            audio_url = f"{request.host_url.rstrip('/')}/reply_audio/{os.path.basename(tts_path)}"
+
+        return jsonify({
+            "displayText": display,
+            "speakText": speak_text,
+            "audio_url": audio_url
+        })
+
+    except Exception as e:
+        print(f"[{APP_NAME}] upload_audio error: {e}")
+        return jsonify({
+            "displayText": "Server error",
+            "speakText": "Server error",
+            "audio_url": ""
+        }), 500
+
+@app.route("/reply_audio/<path:filename>")
+def serve_reply_audio(filename):
+    """Serve generated TTS audio files."""
+    return send_from_directory(REPLY_DIR, filename, as_attachment=False)
+
 # ---------- CLI Mode ----------
-def run_ai():
+def run_cli():
+    """Run the assistant in CLI mode."""
     wish_me()
     while True:
         query = take_command().strip()
         if query:
             print(f"[{APP_NAME}] Processing: {query}")
             response = handle_query(query)
-            print(f"[{APP_NAME}] {response.get('displayText','')}")
+            print(f"[{APP_NAME}] {response.get('displayText', '')}")
 
-
+# ---------- Main Entry Point ----------
 if __name__ == "__main__":
-    mode = input(f"Start {APP_NAME} in (1) Voice CLI or (2) Web API mode? Enter 1 or 2: ").strip()
+    # Ask for mode
+    print(f"=== {APP_NAME} Assistant ===")
+    print("1. Voice CLI Mode")
+    print("2. Web API Mode (with ESP8266 support)")
+    
+    mode = input("Select mode (1 or 2): ").strip()
+    
     if mode == "1":
         SERVER_MODE = "cli"
-        run_ai()
+        print(f"\n[{APP_NAME}] Starting in CLI mode...")
+        print("Press Ctrl+C to exit\n")
+        try:
+            run_cli()
+        except KeyboardInterrupt:
+            print(f"\n[{APP_NAME}] Shutting down...")
     else:
         SERVER_MODE = "api"
-        print(f"[{APP_NAME}] starting on http://127.0.0.1:5000")
-        # Do not run server-side TTS when in API mode
-        app.run(host="0.0.0.0", port=5000)
+        print(f"\n[{APP_NAME}] Starting API server on http://0.0.0.0:5000")
+        print("ESP8266 can send audio to: POST /api/upload_audio")
+        print("Web interface available at: http://localhost:5000\n")
+        app.run(host="0.0.0.0", port=5000, debug=False)
