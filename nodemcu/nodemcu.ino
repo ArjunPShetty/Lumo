@@ -36,8 +36,8 @@
 #include <ArduinoJson.h>   // For parsing JSON (install via Library Manager)
 
 // ---------- CONFIG ----------
-const char* SSID = "YOUR_WIFI_SSID";
-const char* PASSWORD = "YOUR_WIFI_PASSWORD";
+const char* SSID = "Sumsung Galaxy";
+const char* PASSWORD = "12341234";
 
 const char* SERVER_IP = "192.168.1.100"; // change to your PC's IP
 const uint16_t SERVER_PORT = 5000;

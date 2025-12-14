@@ -85,18 +85,6 @@ SETTINGS:
 12. voice male/female      - Change assistant voice (CLI only)
 13. help                   - Show this help menu
 14. exit / quit            - Exit assistant (CLI only)
-
-CONVERSATIONAL:
-You can also chat with me! Try saying:
-- Hi / Hello / Hey
-- How are you?
-- Tell me a joke
-- I'm bored / sad / happy
-- Thank you
-- Goodbye
-- What can you do?
-- Who are you?
-- And many more casual conversations!
 """
     print(commands)
     speak("I have displayed the list of available commands on your screen.")

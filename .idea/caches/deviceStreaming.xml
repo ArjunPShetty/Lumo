@@ -1262,6 +1262,23 @@
             </list>
           </option>
           <option name="api" value="35" />
+          <option name="brand" value="TECNO" />
+          <option name="codename" value="transsion_lab_tecno-km4" />
+          <option name="id" value="transsion_lab_tecno-km4" />
+          <option name="labId" value="transsion" />
+          <option name="manufacturer" value="TECNO" />
+          <option name="name" value="Spark Go 2" />
+          <option name="screenDensity" value="280" />
+          <option name="screenX" value="720" />
+          <option name="screenY" value="1600" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
+          <option name="accessStatus">
+            <list>
+              <option value="EULA_NOT_ACCEPTED" />
+            </list>
+          </option>
+          <option name="api" value="35" />
           <option name="brand" value="vivo" />
           <option name="codename" value="vivo_lab_v2342" />
           <option name="id" value="vivo_lab_v2342" />
