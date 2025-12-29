@@ -82,6 +82,17 @@
             animation: pulseGlow 2s infinite;
         }
 
+        /* Recording animation */
+        @keyframes recordingGlow {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 14px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .recording-pulse {
+            animation: recordingGlow 1.5s infinite;
+            background: linear-gradient(135deg, #ef4444, #f59e0b) !important;
+        }
+
         /* Status indicators */
         .status-indicator {
             position: relative;
@@ -281,6 +292,30 @@
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
 
+        /* Voice mode selector */
+        .voice-mode-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .voice-mode-btn.active {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+        .voice-mode-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        .light-mode .voice-mode-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .desktop-only {
@@ -291,6 +326,30 @@
             .mobile-only {
                 display: none;
             }
+        }
+
+        /* Recording status */
+        .recording-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            font-size: 0.75rem;
+            animation: pulseGlow 2s infinite;
+        }
+        .recording-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
     </style>
 </head>
@@ -313,8 +372,14 @@
 
                 <!-- Connection status in header -->
                 <div class="connection-status">
-                    <div id="connectionDot" class="connection-dot connecting"></div>
-                    <span id="connectionStatus" class="text-sm">Connecting...</span>
+                    <div id="connectionDot" class="connection-dot online"></div>
+                    <span id="connectionStatus" class="text-sm">Ready</span>
+                </div>
+
+                <!-- Recording status (hidden by default) -->
+                <div id="recordingStatus" class="recording-status hidden">
+                    <div class="recording-dot"></div>
+                    <span>Recording...</span>
                 </div>
 
                 <!-- Current chat title -->
@@ -332,13 +397,11 @@
                     </svg>
                 </button>
 
-                <!-- Mic control -->
-                <button id="micToggle" class="flex items-center gap-2 px-4 py-2 rounded-lg glass hover-lift transition">
-                    <svg id="micIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 1v11m0 0a3 3 0 01-3 3 3 3 0 01-3-3V9a3 3 0 013-3m6 0a3 3 0 013 3v2a3 3 0 01-3 3m0 0a3 3 0 01-3 3M5 10v2a7 7 0 0014 0v-2" />
-                    </svg>
-                    <span id="micToggleLabel" class="text-sm">Start Mic</span>
-                </button>
+                <!-- Voice mode selector -->
+                <div class="flex items-center gap-1 p-1 rounded-lg" style="background: var(--bg-card);">
+                    <button id="browserVoiceBtn" class="voice-mode-btn active">Browser Voice</button>
+                    <button id="webSpeechBtn" class="voice-mode-btn">Web Speech</button>
+                </div>
 
                 <!-- Voice on/off -->
                 <button id="voiceToggle" class="px-4 py-2 rounded-lg glass hover-lift text-sm">Voice: <span id="voiceState">On</span></button>
@@ -359,17 +422,35 @@
                         <div class="glass p-4 rounded-xl max-w-prose">
                             <div class="text-sm font-medium">Hello — I'm LUMO.</div>
                             <div class="text-xs mt-1" style="color: var(--text-secondary);">Type a command or press the mic to begin. Current backend: Python (5000)</div>
+                            <div class="text-xs mt-2" style="color: var(--text-secondary);">Voice Mode: <span id="currentVoiceMode">Browser Voice</span></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Input area -->
                 <div class="mt-6 pt-4 border-t flex items-center gap-4" style="border-color: var(--border-color);">
-                    <button id="micFab" class="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">
+                    <!-- Browser Voice Controls -->
+                    <div id="browserVoiceControls" class="flex items-center gap-2">
+                        <button id="startVoiceBtn" class="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 1v11m0 0a3 3 0 01-3 3 3 3 0 01-3-3V9a3 3 0 013-3m6 0a3 3 0 013 3v2a3 3 0 01-3 3" />
+                            </svg>
+                        </button>
+                        <button id="stopVoiceBtn" class="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift hidden" style="background:linear-gradient(135deg,#ef4444,#f59e0b)">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Web Speech Mic (old style) -->
+                    <button id="webSpeechMic" class="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift hidden" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 1v11m0 0a3 3 0 01-3 3 3 3 0 01-3-3V9a3 3 0 013-3m6 0a3 3 0 013 3v2a3 3 0 01-3 3" />
                         </svg>
                     </button>
+
                     <input id="cmdInput" class="flex-1 p-4 rounded-xl glass input-focus" placeholder="Type a command... (e.g. 'turn on living room light')" style="background: var(--bg-card); color: var(--text-primary);" />
                     <button id="sendBtn" class="px-5 py-3 rounded-xl text-white font-medium hover-lift" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">Send</button>
                 </div>
@@ -420,6 +501,7 @@
             <div class="text-xs mt-auto pt-6 border-t" style="color: var(--text-secondary); border-color: var(--border-color);">
                 <div>Active Backend: <span id="apiUrlDisplayDrawer">http://127.0.0.1:5000/api/command</span></div>
                 <div class="mt-1">Version 3.0 · Multi-Mode UI</div>
+                <div class="mt-1">Voice Mode: <span id="voiceModeDisplay">Browser Voice</span></div>
             </div>
         </div>
     </div>
@@ -435,7 +517,9 @@
     /* ============================
        Configuration & constants
        ============================ */
-    let API_URL = 'http://127.0.0.1:5000/api/command';
+    const SERVER_IP = window.location.hostname;
+    let API_URL = `http://${SERVER_IP}:5000/api/command`;
+    let BROWSER_VOICE_API_URL = `http://${SERVER_IP}:5000/api/browser_voice`;
     document.getElementById('apiUrlDisplayDrawer').textContent = API_URL;
 
     /* ============================
@@ -445,25 +529,179 @@
     const drawerRecentChats = document.getElementById('drawerRecentChats');
     const cmdInput = document.getElementById('cmdInput');
     const sendBtn = document.getElementById('sendBtn');
-    const micToggle = document.getElementById('micToggle');
-    const micToggleLabel = document.getElementById('micToggleLabel');
-    const voiceToggle = document.getElementById('voiceToggle');
-    const voiceState = document.getElementById('voiceState');
     const connectionDot = document.getElementById('connectionDot');
     const connectionStatus = document.getElementById('connectionStatus');
     const currentChatTitle = document.getElementById('currentChatTitle');
     const contextMenu = document.getElementById('contextMenu');
+    const recordingStatus = document.getElementById('recordingStatus');
+    const currentVoiceMode = document.getElementById('currentVoiceMode');
+    const voiceModeDisplay = document.getElementById('voiceModeDisplay');
 
     // Storage keys
     const chatsStorageKey = 'lumo_chats_v1';
     const currentChatIdKey = 'lumo_current_chat_id';
+    const voiceModeKey = 'lumo_voice_mode';
 
+    let isRecording = false;
     let isListening = false;
     let recognition = null;
+    let mediaRecorder = null;
+    let audioChunks = [];
     let currentChatId = null;
     let chats = {};
     let contextMenuChatId = null;
     let longPressTimer = null;
+    let currentVoiceModeType = localStorage.getItem(voiceModeKey) || 'browser';
+
+    /* ============================
+       Browser Voice Recording Functions
+       ============================ */
+    async function startBrowserVoice() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+            mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+                const formData = new FormData();
+                formData.append("audio", audioBlob, "voice.wav");
+
+                try {
+                    const res = await fetch(BROWSER_VOICE_API_URL, {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const data = await res.json();
+
+                    if (data.recognizedText) {
+                        appendMessage("user", data.recognizedText);
+                    }
+                    if (data.displayText) {
+                        appendMessage("lumo", data.displayText);
+                    }
+
+                    // Speak response if voice is on
+                    if ((data.speakText || data.displayText) && 'speechSynthesis' in window && document.getElementById('voiceState').textContent === 'On') {
+                        const u = new SpeechSynthesisUtterance(data.speakText || data.displayText || "Response received");
+                        speechSynthesis.speak(u);
+                    }
+                } catch (err) {
+                    console.error('Voice processing error:', err);
+                    appendMessage('lumo', 'Could not process voice input. Please try again.');
+                }
+            };
+
+            mediaRecorder.start();
+            isRecording = true;
+            
+            // Update UI
+            document.getElementById('startVoiceBtn').classList.add('hidden');
+            document.getElementById('stopVoiceBtn').classList.remove('hidden');
+            document.getElementById('startVoiceBtn').classList.add('recording-pulse');
+            recordingStatus.classList.remove('hidden');
+        } catch (err) {
+            console.error('Error accessing microphone:', err);
+            appendMessage('lumo', 'Microphone access denied. Please check permissions.');
+        }
+    }
+
+    function stopBrowserVoice() {
+        if (mediaRecorder && isRecording) {
+            mediaRecorder.stop();
+            isRecording = false;
+            
+            // Update UI
+            document.getElementById('startVoiceBtn').classList.remove('hidden');
+            document.getElementById('stopVoiceBtn').classList.add('hidden');
+            document.getElementById('startVoiceBtn').classList.remove('recording-pulse');
+            recordingStatus.classList.add('hidden');
+
+            // Stop all tracks in the stream
+            mediaRecorder.stream.getTracks().forEach(track => track.stop());
+        }
+    }
+
+    /* ============================
+       Web Speech API Functions
+       ============================ */
+    function setupSpeechRecognition(){
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+        
+        // Add HTTPS warning for mobile
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+            appendMessage('lumo', '⚠️ Web Speech API may not work on HTTP. Use HTTPS for best results.');
+        }
+        
+        if(!SpeechRecognition) return null;
+        const r = new SpeechRecognition();
+        r.lang = 'en-US';
+        r.interimResults = false;
+        r.maxAlternatives = 1;
+        r.onstart = () => {
+            isListening = true;
+            document.getElementById('webSpeechMic').classList.add('mic-pulse');
+            recordingStatus.classList.remove('hidden');
+            recordingStatus.innerHTML = '<div class="recording-dot"></div><span>Listening...</span>';
+        };
+        r.onend = () => {
+            isListening = false;
+            document.getElementById('webSpeechMic').classList.remove('mic-pulse');
+            recordingStatus.classList.add('hidden');
+        };
+        r.onerror = (e) => { 
+            appendMessage('lumo', `Mic error: ${e.error}`);
+            recordingStatus.classList.add('hidden');
+        };
+        r.onresult = (ev) => {
+            const t = ev.results[0][0].transcript;
+            cmdInput.value = t;
+            sendCommand(t);
+        };
+        return r;
+    }
+
+    function toggleWebSpeechMic(){
+        if(!recognition) recognition = setupSpeechRecognition();
+        if(!recognition){
+            appendMessage('lumo', 'SpeechRecognition not supported in this browser.');
+            return;
+        }
+        if(isListening){ 
+            recognition.stop(); 
+        } else { 
+            recognition.start(); 
+        }
+    }
+
+    /* ============================
+       Voice Mode Management
+       ============================ */
+    function setVoiceMode(mode) {
+        currentVoiceModeType = mode;
+        localStorage.setItem(voiceModeKey, mode);
+        
+        // Update UI
+        document.getElementById('browserVoiceBtn').classList.toggle('active', mode === 'browser');
+        document.getElementById('webSpeechBtn').classList.toggle('active', mode === 'webspeech');
+        
+        document.getElementById('browserVoiceControls').classList.toggle('hidden', mode !== 'browser');
+        document.getElementById('webSpeechMic').classList.toggle('hidden', mode !== 'webspeech');
+        
+        currentVoiceMode.textContent = mode === 'browser' ? 'Browser Voice' : 'Web Speech';
+        voiceModeDisplay.textContent = mode === 'browser' ? 'Browser Voice' : 'Web Speech';
+        
+        // Stop any ongoing recording/listening
+        if (mode === 'browser' && isListening) {
+            recognition.stop();
+        }
+        if (mode === 'webspeech' && isRecording) {
+            stopBrowserVoice();
+        }
+    }
 
     /* ============================
        Theme Toggle Functionality
@@ -881,10 +1119,10 @@
             const data = await res.json();
             const display = data.displayText || data.display_text || data.message || data.speakText || JSON.stringify(data);
             appendMessage('lumo', display);
-            setConnectionStatus('Connected', 'online');
+            setConnectionStatus('Ready', 'online');
 
             // Speak if allowed
-            if ((data.speakText || data.message) && 'speechSynthesis' in window && voiceState.textContent === 'On') {
+            if ((data.speakText || data.message) && 'speechSynthesis' in window && document.getElementById('voiceState').textContent === 'On') {
                 const u = new SpeechSynthesisUtterance(data.speakText || (typeof display === 'string' ? display : 'Response'));
                 speechSynthesis.speak(u);
             }
@@ -911,55 +1149,24 @@
             connectionDot.classList.add('online');
         } else if (status === 'connecting') {
             connectionDot.classList.add('connecting');
+        } else {
+            connectionDot.classList.remove('online', 'connecting');
         }
-    }
-
-    /* ============================
-       Mic/Voice integration
-       ============================ */
-    function setupSpeechRecognition(){
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
-        if(!SpeechRecognition) return null;
-        const r = new SpeechRecognition();
-        r.lang = 'en-US';
-        r.interimResults = false;
-        r.maxAlternatives = 1;
-        r.onstart = () => {
-            isListening = true;
-            micToggleLabel.textContent = 'Stop Mic';
-            document.getElementById('micFab').classList.add('mic-pulse');
-        };
-        r.onend = () => {
-            isListening = false;
-            micToggleLabel.textContent = 'Start Mic';
-            document.getElementById('micFab').classList.remove('mic-pulse');
-        };
-        r.onerror = (e) => { appendMessage('lumo', `Mic error: ${e.error}`); };
-        r.onresult = (ev) => {
-            const t = ev.results[0][0].transcript;
-            cmdInput.value = t;
-            sendCommand(t);
-        };
-        return r;
-    }
-
-    /* mic toggle handler */
-    function toggleMic(){
-        if(!recognition) recognition = setupSpeechRecognition();
-        if(!recognition){
-            appendMessage('lumo', 'SpeechRecognition not supported in this browser.');
-            return;
-        }
-        if(isListening){ recognition.stop(); } else { recognition.start(); }
     }
 
     /* ============================
        Event Listeners
        ============================ */
-    // Quick mic FAB click to start/stop
-    document.getElementById('micFab').addEventListener('click', () => {
-        toggleMic();
-    });
+    // Browser Voice Controls
+    document.getElementById('startVoiceBtn').addEventListener('click', startBrowserVoice);
+    document.getElementById('stopVoiceBtn').addEventListener('click', stopBrowserVoice);
+
+    // Web Speech Mic
+    document.getElementById('webSpeechMic').addEventListener('click', toggleWebSpeechMic);
+
+    // Voice Mode Selection
+    document.getElementById('browserVoiceBtn').addEventListener('click', () => setVoiceMode('browser'));
+    document.getElementById('webSpeechBtn').addEventListener('click', () => setVoiceMode('webspeech'));
 
     // Send button and Enter key
     sendBtn.addEventListener('click', () => {
@@ -975,13 +1182,9 @@
         }
     });
 
-    // Mic toggle button
-    micToggle.addEventListener('click', () => {
-        toggleMic();
-    });
-
     // Voice toggle button
-    voiceToggle.addEventListener('click', () => {
+    document.getElementById('voiceToggle').addEventListener('click', () => {
+        const voiceState = document.getElementById('voiceState');
         voiceState.textContent = voiceState.textContent === 'On' ? 'Off' : 'On';
     });
 
@@ -1030,7 +1233,7 @@
        ============================ */
     function updateNetworkStatus(){
         const online = navigator.onLine;
-        setConnectionStatus(online ? 'Online' : 'Offline', online ? 'online' : 'offline');
+        setConnectionStatus(online ? 'Ready' : 'Offline', online ? 'online' : 'offline');
     }
 
     window.addEventListener('online', updateNetworkStatus);
@@ -1038,21 +1241,11 @@
     updateNetworkStatus();
 
     /* ============================
-       Ping backend on load & health-check
-       ============================ */
-    async function pingBackend(){
-        try{
-            const res = await fetch(API_URL, { method:'OPTIONS' });
-            if(res.ok){ setConnectionStatus('Connected', 'online'); }
-            else { setConnectionStatus('Disconnected', 'offline'); }
-        }catch(e){ setConnectionStatus('Disconnected', 'offline'); }
-    }
-    pingBackend();
-
-    /* ============================
        Initialize the app
        ============================ */
     initChats();
+    setVoiceMode(currentVoiceModeType);
+    setConnectionStatus('Ready', 'online');
 
     /* expose ctrl+enter to send */
     window.addEventListener('keydown', e => {

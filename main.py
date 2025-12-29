@@ -444,6 +444,7 @@ def index():
             <ul>
                 <li>POST /api/command - Send text command</li>
                 <li>POST /api/upload_audio - Upload audio from ESP8266</li>
+                <li>POST /api/browser_voice - Upload audio from browser (mobile/laptop)</li>
                 <li>GET /reply_audio/&lt;filename&gt; - Get TTS audio responses</li>
             </ul>
         </body>
@@ -534,6 +535,58 @@ def api_upload_audio():
             "audio_url": ""
         }), 500
 
+@app.route("/api/browser_voice", methods=["POST"])
+def api_browser_voice():
+    """
+    Receive audio from browser (mobile/laptop),
+    convert to text, process command, return response.
+    """
+    try:
+        if "audio" not in request.files:
+            return jsonify({"displayText": "No audio file received"}), 400
+
+        audio_file = request.files["audio"]
+
+        # Save uploaded audio
+        unique = str(uuid.uuid4())
+        wav_path = os.path.join(AUDIO_DIR, f"{unique}.wav")
+        audio_file.save(wav_path)
+
+        # Speech recognition
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(wav_path) as source:
+            audio = recognizer.record(source)
+
+        try:
+            text = recognizer.recognize_google(audio, language="en-in")
+            print(f"[{APP_NAME}] Browser voice recognized: {text}")
+        except sr.UnknownValueError:
+            return jsonify({
+                "displayText": "Could not understand your voice",
+                "speakText": "I could not understand, please try again"
+            })
+        except sr.RequestError as e:
+            return jsonify({
+                "displayText": "Speech service error",
+                "speakText": "Speech recognition service failed"
+            })
+
+        # Process command
+        result = handle_query(text)
+
+        return jsonify({
+            "recognizedText": text,
+            "displayText": result.get("displayText", ""),
+            "speakText": result.get("speakText", "")
+        })
+
+    except Exception as e:
+        print(f"[{APP_NAME}] browser_voice error: {e}")
+        return jsonify({
+            "displayText": "Server error",
+            "speakText": "Server error"
+        }), 500
+
 @app.route("/reply_audio/<path:filename>")
 def serve_reply_audio(filename):
     """Serve generated TTS audio files."""
@@ -571,5 +624,6 @@ if __name__ == "__main__":
         SERVER_MODE = "api"
         print(f"\n[{APP_NAME}] Starting API server on http://0.0.0.0:5000")
         print("ESP8266 can send audio to: POST /api/upload_audio")
+        print("Browser can send audio to: POST /api/browser_voice")
         print("Web interface available at: http://localhost:5000\n")
         app.run(host="0.0.0.0", port=5000, debug=False)
