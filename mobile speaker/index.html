@@ -514,17 +514,13 @@
 </div>
 
 <script>
-    /* ============================
-       Configuration & constants
-       ============================ */
+
     const SERVER_IP = window.location.hostname;
     let API_URL = `http://${SERVER_IP}:5000/api/command`;
     let BROWSER_VOICE_API_URL = `http://${SERVER_IP}:5000/api/browser_voice`;
     document.getElementById('apiUrlDisplayDrawer').textContent = API_URL;
 
-    /* ============================
-       DOM Elements
-       ============================ */
+
     const messagesEl = document.getElementById('messages');
     const drawerRecentChats = document.getElementById('drawerRecentChats');
     const cmdInput = document.getElementById('cmdInput');
@@ -553,9 +549,6 @@
     let longPressTimer = null;
     let currentVoiceModeType = localStorage.getItem(voiceModeKey) || 'browser';
 
-    /* ============================
-       Browser Voice Recording Functions
-       ============================ */
     async function startBrowserVoice() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -625,9 +618,6 @@
         }
     }
 
-    /* ============================
-       Web Speech API Functions
-       ============================ */
     function setupSpeechRecognition(){
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
         
@@ -677,9 +667,6 @@
         }
     }
 
-    /* ============================
-       Voice Mode Management
-       ============================ */
     function setVoiceMode(mode) {
         currentVoiceModeType = mode;
         localStorage.setItem(voiceModeKey, mode);
@@ -703,9 +690,6 @@
         }
     }
 
-    /* ============================
-       Theme Toggle Functionality
-       ============================ */
     const themeToggle = document.getElementById('themeToggle');
     const sunIcon = document.getElementById('sunIcon');
     const moonIcon = document.getElementById('moonIcon');
@@ -743,9 +727,6 @@
         localStorage.setItem('lumo-theme', 'dark');
     }
 
-    /* ============================
-       Drawer functionality
-       ============================ */
     const mobileDrawer = document.getElementById('mobileDrawer');
     const drawer = document.getElementById('drawer');
     const drawerOverlay = document.getElementById('drawerOverlay');
@@ -773,9 +754,6 @@
         }, 300);
     });
 
-    /* ============================
-       Context Menu Functionality
-       ============================ */
     function setupContextMenu() {
         // Hide context menu when clicking elsewhere
         document.addEventListener('click', (e) => {
@@ -894,9 +872,6 @@
         }
     }
 
-    /* ============================
-       Chat Management
-       ============================ */
     function initChats() {
         // Load chats from localStorage
         const storedChats = localStorage.getItem(chatsStorageKey);
@@ -904,10 +879,8 @@
             chats = JSON.parse(storedChats);
         }
 
-        // Load current chat ID
         currentChatId = localStorage.getItem(currentChatIdKey);
 
-        // If no chats exist or current chat doesn't exist, create a new chat
         if (!currentChatId || !chats[currentChatId]) {
             createNewChat();
         } else {
@@ -952,7 +925,6 @@
         const chat = chats[chatId];
         currentChatTitle.textContent = chat.title;
 
-        // Clear current messages and load chat messages
         messagesEl.innerHTML = '';
         chat.messages.forEach(message => {
             appendMessageToDOM(message.who, message.text, message.meta, false);
@@ -971,7 +943,6 @@
         if (!currentChatId || !chats[currentChatId]) return;
 
         const chat = chats[currentChatId];
-        // Find the first user message to use as title
         const firstUserMessage = chat.messages.find(msg => msg.who === 'user');
         if (firstUserMessage) {
             const shortText = firstUserMessage.text.length > 30
@@ -991,8 +962,6 @@
             drawerRecentChats.innerHTML = '<div class="text-center p-4" style="color: var(--text-secondary);">No recent chats</div>';
             return;
         }
-
-        // Convert chats object to array and sort by updated time (newest first)
         const chatsArray = Object.values(chats).sort((a, b) => b.updatedAt - a.updatedAt);
 
         drawerRecentChats.innerHTML = '';
@@ -1007,7 +976,6 @@
             `;
 
             chatEl.addEventListener('click', (e) => {
-                // Only load chat if it's a normal click (not right-click/long-press)
                 if (e.button === 0 || e.type === 'touchstart') {
                     loadChat(chat.id);
                     drawer.classList.add('transform', '-translate-x-full');
@@ -1017,7 +985,6 @@
                 }
             });
 
-            // Setup context menu for this chat item
             setupChatItemContextMenu(chatEl, chat.id);
 
             drawerRecentChats.appendChild(chatEl);
@@ -1026,21 +993,16 @@
 
     function clearRecentChats() {
         if (Object.keys(chats).length <= 1) {
-            // Don't allow clearing if only one chat exists
             alert('Cannot clear all chats. At least one chat must remain.');
             return;
         }
 
-        // Keep only the current chat
         const currentChat = chats[currentChatId];
         chats = { [currentChatId]: currentChat };
         saveChatsToStorage();
         renderRecentChats();
     }
 
-    /* ============================
-       Message rendering
-       ============================ */
     function appendMessage(who, text, meta = {}) {
         if (!currentChatId || !chats[currentChatId]) return;
 
@@ -1051,7 +1013,6 @@
         saveChatsToStorage();
         appendMessageToDOM(who, text, meta);
 
-        // Update chat title if this is the first user message
         if (who === 'user' && chats[currentChatId].title === 'New Chat') {
             updateChatTitle();
         }
@@ -1071,7 +1032,7 @@
         const bubble = document.createElement('div');
         bubble.className = 'glass p-4 rounded-xl max-w-prose';
 
-        // Add timestamp
+
         const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         const messageContent = `<div class="text-xs mb-2" style="color: var(--text-secondary);">${timestamp}</div><div>${text}</div>`;
 
@@ -1083,9 +1044,6 @@
         messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    /* ============================
-       Backend communication
-       ============================ */
     async function sendCommand(command){
         const trimmed = (command||'').trim();
         if(!trimmed) return;
@@ -1093,7 +1051,7 @@
         appendMessage('user', trimmed);
         setConnectionStatus('Sending...', 'connecting');
 
-        const timeout = 10000; // 10 seconds default
+        const timeout = 10000; 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
 
@@ -1121,7 +1079,6 @@
             appendMessage('lumo', display);
             setConnectionStatus('Ready', 'online');
 
-            // Speak if allowed
             if ((data.speakText || data.message) && 'speechSynthesis' in window && document.getElementById('voiceState').textContent === 'On') {
                 const u = new SpeechSynthesisUtterance(data.speakText || (typeof display === 'string' ? display : 'Response'));
                 speechSynthesis.speak(u);
@@ -1137,13 +1094,9 @@
         }
     }
 
-    /* ============================
-       Status helpers
-       ============================ */
     function setConnectionStatus(text, status){
         connectionStatus.textContent = text;
 
-        // Update connection dot
         connectionDot.className = 'connection-dot';
         if (status === 'online') {
             connectionDot.classList.add('online');
@@ -1154,21 +1107,14 @@
         }
     }
 
-    /* ============================
-       Event Listeners
-       ============================ */
-    // Browser Voice Controls
     document.getElementById('startVoiceBtn').addEventListener('click', startBrowserVoice);
     document.getElementById('stopVoiceBtn').addEventListener('click', stopBrowserVoice);
 
-    // Web Speech Mic
     document.getElementById('webSpeechMic').addEventListener('click', toggleWebSpeechMic);
 
-    // Voice Mode Selection
     document.getElementById('browserVoiceBtn').addEventListener('click', () => setVoiceMode('browser'));
     document.getElementById('webSpeechBtn').addEventListener('click', () => setVoiceMode('webspeech'));
 
-    // Send button and Enter key
     sendBtn.addEventListener('click', () => {
         sendCommand(cmdInput.value);
         cmdInput.value = '';
@@ -1182,17 +1128,15 @@
         }
     });
 
-    // Voice toggle button
     document.getElementById('voiceToggle').addEventListener('click', () => {
         const voiceState = document.getElementById('voiceState');
         voiceState.textContent = voiceState.textContent === 'On' ? 'Off' : 'On';
     });
 
-    // Clear button (main toolbar) - clears current chat messages
+
     document.getElementById('clearBtn').addEventListener('click', () => {
         if (!currentChatId || !chats[currentChatId]) return;
 
-        // Keep only the initial LUMO message
         const initialMessage = chats[currentChatId].messages.find(msg =>
             msg.who === 'lumo' && msg.text.includes("Hello — I'm LUMO")
         );
@@ -1200,7 +1144,7 @@
         if (initialMessage) {
             chats[currentChatId].messages = [initialMessage];
         } else {
-            // If no initial message found, create one
+
             chats[currentChatId].messages = [{
                 who: 'lumo',
                 text: "Hello — I'm LUMO. Type a command or press the mic to begin.",
@@ -1214,7 +1158,6 @@
         loadChat(currentChatId);
     });
 
-    // New Chat button
     document.getElementById('newChatBtn').addEventListener('click', () => {
         createNewChat();
         drawer.classList.add('transform', '-translate-x-full');
@@ -1223,14 +1166,11 @@
         }, 300);
     });
 
-    // Clear Recent Chats button
     document.getElementById('clearRecentChatsBtn').addEventListener('click', () => {
         clearRecentChats();
     });
 
-    /* ============================
-       Network status
-       ============================ */
+
     function updateNetworkStatus(){
         const online = navigator.onLine;
         setConnectionStatus(online ? 'Ready' : 'Offline', online ? 'online' : 'offline');
@@ -1240,14 +1180,10 @@
     window.addEventListener('offline', updateNetworkStatus);
     updateNetworkStatus();
 
-    /* ============================
-       Initialize the app
-       ============================ */
     initChats();
     setVoiceMode(currentVoiceModeType);
     setConnectionStatus('Ready', 'online');
 
-    /* expose ctrl+enter to send */
     window.addEventListener('keydown', e => {
         if((e.ctrlKey || e.metaKey) && e.key === 'Enter'){
             sendCommand(cmdInput.value);
@@ -1255,10 +1191,8 @@
         }
     });
 
-    /* expose a debug helper to quickly inject assistant text (for development) */
     window.__lumoInject = (txt) => appendMessage('lumo', txt);
 
-    /* End of script */
 </script>
 </body>
 </html>
