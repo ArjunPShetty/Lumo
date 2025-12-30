@@ -1,0 +1,1264 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>LUMO — Advanced Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #222222;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #22c55e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border-color: #333333;
+            --glow-primary: rgba(59, 130, 246, 0.25);
+            --glow-secondary: rgba(34, 197, 94, 0.15);
+        }
+
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --bg-card: #ffffff;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #22c55e;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --glow-primary: rgba(59, 130, 246, 0.15);
+            --glow-secondary: rgba(34, 197, 94, 0.1);
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 10% 10%, var(--glow-primary), transparent 35%),
+                radial-gradient(circle at 90% 20%, var(--glow-primary), transparent 35%),
+                radial-gradient(circle at 20% 90%, var(--glow-secondary), transparent 40%),
+                radial-gradient(circle at 80% 80%, var(--glow-secondary), transparent 45%),
+                var(--bg-primary);
+            height: 100vh;
+            display: flex;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow: hidden;
+            transition: background 0.5s ease, color 0.3s ease;
+        }
+
+        /* Glass morphism effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .light-mode .glass {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Message animations */
+        @keyframes messageSlide {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .message-animate {
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        /* Mic pulse animation */
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 14px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        .mic-pulse {
+            animation: pulseGlow 2s infinite;
+        }
+
+        /* Recording animation */
+        @keyframes recordingGlow {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 14px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .recording-pulse {
+            animation: recordingGlow 1.5s infinite;
+            background: linear-gradient(135deg, #ef4444, #f59e0b) !important;
+        }
+
+        /* Status indicators */
+        .status-indicator {
+            position: relative;
+        }
+        .status-indicator::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+        }
+        .status-indicator.online::after {
+            background: #22c55e;
+        }
+        .status-indicator.connecting::after {
+            background: #f59e0b;
+        }
+
+        /* Connection status in header */
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .connection-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ef4444;
+        }
+        .connection-dot.online {
+            background: #22c55e;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+        .connection-dot.connecting {
+            background: #f59e0b;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+
+        /* Scrollbar styling */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .light-mode .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Hover effects */
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Input focus effect */
+        .input-focus:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+            border-color: var(--accent-primary);
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover {
+            transform: rotate(15deg);
+        }
+
+        /* Recent button style */
+        .recent-btn {
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+        .recent-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+        }
+        .light-mode .recent-btn {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--text-secondary);
+        }
+        .light-mode .recent-btn:hover {
+            background: rgba(0, 0, 0, 0.08);
+            color: var(--text-primary);
+        }
+
+        /* New Chat button */
+        .new-chat-btn {
+            padding: 10px 16px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .new-chat-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Chat item styling */
+        .chat-item {
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .chat-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .chat-item.active {
+            background: rgba(59, 130, 246, 0.15);
+            border-left: 3px solid var(--accent-primary);
+        }
+        .light-mode .chat-item:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .light-mode .chat-item.active {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Context menu styling */
+        .context-menu {
+            position: fixed;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 4px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            min-width: 120px;
+            backdrop-filter: blur(12px);
+        }
+        .context-menu-item {
+            width: 100%;
+            padding: 8px 12px;
+            text-align: left;
+            border: none;
+            background: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            transition: background 0.2s ease;
+        }
+        .context-menu-item:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+        .context-menu-item.delete {
+            color: #ef4444;
+        }
+        .context-menu-item.delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Rename input styling */
+        .rename-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+        .rename-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Voice mode selector */
+        .voice-mode-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .voice-mode-btn.active {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+        .voice-mode-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        .light-mode .voice-mode-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .desktop-only {
+                display: none;
+            }
+        }
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none;
+            }
+        }
+
+        /* Recording status */
+        .recording-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            font-size: 0.75rem;
+            animation: pulseGlow 2s infinite;
+        }
+        .recording-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+
+<!-- Main layout -->
+<div class="flex w-full h-full">
+
+    <!-- Main content area -->
+    <section class="flex-1 flex flex-col">
+
+        <!-- Top toolbar -->
+        <div class="p-4 flex items-center justify-between gap-4 border-b glass" style="border-color: var(--border-color);">
+            <div class="flex items-center gap-4">
+                <button id="menuToggle" class="p-2 rounded-lg hover-lift" style="background: var(--bg-card);">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
+                <!-- Connection status in header -->
+                <div class="connection-status">
+                    <div id="connectionDot" class="connection-dot online"></div>
+                    <span id="connectionStatus" class="text-sm">Ready</span>
+                </div>
+
+                <!-- Recording status (hidden by default) -->
+                <div id="recordingStatus" class="recording-status hidden">
+                    <div class="recording-dot"></div>
+                    <span>Recording...</span>
+                </div>
+
+                <!-- Current chat title -->
+                <div class="text-sm" style="color: var(--text-secondary);" id="currentChatTitle">New Chat</div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <!-- Theme toggle -->
+                <button id="themeToggle" class="p-2 rounded-lg hover-lift theme-toggle" style="background: var(--bg-card);">
+                    <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+
+                <!-- Voice mode selector -->
+                <div class="flex items-center gap-1 p-1 rounded-lg" style="background: var(--bg-card);">
+                    <button id="browserVoiceBtn" class="voice-mode-btn active">Browser Voice</button>
+                    <button id="webSpeechBtn" class="voice-mode-btn">Web Speech</button>
+                </div>
+
+                <!-- Voice on/off -->
+                <button id="voiceToggle" class="px-4 py-2 rounded-lg glass hover-lift text-sm">Voice: <span id="voiceState">On</span></button>
+
+                <!-- Clear -->
+                <button id="clearBtn" class="px-4 py-2 rounded-lg glass hover-lift text-sm">Clear</button>
+            </div>
+        </div>
+
+        <!-- Messages area -->
+        <main class="flex-1 flex flex-col p-6 overflow-hidden">
+            <div class="h-full flex flex-col">
+                <!-- Message list -->
+                <div id="messages" class="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-2">
+                    <!-- Initial system message -->
+                    <div class="flex items-start gap-4 message-animate">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">L</div>
+                        <div class="glass p-4 rounded-xl max-w-prose">
+                            <div class="text-sm font-medium">Hello — I'm LUMO.</div>
+                            <div class="text-xs mt-1" style="color: var(--text-secondary);">Type a command or press the mic to begin. Current backend: Python (5000)</div>
+                            <div class="text-xs mt-2" style="color: var(--text-secondary);">Voice Mode: <span id="currentVoiceMode">Browser Voice</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input area -->
+                <div class="mt-6 pt-4 border-t flex items-center gap-4" style="border-color: var(--border-color);">
+                    <!-- Browser Voice Controls -->
+                    <div id="browserVoiceControls" class="flex items-center gap-2">
+                        <button id="startVoiceBtn" class="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 1v11m0 0a3 3 0 01-3 3 3 3 0 01-3-3V9a3 3 0 013-3m6 0a3 3 0 013 3v2a3 3 0 01-3 3" />
+                            </svg>
+                        </button>
+                        <button id="stopVoiceBtn" class="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift hidden" style="background:linear-gradient(135deg,#ef4444,#f59e0b)">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Web Speech Mic (old style) -->
+                    <button id="webSpeechMic" class="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift hidden" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 1v11m0 0a3 3 0 01-3 3 3 3 0 01-3-3V9a3 3 0 013-3m6 0a3 3 0 013 3v2a3 3 0 01-3 3" />
+                        </svg>
+                    </button>
+
+                    <input id="cmdInput" class="flex-1 p-4 rounded-xl glass input-focus" placeholder="Type a command... (e.g. 'turn on living room light')" style="background: var(--bg-card); color: var(--text-primary);" />
+                    <button id="sendBtn" class="px-5 py-3 rounded-xl text-white font-medium hover-lift" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">Send</button>
+                </div>
+            </div>
+        </main>
+    </section>
+</div>
+
+<!-- Mobile drawer -->
+<div id="mobileDrawer" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black bg-opacity-70" id="drawerOverlay"></div>
+    <div class="absolute left-0 top-0 h-full w-80 glass transform -translate-x-full transition-transform duration-300" id="drawer" style="background: var(--bg-secondary);">
+        <div class="p-6 h-full flex flex-col">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));">L</div>
+                    <div>
+                        <h2 class="text-lg font-bold gradient-text">LUMO</h2>
+                        <p class="text-xs" style="color: var(--text-secondary);">Voice Assistant</p>
+                    </div>
+                </div>
+                <button id="closeDrawer" class="p-2 rounded-lg hover-lift" style="background: var(--bg-card);">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- New Chat Button -->
+            <button id="newChatBtn" class="new-chat-btn mb-6">
+                <div class="flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    New Chat
+                </div>
+            </button>
+
+            <!-- Recent Chats in Drawer -->
+            <div class="space-y-4 flex-1">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-medium" style="color: var(--text-secondary);">Recent Chats</h3>
+                    <button id="clearRecentChatsBtn" class="recent-btn">Clear</button>
+                </div>
+                <div id="drawerRecentChats" class="space-y-2 text-sm flex-1 overflow-y-auto custom-scrollbar pr-2"></div>
+            </div>
+
+            <div class="text-xs mt-auto pt-6 border-t" style="color: var(--text-secondary); border-color: var(--border-color);">
+                <div>Active Backend: <span id="apiUrlDisplayDrawer">http://127.0.0.1:5000/api/command</span></div>
+                <div class="mt-1">Version 3.0 · Multi-Mode UI</div>
+                <div class="mt-1">Voice Mode: <span id="voiceModeDisplay">Browser Voice</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Context Menu -->
+<div id="contextMenu" class="context-menu hidden">
+    <button class="context-menu-item" id="renameChatBtn">Rename</button>
+    <button class="context-menu-item delete" id="deleteChatBtn">Delete</button>
+</div>
+
+<script>
+    /* ============================
+       Configuration & constants
+       ============================ */
+    const SERVER_IP = window.location.hostname;
+    let API_URL = `http://${SERVER_IP}:5000/api/command`;
+    let BROWSER_VOICE_API_URL = `http://${SERVER_IP}:5000/api/browser_voice`;
+    document.getElementById('apiUrlDisplayDrawer').textContent = API_URL;
+
+    /* ============================
+       DOM Elements
+       ============================ */
+    const messagesEl = document.getElementById('messages');
+    const drawerRecentChats = document.getElementById('drawerRecentChats');
+    const cmdInput = document.getElementById('cmdInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const connectionDot = document.getElementById('connectionDot');
+    const connectionStatus = document.getElementById('connectionStatus');
+    const currentChatTitle = document.getElementById('currentChatTitle');
+    const contextMenu = document.getElementById('contextMenu');
+    const recordingStatus = document.getElementById('recordingStatus');
+    const currentVoiceMode = document.getElementById('currentVoiceMode');
+    const voiceModeDisplay = document.getElementById('voiceModeDisplay');
+
+    // Storage keys
+    const chatsStorageKey = 'lumo_chats_v1';
+    const currentChatIdKey = 'lumo_current_chat_id';
+    const voiceModeKey = 'lumo_voice_mode';
+
+    let isRecording = false;
+    let isListening = false;
+    let recognition = null;
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let currentChatId = null;
+    let chats = {};
+    let contextMenuChatId = null;
+    let longPressTimer = null;
+    let currentVoiceModeType = localStorage.getItem(voiceModeKey) || 'browser';
+
+    /* ============================
+       Browser Voice Recording Functions
+       ============================ */
+    async function startBrowserVoice() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+            mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+                const formData = new FormData();
+                formData.append("audio", audioBlob, "voice.wav");
+
+                try {
+                    const res = await fetch(BROWSER_VOICE_API_URL, {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const data = await res.json();
+
+                    if (data.recognizedText) {
+                        appendMessage("user", data.recognizedText);
+                    }
+                    if (data.displayText) {
+                        appendMessage("lumo", data.displayText);
+                    }
+
+                    // Speak response if voice is on
+                    if ((data.speakText || data.displayText) && 'speechSynthesis' in window && document.getElementById('voiceState').textContent === 'On') {
+                        const u = new SpeechSynthesisUtterance(data.speakText || data.displayText || "Response received");
+                        speechSynthesis.speak(u);
+                    }
+                } catch (err) {
+                    console.error('Voice processing error:', err);
+                    appendMessage('lumo', 'Could not process voice input. Please try again.');
+                }
+            };
+
+            mediaRecorder.start();
+            isRecording = true;
+            
+            // Update UI
+            document.getElementById('startVoiceBtn').classList.add('hidden');
+            document.getElementById('stopVoiceBtn').classList.remove('hidden');
+            document.getElementById('startVoiceBtn').classList.add('recording-pulse');
+            recordingStatus.classList.remove('hidden');
+        } catch (err) {
+            console.error('Error accessing microphone:', err);
+            appendMessage('lumo', 'Microphone access denied. Please check permissions.');
+        }
+    }
+
+    function stopBrowserVoice() {
+        if (mediaRecorder && isRecording) {
+            mediaRecorder.stop();
+            isRecording = false;
+            
+            // Update UI
+            document.getElementById('startVoiceBtn').classList.remove('hidden');
+            document.getElementById('stopVoiceBtn').classList.add('hidden');
+            document.getElementById('startVoiceBtn').classList.remove('recording-pulse');
+            recordingStatus.classList.add('hidden');
+
+            // Stop all tracks in the stream
+            mediaRecorder.stream.getTracks().forEach(track => track.stop());
+        }
+    }
+
+    /* ============================
+       Web Speech API Functions
+       ============================ */
+    function setupSpeechRecognition(){
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+        
+        // Add HTTPS warning for mobile
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+            appendMessage('lumo', '⚠️ Web Speech API may not work on HTTP. Use HTTPS for best results.');
+        }
+        
+        if(!SpeechRecognition) return null;
+        const r = new SpeechRecognition();
+        r.lang = 'en-US';
+        r.interimResults = false;
+        r.maxAlternatives = 1;
+        r.onstart = () => {
+            isListening = true;
+            document.getElementById('webSpeechMic').classList.add('mic-pulse');
+            recordingStatus.classList.remove('hidden');
+            recordingStatus.innerHTML = '<div class="recording-dot"></div><span>Listening...</span>';
+        };
+        r.onend = () => {
+            isListening = false;
+            document.getElementById('webSpeechMic').classList.remove('mic-pulse');
+            recordingStatus.classList.add('hidden');
+        };
+        r.onerror = (e) => { 
+            appendMessage('lumo', `Mic error: ${e.error}`);
+            recordingStatus.classList.add('hidden');
+        };
+        r.onresult = (ev) => {
+            const t = ev.results[0][0].transcript;
+            cmdInput.value = t;
+            sendCommand(t);
+        };
+        return r;
+    }
+
+    function toggleWebSpeechMic(){
+        if(!recognition) recognition = setupSpeechRecognition();
+        if(!recognition){
+            appendMessage('lumo', 'SpeechRecognition not supported in this browser.');
+            return;
+        }
+        if(isListening){ 
+            recognition.stop(); 
+        } else { 
+            recognition.start(); 
+        }
+    }
+
+    /* ============================
+       Voice Mode Management
+       ============================ */
+    function setVoiceMode(mode) {
+        currentVoiceModeType = mode;
+        localStorage.setItem(voiceModeKey, mode);
+        
+        // Update UI
+        document.getElementById('browserVoiceBtn').classList.toggle('active', mode === 'browser');
+        document.getElementById('webSpeechBtn').classList.toggle('active', mode === 'webspeech');
+        
+        document.getElementById('browserVoiceControls').classList.toggle('hidden', mode !== 'browser');
+        document.getElementById('webSpeechMic').classList.toggle('hidden', mode !== 'webspeech');
+        
+        currentVoiceMode.textContent = mode === 'browser' ? 'Browser Voice' : 'Web Speech';
+        voiceModeDisplay.textContent = mode === 'browser' ? 'Browser Voice' : 'Web Speech';
+        
+        // Stop any ongoing recording/listening
+        if (mode === 'browser' && isListening) {
+            recognition.stop();
+        }
+        if (mode === 'webspeech' && isRecording) {
+            stopBrowserVoice();
+        }
+    }
+
+    /* ============================
+       Theme Toggle Functionality
+       ============================ */
+    const themeToggle = document.getElementById('themeToggle');
+    const sunIcon = document.getElementById('sunIcon');
+    const moonIcon = document.getElementById('moonIcon');
+    const body = document.body;
+
+    // Check for saved theme preference or respect OS preference
+    const savedTheme = localStorage.getItem('lumo-theme');
+    if (savedTheme === 'light' || (!savedTheme && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+        enableLightMode();
+    } else {
+        enableDarkMode();
+    }
+
+    themeToggle.addEventListener('click', () => {
+        if (body.classList.contains('light-mode')) {
+            enableDarkMode();
+        } else {
+            enableLightMode();
+        }
+    });
+
+    function enableLightMode() {
+        body.classList.add('light-mode');
+        body.classList.remove('dark-mode');
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+        localStorage.setItem('lumo-theme', 'light');
+    }
+
+    function enableDarkMode() {
+        body.classList.add('dark-mode');
+        body.classList.remove('light-mode');
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+        localStorage.setItem('lumo-theme', 'dark');
+    }
+
+    /* ============================
+       Drawer functionality
+       ============================ */
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const drawer = document.getElementById('drawer');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+    const closeDrawer = document.getElementById('closeDrawer');
+
+    menuToggle.addEventListener('click', () => {
+        mobileDrawer.classList.remove('hidden');
+        setTimeout(() => {
+            drawer.classList.remove('transform', '-translate-x-full');
+        }, 10);
+    });
+
+    closeDrawer.addEventListener('click', () => {
+        drawer.classList.add('transform', '-translate-x-full');
+        setTimeout(() => {
+            mobileDrawer.classList.add('hidden');
+        }, 300);
+    });
+
+    drawerOverlay.addEventListener('click', () => {
+        drawer.classList.add('transform', '-translate-x-full');
+        setTimeout(() => {
+            mobileDrawer.classList.add('hidden');
+        }, 300);
+    });
+
+    /* ============================
+       Context Menu Functionality
+       ============================ */
+    function setupContextMenu() {
+        // Hide context menu when clicking elsewhere
+        document.addEventListener('click', (e) => {
+            if (!contextMenu.contains(e.target)) {
+                hideContextMenu();
+            }
+        });
+
+        // Hide context menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                hideContextMenu();
+            }
+        });
+
+        // Prevent default context menu
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+
+        // Rename button handler
+        document.getElementById('renameChatBtn').addEventListener('click', () => {
+            if (contextMenuChatId) {
+                renameChat(contextMenuChatId);
+            }
+            hideContextMenu();
+        });
+
+        // Delete button handler
+        document.getElementById('deleteChatBtn').addEventListener('click', () => {
+            if (contextMenuChatId) {
+                deleteChat(contextMenuChatId);
+            }
+            hideContextMenu();
+        });
+    }
+
+    function showContextMenu(x, y, chatId) {
+        contextMenuChatId = chatId;
+        contextMenu.style.left = x + 'px';
+        contextMenu.style.top = y + 'px';
+        contextMenu.classList.remove('hidden');
+    }
+
+    function hideContextMenu() {
+        contextMenu.classList.add('hidden');
+        contextMenuChatId = null;
+    }
+
+    function setupChatItemContextMenu(chatElement, chatId) {
+        // Right-click for desktop
+        chatElement.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            showContextMenu(e.pageX, e.pageY, chatId);
+        });
+
+        // Long press for mobile
+        chatElement.addEventListener('touchstart', (e) => {
+            longPressTimer = setTimeout(() => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                showContextMenu(touch.pageX, touch.pageY, chatId);
+            }, 500); // 500ms long press
+        });
+
+        chatElement.addEventListener('touchend', () => {
+            clearTimeout(longPressTimer);
+        });
+
+        chatElement.addEventListener('touchmove', () => {
+            clearTimeout(longPressTimer);
+        });
+    }
+
+    function renameChat(chatId) {
+        if (!chats[chatId]) return;
+
+        const chat = chats[chatId];
+        const newTitle = prompt('Enter new chat name:', chat.title);
+
+        if (newTitle && newTitle.trim() !== '') {
+            chat.title = newTitle.trim();
+            chat.updatedAt = Date.now();
+            saveChatsToStorage();
+
+            if (chatId === currentChatId) {
+                currentChatTitle.textContent = chat.title;
+            }
+
+            renderRecentChats();
+        }
+    }
+
+    function deleteChat(chatId) {
+        if (!chats[chatId]) return;
+
+        // Don't allow deleting if it's the only chat
+        if (Object.keys(chats).length <= 1) {
+            alert('Cannot delete the only chat. Create a new chat first.');
+            return;
+        }
+
+        if (confirm('Are you sure you want to delete this chat?')) {
+            // If deleting the current chat, switch to another one
+            if (chatId === currentChatId) {
+                const remainingChats = Object.keys(chats).filter(id => id !== chatId);
+                const newCurrentChatId = remainingChats[0];
+                loadChat(newCurrentChatId);
+            }
+
+            // Delete the chat
+            delete chats[chatId];
+            saveChatsToStorage();
+            renderRecentChats();
+        }
+    }
+
+    /* ============================
+       Chat Management
+       ============================ */
+    function initChats() {
+        // Load chats from localStorage
+        const storedChats = localStorage.getItem(chatsStorageKey);
+        if (storedChats) {
+            chats = JSON.parse(storedChats);
+        }
+
+        // Load current chat ID
+        currentChatId = localStorage.getItem(currentChatIdKey);
+
+        // If no chats exist or current chat doesn't exist, create a new chat
+        if (!currentChatId || !chats[currentChatId]) {
+            createNewChat();
+        } else {
+            loadChat(currentChatId);
+        }
+
+        renderRecentChats();
+        setupContextMenu();
+    }
+
+    function createNewChat() {
+        const chatId = 'chat_' + Date.now();
+        const newChat = {
+            id: chatId,
+            title: 'New Chat',
+            messages: [
+                {
+                    who: 'lumo',
+                    text: "Hello — I'm LUMO. Type a command or press the mic to begin. Current backend: Python (5000)",
+                    time: Date.now(),
+                    meta: {}
+                }
+            ],
+            createdAt: Date.now(),
+            updatedAt: Date.now()
+        };
+
+        chats[chatId] = newChat;
+        currentChatId = chatId;
+
+        saveChatsToStorage();
+        loadChat(chatId);
+        renderRecentChats();
+    }
+
+    function loadChat(chatId) {
+        if (!chats[chatId]) return;
+
+        currentChatId = chatId;
+        localStorage.setItem(currentChatIdKey, chatId);
+
+        const chat = chats[chatId];
+        currentChatTitle.textContent = chat.title;
+
+        // Clear current messages and load chat messages
+        messagesEl.innerHTML = '';
+        chat.messages.forEach(message => {
+            appendMessageToDOM(message.who, message.text, message.meta, false);
+        });
+
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+        renderRecentChats();
+    }
+
+    function saveChatsToStorage() {
+        localStorage.setItem(chatsStorageKey, JSON.stringify(chats));
+        localStorage.setItem(currentChatIdKey, currentChatId);
+    }
+
+    function updateChatTitle() {
+        if (!currentChatId || !chats[currentChatId]) return;
+
+        const chat = chats[currentChatId];
+        // Find the first user message to use as title
+        const firstUserMessage = chat.messages.find(msg => msg.who === 'user');
+        if (firstUserMessage) {
+            const shortText = firstUserMessage.text.length > 30
+                ? firstUserMessage.text.substring(0, 30) + '...'
+                : firstUserMessage.text;
+            chat.title = shortText;
+            currentChatTitle.textContent = shortText;
+        }
+
+        chat.updatedAt = Date.now();
+        saveChatsToStorage();
+        renderRecentChats();
+    }
+
+    function renderRecentChats() {
+        if (!chats || Object.keys(chats).length === 0) {
+            drawerRecentChats.innerHTML = '<div class="text-center p-4" style="color: var(--text-secondary);">No recent chats</div>';
+            return;
+        }
+
+        // Convert chats object to array and sort by updated time (newest first)
+        const chatsArray = Object.values(chats).sort((a, b) => b.updatedAt - a.updatedAt);
+
+        drawerRecentChats.innerHTML = '';
+        chatsArray.forEach(chat => {
+            const chatEl = document.createElement('div');
+            chatEl.className = `chat-item ${chat.id === currentChatId ? 'active' : ''}`;
+
+            const time = new Date(chat.updatedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            chatEl.innerHTML = `
+                <div class="font-medium text-sm">${chat.title}</div>
+                <div class="text-xs mt-1" style="color: var(--text-secondary);">${time}</div>
+            `;
+
+            chatEl.addEventListener('click', (e) => {
+                // Only load chat if it's a normal click (not right-click/long-press)
+                if (e.button === 0 || e.type === 'touchstart') {
+                    loadChat(chat.id);
+                    drawer.classList.add('transform', '-translate-x-full');
+                    setTimeout(() => {
+                        mobileDrawer.classList.add('hidden');
+                    }, 300);
+                }
+            });
+
+            // Setup context menu for this chat item
+            setupChatItemContextMenu(chatEl, chat.id);
+
+            drawerRecentChats.appendChild(chatEl);
+        });
+    }
+
+    function clearRecentChats() {
+        if (Object.keys(chats).length <= 1) {
+            // Don't allow clearing if only one chat exists
+            alert('Cannot clear all chats. At least one chat must remain.');
+            return;
+        }
+
+        // Keep only the current chat
+        const currentChat = chats[currentChatId];
+        chats = { [currentChatId]: currentChat };
+        saveChatsToStorage();
+        renderRecentChats();
+    }
+
+    /* ============================
+       Message rendering
+       ============================ */
+    function appendMessage(who, text, meta = {}) {
+        if (!currentChatId || !chats[currentChatId]) return;
+
+        const message = { who, text, time: Date.now(), meta };
+        chats[currentChatId].messages.push(message);
+        chats[currentChatId].updatedAt = Date.now();
+
+        saveChatsToStorage();
+        appendMessageToDOM(who, text, meta);
+
+        // Update chat title if this is the first user message
+        if (who === 'user' && chats[currentChatId].title === 'New Chat') {
+            updateChatTitle();
+        }
+    }
+
+    function appendMessageToDOM(who, text, meta = {}, animate = true) {
+        const wrap = document.createElement('div');
+        wrap.className = `flex items-start gap-4 ${animate ? 'message-animate' : ''}`;
+
+        const avatar = document.createElement('div');
+        avatar.className = 'w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold';
+        avatar.style.background = who === 'lumo' ?
+            'linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))' :
+            'linear-gradient(135deg,#fb923c,#ef4444)';
+        avatar.textContent = who === 'lumo' ? 'L' : 'U';
+
+        const bubble = document.createElement('div');
+        bubble.className = 'glass p-4 rounded-xl max-w-prose';
+
+        // Add timestamp
+        const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const messageContent = `<div class="text-xs mb-2" style="color: var(--text-secondary);">${timestamp}</div><div>${text}</div>`;
+
+        bubble.innerHTML = messageContent.replace(/\n/g, '<br/>');
+
+        wrap.appendChild(avatar);
+        wrap.appendChild(bubble);
+        messagesEl.appendChild(wrap);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    /* ============================
+       Backend communication
+       ============================ */
+    async function sendCommand(command){
+        const trimmed = (command||'').trim();
+        if(!trimmed) return;
+
+        appendMessage('user', trimmed);
+        setConnectionStatus('Sending...', 'connecting');
+
+        const timeout = 10000; // 10 seconds default
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+        try {
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type':'application/json' },
+                body: JSON.stringify({
+                    command: trimmed,
+                    settings: {}
+                }),
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+
+            if(!res.ok){
+                appendMessage('lumo', `Server returned ${res.status}`);
+                setConnectionStatus('Server error', 'offline');
+                return;
+            }
+
+            const data = await res.json();
+            const display = data.displayText || data.display_text || data.message || data.speakText || JSON.stringify(data);
+            appendMessage('lumo', display);
+            setConnectionStatus('Ready', 'online');
+
+            // Speak if allowed
+            if ((data.speakText || data.message) && 'speechSynthesis' in window && document.getElementById('voiceState').textContent === 'On') {
+                const u = new SpeechSynthesisUtterance(data.speakText || (typeof display === 'string' ? display : 'Response'));
+                speechSynthesis.speak(u);
+            }
+        } catch (err) {
+            clearTimeout(timeoutId);
+            if (err.name === 'AbortError') {
+                appendMessage('lumo', 'Request timeout - backend is not responding.');
+            } else {
+                appendMessage('lumo', 'Could not reach backend.');
+            }
+            setConnectionStatus('Disconnected', 'offline');
+        }
+    }
+
+    /* ============================
+       Status helpers
+       ============================ */
+    function setConnectionStatus(text, status){
+        connectionStatus.textContent = text;
+
+        // Update connection dot
+        connectionDot.className = 'connection-dot';
+        if (status === 'online') {
+            connectionDot.classList.add('online');
+        } else if (status === 'connecting') {
+            connectionDot.classList.add('connecting');
+        } else {
+            connectionDot.classList.remove('online', 'connecting');
+        }
+    }
+
+    /* ============================
+       Event Listeners
+       ============================ */
+    // Browser Voice Controls
+    document.getElementById('startVoiceBtn').addEventListener('click', startBrowserVoice);
+    document.getElementById('stopVoiceBtn').addEventListener('click', stopBrowserVoice);
+
+    // Web Speech Mic
+    document.getElementById('webSpeechMic').addEventListener('click', toggleWebSpeechMic);
+
+    // Voice Mode Selection
+    document.getElementById('browserVoiceBtn').addEventListener('click', () => setVoiceMode('browser'));
+    document.getElementById('webSpeechBtn').addEventListener('click', () => setVoiceMode('webspeech'));
+
+    // Send button and Enter key
+    sendBtn.addEventListener('click', () => {
+        sendCommand(cmdInput.value);
+        cmdInput.value = '';
+    });
+
+    cmdInput.addEventListener('keydown', e => {
+        if(e.key === 'Enter'){
+            e.preventDefault();
+            sendCommand(cmdInput.value);
+            cmdInput.value = '';
+        }
+    });
+
+    // Voice toggle button
+    document.getElementById('voiceToggle').addEventListener('click', () => {
+        const voiceState = document.getElementById('voiceState');
+        voiceState.textContent = voiceState.textContent === 'On' ? 'Off' : 'On';
+    });
+
+    // Clear button (main toolbar) - clears current chat messages
+    document.getElementById('clearBtn').addEventListener('click', () => {
+        if (!currentChatId || !chats[currentChatId]) return;
+
+        // Keep only the initial LUMO message
+        const initialMessage = chats[currentChatId].messages.find(msg =>
+            msg.who === 'lumo' && msg.text.includes("Hello — I'm LUMO")
+        );
+
+        if (initialMessage) {
+            chats[currentChatId].messages = [initialMessage];
+        } else {
+            // If no initial message found, create one
+            chats[currentChatId].messages = [{
+                who: 'lumo',
+                text: "Hello — I'm LUMO. Type a command or press the mic to begin.",
+                time: Date.now(),
+                meta: {}
+            }];
+        }
+
+        chats[currentChatId].updatedAt = Date.now();
+        saveChatsToStorage();
+        loadChat(currentChatId);
+    });
+
+    // New Chat button
+    document.getElementById('newChatBtn').addEventListener('click', () => {
+        createNewChat();
+        drawer.classList.add('transform', '-translate-x-full');
+        setTimeout(() => {
+            mobileDrawer.classList.add('hidden');
+        }, 300);
+    });
+
+    // Clear Recent Chats button
+    document.getElementById('clearRecentChatsBtn').addEventListener('click', () => {
+        clearRecentChats();
+    });
+
+    /* ============================
+       Network status
+       ============================ */
+    function updateNetworkStatus(){
+        const online = navigator.onLine;
+        setConnectionStatus(online ? 'Ready' : 'Offline', online ? 'online' : 'offline');
+    }
+
+    window.addEventListener('online', updateNetworkStatus);
+    window.addEventListener('offline', updateNetworkStatus);
+    updateNetworkStatus();
+
+    /* ============================
+       Initialize the app
+       ============================ */
+    initChats();
+    setVoiceMode(currentVoiceModeType);
+    setConnectionStatus('Ready', 'online');
+
+    /* expose ctrl+enter to send */
+    window.addEventListener('keydown', e => {
+        if((e.ctrlKey || e.metaKey) && e.key === 'Enter'){
+            sendCommand(cmdInput.value);
+            cmdInput.value = '';
+        }
+    });
+
+    /* expose a debug helper to quickly inject assistant text (for development) */
+    window.__lumoInject = (txt) => appendMessage('lumo', txt);
+
+    /* End of script */
+</script>
+</body>
+</html>

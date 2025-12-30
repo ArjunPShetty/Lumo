@@ -40,10 +40,9 @@ tts_lock = threading.Lock()
 SERVER_MODE = None
 
 def speak(audio):
-    """Speak only in CLI mode."""
-    if SERVER_MODE == "cli":
-        engine.say(audio)
-        engine.runAndWait()
+    """Speak in both CLI and API modes."""
+    engine.say(audio)
+    engine.runAndWait()
 
 def take_command():
     """Listen to user voice input or fallback to manual input (CLI only)."""
@@ -573,6 +572,10 @@ def api_browser_voice():
 
         # Process command
         result = handle_query(text)
+
+        # FORCE laptop speaker output
+        if result.get("speakText"):
+            speak(result["speakText"])
 
         return jsonify({
             "recognizedText": text,
