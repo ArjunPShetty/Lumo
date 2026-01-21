@@ -3,9 +3,9 @@ MIT License
 Copyright (c) 2025 Arjun
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), including
+of this software and associated documentation files (the "Software"), including
 the Python backend code, Arduino sketches, NodeMCU firmware, and related AI/IoT
-modules of LUMO – An AI-Powered Voice Assistant Using Arduino, to deal
+modules of **LUMO – An AI-Powered Voice Assistant Using Arduino**, to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
@@ -14,18 +14,18 @@ furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 
-Project Description (Informative, Not Legally Binding)
+## Project Description (Informative, Not Legally Binding)
 
-LUMO (LUMO) is a smart voice-controlled system designed to automate home
-appliances such as lights and fans using real-time speech interaction.
+LUMO is a smart voice-controlled system designed to automate home appliances
+such as lights and fans using real-time speech interaction.
 The system integrates Arduino, NodeMCU (Wi-Fi), and a Python-based backend
 for AI-driven voice processing, command recognition, and responses.
-It supports offline voice recognition, real-time feedback via speaker/buzzer,
+It supports offline voice recognition, real-time feedback via speaker or buzzer,
 relay-based hardware control, and expandable data storage for logs and audio.
 
-Disclaimer
+## Disclaimer
 
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
