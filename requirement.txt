@@ -5,6 +5,8 @@ pip install psutil
 pip install pyautogui
 pip install pyaudio
 pip install flask flask_cors
+
+
 pywhatkit pyautogui psutil wikipedia
 python.exe -m pip install --upgrade pip
 
