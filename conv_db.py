@@ -223,6 +223,249 @@ def get_conversational_response(query):
             "response": "Satellite communication uses artificial satellites to transmit signals over long distances. It's used for television broadcasting, internet services, GPS, and weather monitoring."
         },
 
+        # NEW: Additional Engineering Topics
+        "civil_engineering": {
+            "keywords": ["civil engineering", "civil engineer", "construction engineering"],
+            "response": "Civil engineering involves designing, constructing, and maintaining infrastructure like buildings, roads, bridges, and water supply systems."
+        },
+
+        "mechanical_engineering": {
+            "keywords": ["mechanical engineering", "mechanical engineer", "thermodynamics"],
+            "response": "Mechanical engineering deals with the design, analysis, manufacturing, and maintenance of mechanical systems, including engines, machines, and thermal systems."
+        },
+
+        "electrical_engineering": {
+            "keywords": ["electrical engineering", "electrical engineer", "power systems"],
+            "response": "Electrical engineering focuses on electricity, electronics, and electromagnetism, including power generation, transmission, and electrical machines."
+        },
+
+        "aerospace_engineering": {
+            "keywords": ["aerospace engineering", "aerospace", "aircraft design"],
+            "response": "Aerospace engineering involves the design and development of aircraft and spacecraft, including aerodynamics, propulsion systems, and materials science."
+        },
+
+        "chemical_engineering": {
+            "keywords": ["chemical engineering", "chemical engineer", "process engineering"],
+            "response": "Chemical engineering applies chemistry, physics, and mathematics to process raw materials into valuable products, including chemicals, fuels, and pharmaceuticals."
+        },
+
+        "biomedical_engineering": {
+            "keywords": ["biomedical engineering", "biomedical", "medical devices"],
+            "response": "Biomedical engineering combines engineering principles with medical sciences to design and create equipment, devices, and software used in healthcare."
+        },
+
+        # NEW: More Programming Languages
+        "c_language": {
+            "keywords": ["c language", "c programming", "c language basics"],
+            "response": "C is a general-purpose programming language known for its efficiency and low-level access to memory. It's widely used in system programming and embedded systems."
+        },
+
+        "csharp": {
+            "keywords": ["c#", "c sharp", "csharp programming"],
+            "response": "C# (C Sharp) is a modern, object-oriented programming language developed by Microsoft, commonly used for Windows applications, game development with Unity, and web services."
+        },
+
+        "ruby": {
+            "keywords": ["ruby", "ruby programming", "ruby on rails"],
+            "response": "Ruby is a dynamic, open-source programming language focused on simplicity and productivity. It's often used with the Ruby on Rails framework for web development."
+        },
+
+        "swift": {
+            "keywords": ["swift", "swift programming", "ios development"],
+            "response": "Swift is a powerful and intuitive programming language developed by Apple for iOS, macOS, watchOS, and tvOS app development."
+        },
+
+        "kotlin": {
+            "keywords": ["kotlin", "kotlin programming", "android kotlin"],
+            "response": "Kotlin is a statically typed programming language that runs on the Java Virtual Machine. It's officially supported for Android development and known for its conciseness and safety."
+        },
+
+        "go_lang": {
+            "keywords": ["go language", "golang", "go programming"],
+            "response": "Go (or Golang) is an open-source programming language developed by Google, known for its simplicity, efficiency, and built-in support for concurrent programming."
+        },
+
+        "rust": {
+            "keywords": ["rust", "rust programming", "rust language"],
+            "response": "Rust is a systems programming language focused on safety, speed, and concurrency. It prevents segfaults and guarantees thread safety without a garbage collector."
+        },
+
+        "php": {
+            "keywords": ["php", "php programming", "php web development"],
+            "response": "PHP is a popular server-side scripting language designed for web development, often used with databases like MySQL to create dynamic websites."
+        },
+
+        # NEW: Advanced Programming Concepts
+        "object_oriented": {
+            "keywords": ["object oriented", "oop", "object oriented programming"],
+            "response": "Object-Oriented Programming (OOP) is a programming paradigm based on objects containing data and methods. Key concepts include classes, objects, inheritance, polymorphism, and encapsulation."
+        },
+
+        "database": {
+            "keywords": ["database", "sql", "database management"],
+            "response": "A database is an organized collection of data stored and accessed electronically. SQL (Structured Query Language) is commonly used to manage relational databases."
+        },
+
+        "web_development": {
+            "keywords": ["web development", "web developer", "frontend backend"],
+            "response": "Web development involves creating websites and web applications. It includes frontend (client-side, like HTML/CSS/JavaScript) and backend (server-side, like Node.js, Python, PHP) development."
+        },
+
+        "machine_learning": {
+            "keywords": ["machine learning", "ml", "ai ml"],
+            "response": "Machine learning is a subset of artificial intelligence that enables systems to learn and improve from experience without explicit programming, using algorithms and statistical models."
+        },
+
+        "cloud_computing": {
+            "keywords": ["cloud computing", "aws", "azure", "google cloud"],
+            "response": "Cloud computing delivers computing services over the internet, including storage, processing, and databases. Popular providers are AWS, Microsoft Azure, and Google Cloud Platform."
+        },
+
+        # NEW: Geography and Countries
+        "geography": {
+            "keywords": ["geography", "geographical", "world geography"],
+            "response": "Geography is the study of Earth's landscapes, environments, and the relationships between people and their environments. It includes physical and human geography."
+        },
+
+        "continents": {
+            "keywords": ["continents", "how many continents", "list of continents"],
+            "response": "There are 7 continents: Asia, Africa, North America, South America, Antarctica, Europe, and Australia (or Oceania)."
+        },
+
+        "india": {
+            "keywords": ["india", "about india", "indian geography"],
+            "response": "India is the seventh-largest country by area and the second-most populous country. It's located in South Asia with New Delhi as its capital, and has diverse cultures, languages, and landscapes."
+        },
+
+        "usa": {
+            "keywords": ["usa", "united states", "america geography"],
+            "response": "The United States of America (USA) is a country in North America with 50 states. Its capital is Washington D.C., and it's known for its diverse geography, economy, and cultural influence."
+        },
+
+        "china": {
+            "keywords": ["china", "about china", "chinese geography"],
+            "response": "China is the world's most populous country, located in East Asia. Its capital is Beijing, and it's known for the Great Wall, diverse landscapes, and rapid economic growth."
+        },
+
+        "europe": {
+            "keywords": ["europe", "european countries", "europe geography"],
+            "response": "Europe is a continent located entirely in the Northern Hemisphere, with 44 countries. It's known for its rich history, diverse cultures, and landmarks like the Eiffel Tower and Colosseum."
+        },
+
+        "africa": {
+            "keywords": ["africa", "african continent", "africa geography"],
+            "response": "Africa is the second-largest continent by area and population. It's known for its biodiversity, the Sahara Desert, the Nile River, and diverse cultures across 54 countries."
+        },
+
+        # NEW: World Facts
+        "world_population": {
+            "keywords": ["world population", "global population", "how many people"],
+            "response": "The world population is over 8 billion people as of 2023, with Asia being the most populous continent."
+        },
+
+        "earth_facts": {
+            "keywords": ["earth", "planet earth", "about earth"],
+            "response": "Earth is the third planet from the Sun and the only known celestial body to support life. It has an atmosphere composed mainly of nitrogen and oxygen, and about 71% of its surface is covered by water."
+        },
+
+        "solar_system": {
+            "keywords": ["solar system", "planets", "sun and planets"],
+            "response": "The solar system consists of the Sun and eight planets: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune. It also includes dwarf planets like Pluto, asteroids, and comets."
+        },
+
+        "oceans": {
+            "keywords": ["oceans", "world oceans", "five oceans"],
+            "response": "There are five oceans: Pacific Ocean (largest), Atlantic Ocean, Indian Ocean, Southern Ocean, and Arctic Ocean (smallest)."
+        },
+
+        "mountains": {
+            "keywords": ["mountains", "highest mountain", "mountain ranges"],
+            "response": "Mount Everest in the Himalayas is the highest mountain above sea level at 8,848 meters. Other major ranges include the Andes, Rockies, and Alps."
+        },
+
+        # NEW: Semiconductors (Detailed)
+        "semiconductor_basics": {
+            "keywords": ["semiconductor", "semiconductors", "what is semiconductor"],
+            "response": "Semiconductors are materials with electrical conductivity between conductors (like metals) and insulators (like ceramics). Silicon is the most commonly used semiconductor in electronics."
+        },
+
+        "silicon": {
+            "keywords": ["silicon", "silicon chip", "silicon wafer"],
+            "response": "Silicon is a chemical element widely used in semiconductors due to its stable crystal structure and ability to be doped with impurities to modify its electrical properties."
+        },
+
+        "doping": {
+            "keywords": ["doping", "semiconductor doping", "n-type p-type"],
+            "response": "Doping is the process of adding impurities to semiconductors to change their electrical properties. N-type doping adds electrons, while P-type doping creates holes (positive charge carriers)."
+        },
+
+        "pn_junction": {
+            "keywords": ["pn junction", "p-n junction", "junction diode"],
+            "response": "A PN junction is formed by joining P-type and N-type semiconductors. It allows current to flow in one direction, forming the basis of diodes and other semiconductor devices."
+        },
+
+        "ic": {
+            "keywords": ["integrated circuit", "ic", "microchip"],
+            "response": "An integrated circuit (IC) is a set of electronic circuits on a small chip of semiconductor material, typically silicon. ICs are used in virtually all electronic devices today."
+        },
+
+        "vlsi": {
+            "keywords": ["vlsi", "very large scale integration", "vlsi design"],
+            "response": "VLSI (Very Large Scale Integration) is the process of creating integrated circuits by combining thousands or millions of transistors into a single chip."
+        },
+
+        "semiconductor_manufacturing": {
+            "keywords": ["semiconductor manufacturing", "chip fabrication", "semiconductor process"],
+            "response": "Semiconductor manufacturing involves designing and fabricating ICs through processes like photolithography, etching, doping, and packaging in cleanroom environments."
+        },
+
+        # NEW: Science Topics
+        "physics": {
+            "keywords": ["physics", "laws of physics", "quantum physics"],
+            "response": "Physics is the natural science that studies matter, energy, motion, and forces. It includes classical mechanics, electromagnetism, thermodynamics, and quantum mechanics."
+        },
+
+        "chemistry": {
+            "keywords": ["chemistry", "chemical reactions", "organic chemistry"],
+            "response": "Chemistry studies the composition, structure, properties, and changes of matter. It includes organic, inorganic, physical, and analytical chemistry."
+        },
+
+        "biology": {
+            "keywords": ["biology", "life science", "cell biology"],
+            "response": "Biology is the study of living organisms and their structure, function, growth, evolution, and distribution. It includes botany, zoology, genetics, and ecology."
+        },
+
+        "mathematics": {
+            "keywords": ["mathematics", "math", "calculus algebra"],
+            "response": "Mathematics is the study of numbers, quantities, shapes, and patterns. It includes arithmetic, algebra, geometry, calculus, and statistics."
+        },
+
+        # NEW: Current Technologies
+        "ai": {
+            "keywords": ["artificial intelligence", "ai", "what is ai"],
+            "response": "Artificial Intelligence (AI) refers to machines or software that mimic human intelligence, including learning, reasoning, and problem-solving. Applications include chatbots, image recognition, and autonomous vehicles."
+        },
+
+        "blockchain": {
+            "keywords": ["blockchain", "bitcoin", "cryptocurrency"],
+            "response": "Blockchain is a decentralized digital ledger that records transactions across many computers. It's the technology behind cryptocurrencies like Bitcoin and has applications in finance, supply chain, and more."
+        },
+
+        "iot": {
+            "keywords": ["iot", "internet of things", "smart devices"],
+            "response": "The Internet of Things (IoT) refers to interconnected devices that communicate over the internet, such as smart home devices, wearables, and industrial sensors."
+        },
+
+        "5g": {
+            "keywords": ["5g", "5g technology", "fifth generation"],
+            "response": "5G is the fifth generation of cellular network technology, offering faster speeds, lower latency, and greater capacity than 4G, enabling advancements in IoT, autonomous vehicles, and telemedicine."
+        },
+
+        "quantum_computing": {
+            "keywords": ["quantum computing", "quantum computer", "qubit"],
+            "response": "Quantum computing uses quantum-mechanical phenomena like superposition and entanglement to perform computations. It has potential to solve problems that are intractable for classical computers."
+        },
+
         # Additional general responses
         "yes": {
             "keywords": ["yes", "yeah", "yep", "sure"],
@@ -249,6 +492,4 @@ def get_conversational_response(query):
     for category, data in responses.items():
         if any(keyword in query for keyword in data["keywords"]):
             return data["response"]
-
-    # Default response if no match found
-    return "I'm not sure I understand that. Could you please rephrase your question or ask about Alvas College, programming, electronics, or something else?"
+    return "I'm not sure how to respond to that. Could you please rephrase or ask something else?"

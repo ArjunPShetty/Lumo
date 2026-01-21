@@ -605,7 +605,6 @@ def run_cli():
 
 # ---------- Main Entry Point ----------
 if __name__ == "__main__":
-    # Ask for mode
     print(f"=== {APP_NAME} Assistant ===")
     print("1. Voice CLI Mode")
     print("2. Web API Mode (with ESP8266 support)")
