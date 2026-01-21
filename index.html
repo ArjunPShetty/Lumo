@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>LUMO — Advanced Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -40,7 +40,6 @@
                 radial-gradient(circle at 80% 80%, var(--glow-secondary), transparent 45%),
                 var(--bg-primary);
             height: 100vh;
-            height: 100dvh;
             display: flex;
             font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
             color: var(--text-primary);
@@ -50,6 +49,7 @@
             transition: background 0.5s ease, color 0.3s ease;
         }
 
+        /* Glass morphism effect */
         .glass {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(12px);
@@ -63,6 +63,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
+        /* Message animations */
         @keyframes messageSlide {
             from { transform: translateY(10px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
@@ -71,6 +72,7 @@
             animation: messageSlide 0.3s ease-out;
         }
 
+        /* Mic pulse animation */
         @keyframes pulseGlow {
             0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
             70% { box-shadow: 0 0 0 14px rgba(59, 130, 246, 0); }
@@ -80,6 +82,7 @@
             animation: pulseGlow 2s infinite;
         }
 
+        /* Recording animation */
         @keyframes recordingGlow {
             0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
             70% { box-shadow: 0 0 0 14px rgba(239, 68, 68, 0); }
@@ -90,6 +93,7 @@
             background: linear-gradient(135deg, #ef4444, #f59e0b) !important;
         }
 
+        /* Status indicators */
         .status-indicator {
             position: relative;
         }
@@ -110,6 +114,7 @@
             background: #f59e0b;
         }
 
+        /* Connection status in header */
         .connection-status {
             display: flex;
             align-items: center;
@@ -130,8 +135,9 @@
             box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
         }
 
+        /* Scrollbar styling */
         .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
+            width: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.2);
@@ -145,6 +151,7 @@
             background: rgba(0, 0, 0, 0.2);
         }
 
+        /* Gradient text */
         .gradient-text {
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
@@ -152,6 +159,7 @@
             background-clip: text;
         }
 
+        /* Hover effects */
         .hover-lift {
             transition: all 0.3s ease;
         }
@@ -160,11 +168,13 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
 
+        /* Input focus effect */
         .input-focus:focus {
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
             border-color: var(--accent-primary);
         }
 
+        /* Theme toggle button */
         .theme-toggle {
             transition: all 0.3s ease;
         }
@@ -172,6 +182,7 @@
             transform: rotate(15deg);
         }
 
+        /* Recent button style */
         .recent-btn {
             padding: 4px 10px;
             font-size: 0.75rem;
@@ -195,6 +206,7 @@
             color: var(--text-primary);
         }
 
+        /* New Chat button */
         .new-chat-btn {
             padding: 10px 16px;
             border-radius: 10px;
@@ -202,13 +214,13 @@
             color: white;
             font-weight: 500;
             transition: all 0.3s ease;
-            width: 100%;
         }
         .new-chat-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
         }
 
+        /* Chat item styling */
         .chat-item {
             padding: 12px;
             border-radius: 8px;
@@ -230,6 +242,7 @@
             background: rgba(59, 130, 246, 0.1);
         }
 
+        /* Context menu styling */
         .context-menu {
             position: fixed;
             background: var(--bg-card);
@@ -263,6 +276,7 @@
             background: rgba(239, 68, 68, 0.2);
         }
 
+        /* Rename input styling */
         .rename-input {
             width: 100%;
             padding: 8px;
@@ -278,6 +292,7 @@
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
 
+        /* Voice mode selector */
         .voice-mode-btn {
             padding: 6px 12px;
             border-radius: 8px;
@@ -287,7 +302,6 @@
             font-size: 0.75rem;
             transition: all 0.2s ease;
             cursor: pointer;
-            white-space: nowrap;
         }
         .voice-mode-btn.active {
             background: rgba(59, 130, 246, 0.2);
@@ -302,6 +316,19 @@
             background: rgba(0, 0, 0, 0.05);
         }
 
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .desktop-only {
+                display: none;
+            }
+        }
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none;
+            }
+        }
+
+        /* Recording status */
         .recording-status {
             display: flex;
             align-items: center;
@@ -312,7 +339,6 @@
             color: #ef4444;
             font-size: 0.75rem;
             animation: pulseGlow 2s infinite;
-            white-space: nowrap;
         }
         .recording-dot {
             width: 8px;
@@ -325,288 +351,136 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
         }
-
-        .safe-area-bottom {
-            padding-bottom: env(safe-area-inset-bottom, 0);
-        }
-        
-        .safe-area-top {
-            padding-top: env(safe-area-inset-top, 0);
-        }
-
-        .touch-button {
-            min-height: 44px;
-            min-width: 44px;
-        }
-
-        .responsive-text {
-            font-size: clamp(0.75rem, 2vw, 1rem);
-        }
-
-        .flexible-container {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .voice-controls-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
-            gap: 8px;
-            width: 100%;
-        }
-
-        .mobile-drawer {
-            width: 100%;
-            max-width: 320px;
-        }
-
-        .message-bubble {
-            max-width: min(90%, 700px);
-        }
-
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        @media (max-width: 640px) {
-            .mobile-flex-col {
-                flex-direction: column;
-            }
-            
-            .mobile-w-full {
-                width: 100%;
-            }
-            
-            .mobile-text-sm {
-                font-size: 0.875rem;
-            }
-            
-            .mobile-p-3 {
-                padding: 0.75rem;
-            }
-            
-            .mobile-gap-2 {
-                gap: 0.5rem;
-            }
-            
-            .mobile-hidden {
-                display: none !important;
-            }
-            
-            .mobile-block {
-                display: block !important;
-            }
-            
-            .mobile-justify-between {
-                justify-content: space-between;
-            }
-            
-            .mobile-space-y-2 > * + * {
-                margin-top: 0.5rem;
-            }
-            
-            .mobile-message-avatar {
-                width: 32px;
-                height: 32px;
-                font-size: 0.875rem;
-            }
-            
-            .mobile-input-area {
-                padding: 0.75rem;
-                gap: 0.5rem;
-            }
-            
-            .mobile-touch-button {
-                min-height: 48px;
-                min-width: 48px;
-                padding: 0.75rem;
-            }
-            
-            .mobile-toolbar {
-                padding: 0.75rem;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-            
-            .mobile-voice-single-col {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .mobile-voice-single-col > * {
-                width: 100%;
-            }
-        }
-
-        @media (min-width: 641px) and (max-width: 1024px) {
-            .tablet-flex-col {
-                flex-direction: column;
-            }
-            
-            .tablet-w-full {
-                width: 100%;
-            }
-            
-            .tablet-text-base {
-                font-size: 1rem;
-            }
-        }
-
-        @media (min-width: 1025px) {
-            .desktop-flex-row {
-                flex-direction: row;
-            }
-            
-            .desktop-w-auto {
-                width: auto;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            input, textarea {
-                font-size: 16px !important;
-            }
-        }
     </style>
 </head>
 <body class="dark-mode">
 
+<!-- Main layout -->
 <div class="flex w-full h-full">
 
-    <section class="flex-1 flex flex-col safe-area-top">
+    <!-- Main content area -->
+    <section class="flex-1 flex flex-col">
 
-        <div class="mobile-toolbar p-4 flex items-center justify-between border-b glass" style="border-color: var(--border-color);">
-            <div class="flex items-center gap-3 mobile-w-full mobile-justify-between">
-                <div class="flex items-center gap-3">
-                    <button id="menuToggle" class="touch-button p-2 rounded-lg hover-lift mobile-touch-button" style="background: var(--bg-card);">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
+        <!-- Top toolbar -->
+        <div class="p-4 flex items-center justify-between gap-4 border-b glass" style="border-color: var(--border-color);">
+            <div class="flex items-center gap-4">
+                <button id="menuToggle" class="p-2 rounded-lg hover-lift" style="background: var(--bg-card);">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
 
-                    <div class="connection-status mobile-hidden tablet-flex-col">
-                        <div id="connectionDot" class="connection-dot online"></div>
-                        <span id="connectionStatus" class="text-sm mobile-text-sm">Ready</span>
-                    </div>
-
-                    <div id="recordingStatus" class="recording-status hidden">
-                        <div class="recording-dot"></div>
-                        <span class="mobile-text-sm">Recording...</span>
-                    </div>
+                <!-- Connection status in header -->
+                <div class="connection-status">
+                    <div id="connectionDot" class="connection-dot online"></div>
+                    <span id="connectionStatus" class="text-sm">Ready</span>
                 </div>
 
-                <div class="text-sm mobile-text-sm text-center flex-1 mx-2" style="color: var(--text-secondary);" id="currentChatTitle">New Chat</div>
-
-                <div class="flex items-center gap-2">
-                    <button id="themeToggle" class="touch-button p-2 rounded-lg hover-lift theme-toggle mobile-touch-button" style="background: var(--bg-card);">
-                        <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                        <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                        </svg>
-                    </button>
-
-                    <div class="connection-status mobile-block tablet-flex-col hidden">
-                        <div id="mobileConnectionDot" class="connection-dot online"></div>
-                    </div>
+                <!-- Recording status (hidden by default) -->
+                <div id="recordingStatus" class="recording-status hidden">
+                    <div class="recording-dot"></div>
+                    <span>Recording...</span>
                 </div>
+
+                <!-- Current chat title -->
+                <div class="text-sm" style="color: var(--text-secondary);" id="currentChatTitle">New Chat</div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <!-- Theme toggle -->
+                <button id="themeToggle" class="p-2 rounded-lg hover-lift theme-toggle" style="background: var(--bg-card);">
+                    <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+
+                <!-- Voice mode selector -->
+                <div class="flex items-center gap-1 p-1 rounded-lg" style="background: var(--bg-card);">
+                    <button id="browserVoiceBtn" class="voice-mode-btn active">Browser Voice</button>
+                    <button id="webSpeechBtn" class="voice-mode-btn">Web Speech</button>
+                </div>
+
+                <!-- Voice on/off -->
+                <button id="voiceToggle" class="px-4 py-2 rounded-lg glass hover-lift text-sm">Voice: <span id="voiceState">On</span></button>
+
+                <!-- Clear -->
+                <button id="clearBtn" class="px-4 py-2 rounded-lg glass hover-lift text-sm">Clear</button>
             </div>
         </div>
 
-        <div class="mobile-toolbar p-3 border-b flex items-center gap-2 mobile-voice-single-col" style="border-color: var(--border-color); background: var(--bg-secondary);">
-            <div class="flex items-center gap-1 p-1 rounded-lg mobile-w-full" style="background: var(--bg-card);">
-                <button id="browserVoiceBtn" class="voice-mode-btn active mobile-text-sm mobile-w-full text-center">Browser Voice</button>
-                <button id="webSpeechBtn" class="voice-mode-btn mobile-text-sm mobile-w-full text-center">Web Speech</button>
-            </div>
-
-            <div class="flex items-center gap-2 mobile-w-full">
-                <button id="voiceToggle" class="touch-button px-3 py-2 rounded-lg glass hover-lift text-sm mobile-text-sm mobile-w-full text-center">Voice: <span id="voiceState">On</span></button>
-
-                <button id="clearBtn" class="touch-button px-3 py-2 rounded-lg glass hover-lift text-sm mobile-text-sm mobile-w-full text-center">Clear Chat</button>
-            </div>
-        </div>
-
-        <main class="flexible-container flex flex-col p-3 sm:p-4 md:p-6 overflow-hidden">
+        <!-- Messages area -->
+        <main class="flex-1 flex flex-col p-6 overflow-hidden">
             <div class="h-full flex flex-col">
-                <div id="messages" class="flexible-container overflow-y-auto custom-scrollbar no-scrollbar space-y-3 sm:space-y-4 pr-2">
-                    <div class="flex items-start gap-3 sm:gap-4 message-animate">
-                        <div class="mobile-message-avatar w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">L</div>
-                        <div class="glass p-3 sm:p-4 rounded-xl message-bubble">
-                            <div class="text-sm mobile-text-sm font-medium">Hello — I'm LUMO.</div>
-                            <div class="text-xs mobile-text-sm mt-1" style="color: var(--text-secondary);">Type a command or press the mic to begin.</div>
-                            <div class="text-xs mobile-text-sm mt-2" style="color: var(--text-secondary);">Voice Mode: <span id="currentVoiceMode">Browser Voice</span></div>
+                <!-- Message list -->
+                <div id="messages" class="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-2">
+                    <!-- Initial system message -->
+                    <div class="flex items-start gap-4 message-animate">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">L</div>
+                        <div class="glass p-4 rounded-xl max-w-prose">
+                            <div class="text-sm font-medium">Hello — I'm LUMO.</div>
+                            <div class="text-xs mt-1" style="color: var(--text-secondary);">Type a command or press the mic to begin. Current backend: Python (5000)</div>
+                            <div class="text-xs mt-2" style="color: var(--text-secondary);">Voice Mode: <span id="currentVoiceMode">Browser Voice</span></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t safe-area-bottom mobile-input-area flex flex-col sm:flex-row items-center gap-3 sm:gap-4" style="border-color: var(--border-color);">
-                    <div class="voice-controls-grid sm:flex sm:items-center sm:gap-2 w-full sm:w-auto">
-                        <div id="browserVoiceControls" class="flex items-center justify-center gap-2">
-                            <button id="startVoiceBtn" class="touch-button mobile-touch-button w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 1v11m0 0a3 3 0 01-3 3 3 3 0 01-3-3V9a3 3 0 013-3m6 0a3 3 0 013 3v2a3 3 0 01-3 3" />
-                                </svg>
-                            </button>
-                            <button id="stopVoiceBtn" class="touch-button mobile-touch-button w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift hidden" style="background:linear-gradient(135deg,#ef4444,#f59e0b)">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <button id="webSpeechMic" class="touch-button mobile-touch-button w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift hidden" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <!-- Input area -->
+                <div class="mt-6 pt-4 border-t flex items-center gap-4" style="border-color: var(--border-color);">
+                    <!-- Browser Voice Controls -->
+                    <div id="browserVoiceControls" class="flex items-center gap-2">
+                        <button id="startVoiceBtn" class="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 1v11m0 0a3 3 0 01-3 3 3 3 0 01-3-3V9a3 3 0 013-3m6 0a3 3 0 013 3v2a3 3 0 01-3 3" />
+                            </svg>
+                        </button>
+                        <button id="stopVoiceBtn" class="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift hidden" style="background:linear-gradient(135deg,#ef4444,#f59e0b)">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
                             </svg>
                         </button>
                     </div>
 
-                    <input id="cmdInput" class="flexible-container touch-button p-3 sm:p-4 rounded-xl glass input-focus mobile-text-sm" 
-                           placeholder="Type a command or use voice..." 
-                           style="background: var(--bg-card); color: var(--text-primary);"
-                           autocomplete="off"
-                           autocorrect="off"
-                           autocapitalize="off"
-                           spellcheck="false" />
-
-                    <button id="sendBtn" class="touch-button mobile-touch-button px-4 py-3 sm:px-5 sm:py-3 rounded-xl text-white font-medium hover-lift w-full sm:w-auto" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">
-                        <span class="mobile-hidden sm:inline">Send</span>
-                        <svg class="inline sm:hidden h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    <!-- Web Speech Mic (old style) -->
+                    <button id="webSpeechMic" class="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-lg hover-lift hidden" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 1v11m0 0a3 3 0 01-3 3 3 3 0 01-3-3V9a3 3 0 013-3m6 0a3 3 0 013 3v2a3 3 0 01-3 3" />
                         </svg>
                     </button>
+
+                    <input id="cmdInput" class="flex-1 p-4 rounded-xl glass input-focus" placeholder="Type a command... (e.g. 'turn on living room light')" style="background: var(--bg-card); color: var(--text-primary);" />
+                    <button id="sendBtn" class="px-5 py-3 rounded-xl text-white font-medium hover-lift" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))">Send</button>
                 </div>
             </div>
         </main>
     </section>
 </div>
 
+<!-- Mobile drawer -->
 <div id="mobileDrawer" class="fixed inset-0 z-50 hidden">
     <div class="absolute inset-0 bg-black bg-opacity-70" id="drawerOverlay"></div>
-    <div class="absolute left-0 top-0 h-full mobile-drawer glass transform -translate-x-full transition-transform duration-300" id="drawer" style="background: var(--bg-secondary);">
-        <div class="p-4 sm:p-6 h-full flex flex-col safe-area-top safe-area-bottom">
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center gap-3">
-                    <div class="mobile-message-avatar w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));">L</div>
+    <div class="absolute left-0 top-0 h-full w-80 glass transform -translate-x-full transition-transform duration-300" id="drawer" style="background: var(--bg-secondary);">
+        <div class="p-6 h-full flex flex-col">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style="background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));">L</div>
                     <div>
-                        <h2 class="text-lg mobile-text-sm font-bold gradient-text">LUMO</h2>
-                        <p class="text-xs mobile-text-sm" style="color: var(--text-secondary);">Voice Assistant</p>
+                        <h2 class="text-lg font-bold gradient-text">LUMO</h2>
+                        <p class="text-xs" style="color: var(--text-secondary);">Voice Assistant</p>
                     </div>
                 </div>
-                <button id="closeDrawer" class="touch-button p-2 rounded-lg hover-lift mobile-touch-button" style="background: var(--bg-card);">
+                <button id="closeDrawer" class="p-2 rounded-lg hover-lift" style="background: var(--bg-card);">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
 
-            <button id="newChatBtn" class="new-chat-btn mb-6 touch-button">
+            <!-- New Chat Button -->
+            <button id="newChatBtn" class="new-chat-btn mb-6">
                 <div class="flex items-center justify-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -615,52 +489,54 @@
                 </div>
             </button>
 
-            <div class="space-y-4 flexible-container">
+            <!-- Recent Chats in Drawer -->
+            <div class="space-y-4 flex-1">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-sm mobile-text-sm font-medium" style="color: var(--text-secondary);">Recent Chats</h3>
-                    <button id="clearRecentChatsBtn" class="recent-btn touch-button">Clear</button>
+                    <h3 class="text-sm font-medium" style="color: var(--text-secondary);">Recent Chats</h3>
+                    <button id="clearRecentChatsBtn" class="recent-btn">Clear</button>
                 </div>
-                <div id="drawerRecentChats" class="space-y-2 text-sm mobile-text-sm flexible-container overflow-y-auto custom-scrollbar pr-2"></div>
+                <div id="drawerRecentChats" class="space-y-2 text-sm flex-1 overflow-y-auto custom-scrollbar pr-2"></div>
             </div>
 
-            <div class="text-xs mobile-text-sm mt-auto pt-4 sm:pt-6 border-t" style="color: var(--text-secondary); border-color: var(--border-color);">
-                <div class="break-all">Backend: <span id="apiUrlDisplayDrawer">http://127.0.0.1:5000</span></div>
-                <div class="mt-1">Voice Mode: <span id="voiceModeDisplay">Browser Voice</span></div>
-                <div class="mt-1">Status: <span id="drawerStatus">Ready</span></div>
+            <div class="text-xs mt-auto pt-6 border-t" style="color: var(--text-secondary); border-color: var(--border-color);">
+                <div>Active Backend: <span id="apiUrlDisplayDrawer">http://127.0.0.1:5000/api/command</span></div>
                 <div class="mt-1">Version 3.0 · Multi-Mode UI</div>
+                <div class="mt-1">Voice Mode: <span id="voiceModeDisplay">Browser Voice</span></div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Context Menu -->
 <div id="contextMenu" class="context-menu hidden">
-    <button class="context-menu-item touch-button" id="renameChatBtn">Rename</button>
-    <button class="context-menu-item delete touch-button" id="deleteChatBtn">Delete</button>
+    <button class="context-menu-item" id="renameChatBtn">Rename</button>
+    <button class="context-menu-item delete" id="deleteChatBtn">Delete</button>
 </div>
 
 <script>
+
     const SERVER_IP = window.location.hostname;
     let API_URL = `http://${SERVER_IP}:5000/api/command`;
     let BROWSER_VOICE_API_URL = `http://${SERVER_IP}:5000/api/browser_voice`;
-    document.getElementById('apiUrlDisplayDrawer').textContent = `http://${SERVER_IP}:5000`;
+    document.getElementById('apiUrlDisplayDrawer').textContent = API_URL;
+
 
     const messagesEl = document.getElementById('messages');
     const drawerRecentChats = document.getElementById('drawerRecentChats');
     const cmdInput = document.getElementById('cmdInput');
     const sendBtn = document.getElementById('sendBtn');
     const connectionDot = document.getElementById('connectionDot');
-    const mobileConnectionDot = document.getElementById('mobileConnectionDot');
     const connectionStatus = document.getElementById('connectionStatus');
     const currentChatTitle = document.getElementById('currentChatTitle');
     const contextMenu = document.getElementById('contextMenu');
     const recordingStatus = document.getElementById('recordingStatus');
     const currentVoiceMode = document.getElementById('currentVoiceMode');
     const voiceModeDisplay = document.getElementById('voiceModeDisplay');
-    const drawerStatus = document.getElementById('drawerStatus');
 
-    const chatsStorageKey = 'lumo_chats_v2';
+    // Storage keys
+    const chatsStorageKey = 'lumo_chats_v1';
     const currentChatIdKey = 'lumo_current_chat_id';
-    const voiceModeKey = 'lumo_voice_mode_v2';
+    const voiceModeKey = 'lumo_voice_mode';
 
     let isRecording = false;
     let isListening = false;
@@ -672,67 +548,21 @@
     let contextMenuChatId = null;
     let longPressTimer = null;
     let currentVoiceModeType = localStorage.getItem(voiceModeKey) || 'browser';
-    let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-    function setupForDevice() {
-        if (isMobile || isTouchDevice) {
-            document.body.classList.add('mobile');
-            cmdInput.setAttribute('autocorrect', 'off');
-            cmdInput.setAttribute('autocapitalize', 'none');
-            
-            const metaViewport = document.querySelector('meta[name="viewport"]');
-            let originalContent = metaViewport.getAttribute('content');
-            metaViewport.setAttribute('content', originalContent + ', maximum-scale=1.0, user-scalable=no');
-            
-            document.querySelectorAll('button').forEach(btn => {
-                btn.addEventListener('touchstart', function() {
-                    this.style.transform = 'scale(0.98)';
-                });
-                btn.addEventListener('touchend', function() {
-                    this.style.transform = '';
-                });
-            });
-        }
-        
-        updateConnectionDisplay();
-    }
 
     async function startBrowserVoice() {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                audio: {
-                    echoCancellation: true,
-                    noiseSuppression: true,
-                    sampleRate: 44100
-                }
-            });
-            
-            mediaRecorder = new MediaRecorder(stream, {
-                mimeType: 'audio/webm;codecs=opus'
-            });
-            
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
             audioChunks = [];
 
-            mediaRecorder.ondataavailable = e => {
-                if (e.data.size > 0) {
-                    audioChunks.push(e.data);
-                }
-            };
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
 
             mediaRecorder.onstop = async () => {
-                if (audioChunks.length === 0) {
-                    appendMessage('lumo', 'No audio recorded. Please try again.');
-                    return;
-                }
-
-                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
                 const formData = new FormData();
-                formData.append("audio", audioBlob, "voice.webm");
+                formData.append("audio", audioBlob, "voice.wav");
 
                 try {
-                    setConnectionStatus('Processing voice...', 'connecting');
-                    
                     const res = await fetch(BROWSER_VOICE_API_URL, {
                         method: "POST",
                         body: formData
@@ -746,142 +576,94 @@
                     if (data.displayText) {
                         appendMessage("lumo", data.displayText);
                     }
-                    
-                    setConnectionStatus('Ready', 'online');
+
+                    // Speak response if voice is on
+                    if ((data.speakText || data.displayText) && 'speechSynthesis' in window && document.getElementById('voiceState').textContent === 'On') {
+                        const u = new SpeechSynthesisUtterance(data.speakText || data.displayText || "Response received");
+                        speechSynthesis.speak(u);
+                    }
                 } catch (err) {
                     console.error('Voice processing error:', err);
                     appendMessage('lumo', 'Could not process voice input. Please try again.');
-                    setConnectionStatus('Voice error', 'offline');
-                    setTimeout(() => setConnectionStatus('Ready', 'online'), 2000);
                 }
             };
 
             mediaRecorder.start();
             isRecording = true;
             
-            updateRecordingUI(true);
-            
+            // Update UI
+            document.getElementById('startVoiceBtn').classList.add('hidden');
+            document.getElementById('stopVoiceBtn').classList.remove('hidden');
+            document.getElementById('startVoiceBtn').classList.add('recording-pulse');
+            recordingStatus.classList.remove('hidden');
         } catch (err) {
             console.error('Error accessing microphone:', err);
-            let errorMessage = 'Microphone access denied. ';
-            if (err.name === 'NotAllowedError') {
-                errorMessage += 'Please enable microphone permissions in your browser settings.';
-            } else if (err.name === 'NotFoundError') {
-                errorMessage += 'No microphone found. Please connect a microphone.';
-            } else {
-                errorMessage += 'Please check your microphone settings.';
-            }
-            appendMessage('lumo', errorMessage);
+            appendMessage('lumo', 'Microphone access denied. Please check permissions.');
         }
     }
 
     function stopBrowserVoice() {
-        if (mediaRecorder && isRecording && mediaRecorder.state !== 'inactive') {
+        if (mediaRecorder && isRecording) {
             mediaRecorder.stop();
             isRecording = false;
             
-            updateRecordingUI(false);
-            
-            if (mediaRecorder.stream) {
-                mediaRecorder.stream.getTracks().forEach(track => track.stop());
-            }
-        }
-    }
-
-    function updateRecordingUI(recording) {
-        const startBtn = document.getElementById('startVoiceBtn');
-        const stopBtn = document.getElementById('stopVoiceBtn');
-        
-        if (recording) {
-            startBtn.classList.add('hidden');
-            stopBtn.classList.remove('hidden');
-            startBtn.classList.add('recording-pulse');
-            recordingStatus.classList.remove('hidden');
-            recordingStatus.innerHTML = '<div class="recording-dot"></div><span>Recording... Tap to stop</span>';
-        } else {
-            startBtn.classList.remove('hidden');
-            stopBtn.classList.add('hidden');
-            startBtn.classList.remove('recording-pulse');
+            // Update UI
+            document.getElementById('startVoiceBtn').classList.remove('hidden');
+            document.getElementById('stopVoiceBtn').classList.add('hidden');
+            document.getElementById('startVoiceBtn').classList.remove('recording-pulse');
             recordingStatus.classList.add('hidden');
+
+            // Stop all tracks in the stream
+            mediaRecorder.stream.getTracks().forEach(track => track.stop());
         }
     }
 
-    function setupSpeechRecognition() {
+    function setupSpeechRecognition(){
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
         
-        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-            appendMessage('lumo', '⚠️ Web Speech API works best with HTTPS. For best results, use HTTPS or localhost.');
+        // Add HTTPS warning for mobile
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+            appendMessage('lumo', '⚠️ Web Speech API may not work on HTTP. Use HTTPS for best results.');
         }
         
-        if (!SpeechRecognition) {
-            appendMessage('lumo', 'Web Speech API is not supported in this browser. Try using Browser Voice mode instead.');
-            return null;
-        }
-        
+        if(!SpeechRecognition) return null;
         const r = new SpeechRecognition();
         r.lang = 'en-US';
         r.interimResults = false;
         r.maxAlternatives = 1;
-        r.continuous = false;
-        
         r.onstart = () => {
             isListening = true;
             document.getElementById('webSpeechMic').classList.add('mic-pulse');
             recordingStatus.classList.remove('hidden');
-            recordingStatus.innerHTML = '<div class="recording-dot"></div><span>Listening... Speak now</span>';
-            setConnectionStatus('Listening...', 'connecting');
+            recordingStatus.innerHTML = '<div class="recording-dot"></div><span>Listening...</span>';
         };
-        
         r.onend = () => {
             isListening = false;
             document.getElementById('webSpeechMic').classList.remove('mic-pulse');
             recordingStatus.classList.add('hidden');
-            setConnectionStatus('Ready', 'online');
         };
-        
         r.onerror = (e) => { 
-            console.error('Speech recognition error:', e.error);
-            let errorMsg = `Speech recognition error: ${e.error}`;
-            if (e.error === 'not-allowed') {
-                errorMsg = 'Microphone permission denied. Please allow microphone access.';
-            } else if (e.error === 'audio-capture') {
-                errorMsg = 'No microphone found. Please check your microphone.';
-            } else if (e.error === 'network') {
-                errorMsg = 'Network error. Please check your connection.';
-            }
-            appendMessage('lumo', errorMsg);
+            appendMessage('lumo', `Mic error: ${e.error}`);
             recordingStatus.classList.add('hidden');
-            setConnectionStatus('Speech error', 'offline');
-            setTimeout(() => setConnectionStatus('Ready', 'online'), 2000);
         };
-        
         r.onresult = (ev) => {
             const t = ev.results[0][0].transcript;
             cmdInput.value = t;
             sendCommand(t);
         };
-        
         return r;
     }
 
-    function toggleWebSpeechMic() {
-        if (!recognition) {
-            recognition = setupSpeechRecognition();
-        }
-        
-        if (!recognition) {
+    function toggleWebSpeechMic(){
+        if(!recognition) recognition = setupSpeechRecognition();
+        if(!recognition){
+            appendMessage('lumo', 'SpeechRecognition not supported in this browser.');
             return;
         }
-        
-        if (isListening) { 
+        if(isListening){ 
             recognition.stop(); 
         } else { 
-            try {
-                recognition.start();
-            } catch (err) {
-                console.error('Failed to start speech recognition:', err);
-                appendMessage('lumo', 'Failed to start speech recognition. Please try again.');
-            }
+            recognition.start(); 
         }
     }
 
@@ -889,27 +671,22 @@
         currentVoiceModeType = mode;
         localStorage.setItem(voiceModeKey, mode);
         
+        // Update UI
         document.getElementById('browserVoiceBtn').classList.toggle('active', mode === 'browser');
         document.getElementById('webSpeechBtn').classList.toggle('active', mode === 'webspeech');
         
         document.getElementById('browserVoiceControls').classList.toggle('hidden', mode !== 'browser');
         document.getElementById('webSpeechMic').classList.toggle('hidden', mode !== 'webspeech');
         
-        const voiceModeText = mode === 'browser' ? 'Browser Voice' : 'Web Speech';
-        currentVoiceMode.textContent = voiceModeText;
-        voiceModeDisplay.textContent = voiceModeText;
+        currentVoiceMode.textContent = mode === 'browser' ? 'Browser Voice' : 'Web Speech';
+        voiceModeDisplay.textContent = mode === 'browser' ? 'Browser Voice' : 'Web Speech';
         
+        // Stop any ongoing recording/listening
         if (mode === 'browser' && isListening) {
             recognition.stop();
         }
         if (mode === 'webspeech' && isRecording) {
             stopBrowserVoice();
-        }
-        
-        if (mode === 'browser') {
-            cmdInput.placeholder = 'Tap mic button to record voice...';
-        } else {
-            cmdInput.placeholder = 'Tap mic button to speak...';
         }
     }
 
@@ -918,6 +695,7 @@
     const moonIcon = document.getElementById('moonIcon');
     const body = document.body;
 
+    // Check for saved theme preference or respect OS preference
     const savedTheme = localStorage.getItem('lumo-theme');
     if (savedTheme === 'light' || (!savedTheme && window.matchMedia('(prefers-color-scheme: light)').matches)) {
         enableLightMode();
@@ -955,49 +733,48 @@
     const menuToggle = document.getElementById('menuToggle');
     const closeDrawer = document.getElementById('closeDrawer');
 
-    function openDrawer() {
+    menuToggle.addEventListener('click', () => {
         mobileDrawer.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
         setTimeout(() => {
             drawer.classList.remove('transform', '-translate-x-full');
         }, 10);
-    }
+    });
 
-    function closeDrawerFunc() {
+    closeDrawer.addEventListener('click', () => {
         drawer.classList.add('transform', '-translate-x-full');
         setTimeout(() => {
             mobileDrawer.classList.add('hidden');
-            document.body.style.overflow = '';
         }, 300);
-    }
+    });
 
-    menuToggle.addEventListener('click', openDrawer);
-    closeDrawer.addEventListener('click', closeDrawerFunc);
-    drawerOverlay.addEventListener('click', closeDrawerFunc);
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !mobileDrawer.classList.contains('hidden')) {
-            closeDrawerFunc();
-        }
+    drawerOverlay.addEventListener('click', () => {
+        drawer.classList.add('transform', '-translate-x-full');
+        setTimeout(() => {
+            mobileDrawer.classList.add('hidden');
+        }, 300);
     });
 
     function setupContextMenu() {
+        // Hide context menu when clicking elsewhere
         document.addEventListener('click', (e) => {
             if (!contextMenu.contains(e.target)) {
                 hideContextMenu();
             }
         });
 
+        // Hide context menu on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 hideContextMenu();
             }
         });
 
+        // Prevent default context menu
         document.addEventListener('contextmenu', (e) => {
             e.preventDefault();
         });
 
+        // Rename button handler
         document.getElementById('renameChatBtn').addEventListener('click', () => {
             if (contextMenuChatId) {
                 renameChat(contextMenuChatId);
@@ -1005,6 +782,7 @@
             hideContextMenu();
         });
 
+        // Delete button handler
         document.getElementById('deleteChatBtn').addEventListener('click', () => {
             if (contextMenuChatId) {
                 deleteChat(contextMenuChatId);
@@ -1014,24 +792,9 @@
     }
 
     function showContextMenu(x, y, chatId) {
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
-        const menuWidth = 120;
-        const menuHeight = 80;
-        
-        let posX = x;
-        let posY = y;
-        
-        if (x + menuWidth > viewportWidth) {
-            posX = viewportWidth - menuWidth - 10;
-        }
-        if (y + menuHeight > viewportHeight) {
-            posY = viewportHeight - menuHeight - 10;
-        }
-        
         contextMenuChatId = chatId;
-        contextMenu.style.left = posX + 'px';
-        contextMenu.style.top = posY + 'px';
+        contextMenu.style.left = x + 'px';
+        contextMenu.style.top = y + 'px';
         contextMenu.classList.remove('hidden');
     }
 
@@ -1041,29 +804,28 @@
     }
 
     function setupChatItemContextMenu(chatElement, chatId) {
+        // Right-click for desktop
         chatElement.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             e.stopPropagation();
             showContextMenu(e.pageX, e.pageY, chatId);
         });
 
+        // Long press for mobile
         chatElement.addEventListener('touchstart', (e) => {
             longPressTimer = setTimeout(() => {
                 e.preventDefault();
                 const touch = e.touches[0];
                 showContextMenu(touch.pageX, touch.pageY, chatId);
-                chatElement.style.backgroundColor = 'rgba(59, 130, 246, 0.2)';
-            }, 500);
+            }, 500); // 500ms long press
         });
 
         chatElement.addEventListener('touchend', () => {
             clearTimeout(longPressTimer);
-            chatElement.style.backgroundColor = '';
         });
 
         chatElement.addEventListener('touchmove', () => {
             clearTimeout(longPressTimer);
-            chatElement.style.backgroundColor = '';
         });
     }
 
@@ -1089,18 +851,21 @@
     function deleteChat(chatId) {
         if (!chats[chatId]) return;
 
+        // Don't allow deleting if it's the only chat
         if (Object.keys(chats).length <= 1) {
             alert('Cannot delete the only chat. Create a new chat first.');
             return;
         }
 
         if (confirm('Are you sure you want to delete this chat?')) {
+            // If deleting the current chat, switch to another one
             if (chatId === currentChatId) {
                 const remainingChats = Object.keys(chats).filter(id => id !== chatId);
                 const newCurrentChatId = remainingChats[0];
                 loadChat(newCurrentChatId);
             }
 
+            // Delete the chat
             delete chats[chatId];
             saveChatsToStorage();
             renderRecentChats();
@@ -1108,14 +873,10 @@
     }
 
     function initChats() {
+        // Load chats from localStorage
         const storedChats = localStorage.getItem(chatsStorageKey);
         if (storedChats) {
-            try {
-                chats = JSON.parse(storedChats);
-            } catch (e) {
-                console.error('Error parsing chats from storage:', e);
-                chats = {};
-            }
+            chats = JSON.parse(storedChats);
         }
 
         currentChatId = localStorage.getItem(currentChatIdKey);
@@ -1138,7 +899,7 @@
             messages: [
                 {
                     who: 'lumo',
-                    text: "Hello — I'm LUMO. Type a command or press the mic to begin.",
+                    text: "Hello — I'm LUMO. Type a command or press the mic to begin. Current backend: Python (5000)",
                     time: Date.now(),
                     meta: {}
                 }
@@ -1171,26 +932,11 @@
 
         messagesEl.scrollTop = messagesEl.scrollHeight;
         renderRecentChats();
-        
-        drawerStatus.textContent = 'Ready';
     }
 
     function saveChatsToStorage() {
-        try {
-            localStorage.setItem(chatsStorageKey, JSON.stringify(chats));
-            localStorage.setItem(currentChatIdKey, currentChatId);
-        } catch (e) {
-            console.error('Error saving to localStorage:', e);
-            if (e.name === 'QuotaExceededError') {
-                const chatsArray = Object.values(chats).sort((a, b) => b.updatedAt - a.updatedAt);
-                const recentChats = chatsArray.slice(0, 10);
-                chats = {};
-                recentChats.forEach(chat => {
-                    chats[chat.id] = chat;
-                });
-                saveChatsToStorage();
-            }
-        }
+        localStorage.setItem(chatsStorageKey, JSON.stringify(chats));
+        localStorage.setItem(currentChatIdKey, currentChatId);
     }
 
     function updateChatTitle() {
@@ -1216,24 +962,26 @@
             drawerRecentChats.innerHTML = '<div class="text-center p-4" style="color: var(--text-secondary);">No recent chats</div>';
             return;
         }
-
         const chatsArray = Object.values(chats).sort((a, b) => b.updatedAt - a.updatedAt);
 
         drawerRecentChats.innerHTML = '';
         chatsArray.forEach(chat => {
             const chatEl = document.createElement('div');
-            chatEl.className = `chat-item touch-button ${chat.id === currentChatId ? 'active' : ''}`;
+            chatEl.className = `chat-item ${chat.id === currentChatId ? 'active' : ''}`;
 
             const time = new Date(chat.updatedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             chatEl.innerHTML = `
-                <div class="font-medium text-sm mobile-text-sm truncate">${chat.title}</div>
-                <div class="text-xs mobile-text-sm mt-1" style="color: var(--text-secondary);">${time}</div>
+                <div class="font-medium text-sm">${chat.title}</div>
+                <div class="text-xs mt-1" style="color: var(--text-secondary);">${time}</div>
             `;
 
             chatEl.addEventListener('click', (e) => {
                 if (e.button === 0 || e.type === 'touchstart') {
                     loadChat(chat.id);
-                    closeDrawerFunc();
+                    drawer.classList.add('transform', '-translate-x-full');
+                    setTimeout(() => {
+                        mobileDrawer.classList.add('hidden');
+                    }, 300);
                 }
             });
 
@@ -1249,12 +997,10 @@
             return;
         }
 
-        if (confirm('Are you sure you want to clear all chats except the current one?')) {
-            const currentChat = chats[currentChatId];
-            chats = { [currentChatId]: currentChat };
-            saveChatsToStorage();
-            renderRecentChats();
-        }
+        const currentChat = chats[currentChatId];
+        chats = { [currentChatId]: currentChat };
+        saveChatsToStorage();
+        renderRecentChats();
     }
 
     function appendMessage(who, text, meta = {}) {
@@ -1274,43 +1020,38 @@
 
     function appendMessageToDOM(who, text, meta = {}, animate = true) {
         const wrap = document.createElement('div');
-        wrap.className = `flex items-start gap-3 sm:gap-4 ${animate ? 'message-animate' : ''}`;
+        wrap.className = `flex items-start gap-4 ${animate ? 'message-animate' : ''}`;
 
         const avatar = document.createElement('div');
-        avatar.className = 'mobile-message-avatar w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold';
+        avatar.className = 'w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold';
         avatar.style.background = who === 'lumo' ?
             'linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))' :
             'linear-gradient(135deg,#fb923c,#ef4444)';
         avatar.textContent = who === 'lumo' ? 'L' : 'U';
 
         const bubble = document.createElement('div');
-        bubble.className = 'glass p-3 sm:p-4 rounded-xl message-bubble';
+        bubble.className = 'glass p-4 rounded-xl max-w-prose';
+
 
         const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const messageContent = `<div class="text-xs mobile-text-sm mb-2" style="color: var(--text-secondary);">${timestamp}</div><div class="text-sm mobile-text-sm">${text}</div>`;
+        const messageContent = `<div class="text-xs mb-2" style="color: var(--text-secondary);">${timestamp}</div><div>${text}</div>`;
 
         bubble.innerHTML = messageContent.replace(/\n/g, '<br/>');
 
         wrap.appendChild(avatar);
         wrap.appendChild(bubble);
         messagesEl.appendChild(wrap);
-        
-        setTimeout(() => {
-            messagesEl.scrollTo({
-                top: messagesEl.scrollHeight,
-                behavior: 'smooth'
-            });
-        }, 100);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    async function sendCommand(command) {
+    async function sendCommand(command){
         const trimmed = (command||'').trim();
         if(!trimmed) return;
 
         appendMessage('user', trimmed);
         setConnectionStatus('Sending...', 'connecting');
 
-        const timeout = 15000;
+        const timeout = 10000; 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
 
@@ -1328,7 +1069,7 @@
             clearTimeout(timeoutId);
 
             if(!res.ok){
-                appendMessage('lumo', `Server error: ${res.status}`);
+                appendMessage('lumo', `Server returned ${res.status}`);
                 setConnectionStatus('Server error', 'offline');
                 return;
             }
@@ -1338,12 +1079,14 @@
             appendMessage('lumo', display);
             setConnectionStatus('Ready', 'online');
 
+            if ((data.speakText || data.message) && 'speechSynthesis' in window && document.getElementById('voiceState').textContent === 'On') {
+                const u = new SpeechSynthesisUtterance(data.speakText || (typeof display === 'string' ? display : 'Response'));
+                speechSynthesis.speak(u);
+            }
         } catch (err) {
             clearTimeout(timeoutId);
             if (err.name === 'AbortError') {
                 appendMessage('lumo', 'Request timeout - backend is not responding.');
-            } else if (err.name === 'TypeError' && err.message.includes('Failed to fetch')) {
-                appendMessage('lumo', 'Network error - cannot connect to backend. Make sure server is running.');
             } else {
                 appendMessage('lumo', 'Could not reach backend.');
             }
@@ -1351,34 +1094,16 @@
         }
     }
 
-    function setConnectionStatus(text, status) {
+    function setConnectionStatus(text, status){
         connectionStatus.textContent = text;
-        drawerStatus.textContent = text;
 
-        const dots = [connectionDot, mobileConnectionDot];
-        dots.forEach(dot => {
-            if (dot) {
-                dot.className = 'connection-dot';
-                if (status === 'online') {
-                    dot.classList.add('online');
-                } else if (status === 'connecting') {
-                    dot.classList.add('connecting');
-                }
-            }
-        });
-    }
-
-    function updateConnectionDisplay() {
-        if (window.innerWidth < 640) {
-            document.querySelector('.connection-status').classList.add('mobile-hidden');
-            if (mobileConnectionDot) {
-                mobileConnectionDot.parentElement.classList.remove('hidden');
-            }
+        connectionDot.className = 'connection-dot';
+        if (status === 'online') {
+            connectionDot.classList.add('online');
+        } else if (status === 'connecting') {
+            connectionDot.classList.add('connecting');
         } else {
-            document.querySelector('.connection-status').classList.remove('mobile-hidden');
-            if (mobileConnectionDot) {
-                mobileConnectionDot.parentElement.classList.add('hidden');
-            }
+            connectionDot.classList.remove('online', 'connecting');
         }
     }
 
@@ -1391,22 +1116,15 @@
     document.getElementById('webSpeechBtn').addEventListener('click', () => setVoiceMode('webspeech'));
 
     sendBtn.addEventListener('click', () => {
-        const command = cmdInput.value.trim();
-        if (command) {
-            sendCommand(command);
-            cmdInput.value = '';
-            cmdInput.focus();
-        }
+        sendCommand(cmdInput.value);
+        cmdInput.value = '';
     });
 
     cmdInput.addEventListener('keydown', e => {
         if(e.key === 'Enter'){
             e.preventDefault();
-            const command = cmdInput.value.trim();
-            if (command) {
-                sendCommand(command);
-                cmdInput.value = '';
-            }
+            sendCommand(cmdInput.value);
+            cmdInput.value = '';
         }
     });
 
@@ -1415,139 +1133,65 @@
         voiceState.textContent = voiceState.textContent === 'On' ? 'Off' : 'On';
     });
 
+
     document.getElementById('clearBtn').addEventListener('click', () => {
         if (!currentChatId || !chats[currentChatId]) return;
 
-        if (confirm('Clear all messages in this chat?')) {
-            const initialMessage = chats[currentChatId].messages.find(msg =>
-                msg.who === 'lumo' && msg.text.includes("Hello — I'm LUMO")
-            );
+        const initialMessage = chats[currentChatId].messages.find(msg =>
+            msg.who === 'lumo' && msg.text.includes("Hello — I'm LUMO")
+        );
 
-            if (initialMessage) {
-                chats[currentChatId].messages = [initialMessage];
-            } else {
-                chats[currentChatId].messages = [{
-                    who: 'lumo',
-                    text: "Hello — I'm LUMO. Type a command or press the mic to begin.",
-                    time: Date.now(),
-                    meta: {}
-                }];
-            }
+        if (initialMessage) {
+            chats[currentChatId].messages = [initialMessage];
+        } else {
 
-            chats[currentChatId].updatedAt = Date.now();
-            saveChatsToStorage();
-            loadChat(currentChatId);
+            chats[currentChatId].messages = [{
+                who: 'lumo',
+                text: "Hello — I'm LUMO. Type a command or press the mic to begin.",
+                time: Date.now(),
+                meta: {}
+            }];
         }
+
+        chats[currentChatId].updatedAt = Date.now();
+        saveChatsToStorage();
+        loadChat(currentChatId);
     });
 
     document.getElementById('newChatBtn').addEventListener('click', () => {
         createNewChat();
-        closeDrawerFunc();
+        drawer.classList.add('transform', '-translate-x-full');
+        setTimeout(() => {
+            mobileDrawer.classList.add('hidden');
+        }, 300);
     });
 
     document.getElementById('clearRecentChatsBtn').addEventListener('click', () => {
         clearRecentChats();
     });
 
-    function updateNetworkStatus() {
+
+    function updateNetworkStatus(){
         const online = navigator.onLine;
-        if (online) {
-            setConnectionStatus('Ready', 'online');
-        } else {
-            setConnectionStatus('Offline', 'offline');
-            appendMessage('lumo', 'You are offline. Please check your internet connection.');
-        }
+        setConnectionStatus(online ? 'Ready' : 'Offline', online ? 'online' : 'offline');
     }
 
     window.addEventListener('online', updateNetworkStatus);
     window.addEventListener('offline', updateNetworkStatus);
-    
-    window.addEventListener('resize', () => {
-        updateConnectionDisplay();
-        hideContextMenu();
-    });
+    updateNetworkStatus();
 
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            if (isRecording) {
-                stopBrowserVoice();
-            }
-            if (isListening) {
-                recognition.stop();
-            }
-        }
-    });
-
-    window.addEventListener('beforeunload', () => {
-        if (isRecording) {
-            stopBrowserVoice();
-        }
-        if (isListening) {
-            recognition.stop();
-        }
-    });
-
-    function initApp() {
-        setupForDevice();
-        initChats();
-        setVoiceMode(currentVoiceModeType);
-        setConnectionStatus('Ready', 'online');
-        updateNetworkStatus();
-        
-        if (!isMobile) {
-            setTimeout(() => cmdInput.focus(), 500);
-        }
-        
-        setTimeout(() => {
-            fetch(API_URL, { method: 'HEAD' })
-                .then(() => setConnectionStatus('Ready', 'online'))
-                .catch(() => setConnectionStatus('Backend offline', 'offline'));
-        }, 1000);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initApp);
-    } else {
-        initApp();
-    }
+    initChats();
+    setVoiceMode(currentVoiceModeType);
+    setConnectionStatus('Ready', 'online');
 
     window.addEventListener('keydown', e => {
         if((e.ctrlKey || e.metaKey) && e.key === 'Enter'){
-            const command = cmdInput.value.trim();
-            if (command) {
-                sendCommand(command);
-                cmdInput.value = '';
-            }
-        }
-        
-        if((e.ctrlKey || e.metaKey) && e.key === 'k'){
-            e.preventDefault();
-            cmdInput.focus();
-        }
-        
-        if((e.ctrlKey || e.metaKey) && e.key === 'n'){
-            e.preventDefault();
-            createNewChat();
-        }
-        
-        if(e.key === 'Escape'){
-            if (cmdInput.value) {
-                cmdInput.value = '';
-            } else if (!mobileDrawer.classList.contains('hidden')) {
-                closeDrawerFunc();
-            }
-            hideContextMenu();
+            sendCommand(cmdInput.value);
+            cmdInput.value = '';
         }
     });
 
     window.__lumoInject = (txt) => appendMessage('lumo', txt);
-    
-    window.__setBackendUrl = (url) => {
-        API_URL = url;
-        BROWSER_VOICE_API_URL = url.replace('/api/command', '/api/browser_voice');
-        document.getElementById('apiUrlDisplayDrawer').textContent = url.replace('/api/command', '');
-        console.log('Backend URL set to:', url);
-    };
 
 </script>
 </body>
