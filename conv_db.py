@@ -255,72 +255,691 @@ def get_conversational_response(query):
 
         # Programming Languages
         "c": {
-            "keywords": ["c language", "c", "c programming", "c language basics"],
-            "response": "C is a general-purpose programming language known for its efficiency and low-level access to memory. It's widely used in system programming and embedded systems."
+            "keywords": ["c language", "c", "c programming", "c language basics", "c programming language"],
+            "response": "C is a general-purpose, procedural programming language developed in 1972 by Dennis Ritchie at Bell Labs. Known for its efficiency, low-level memory access, and minimal runtime support. Widely used in operating systems (Unix, Linux, Windows kernel), embedded systems, and system programming. C has influenced many languages and remains foundational in computer science education and industry."
         },
 
         "csharp": {
-            "keywords": ["c#", "c sharp", "csharp programming"],
-            "response": "C# (C Sharp) is a modern, object-oriented programming language developed by Microsoft, commonly used for Windows applications, game development with Unity, and web services."
+            "keywords": ["c#", "c sharp", "csharp programming", "dotnet c#", "c# language"],
+            "response": "C# (C Sharp) is a modern, object-oriented, type-safe programming language developed by Microsoft in 2000. It runs on the .NET framework and .NET Core. Used for Windows desktop applications (WPF, WinForms), web development (ASP.NET), game development (Unity engine), and enterprise software. C# combines features from C++, Java, and Delphi with innovations like LINQ and async/await."
         },
 
         "ruby": {
-            "keywords": ["ruby", "ruby programming", "ruby on rails"],
-            "response": "Ruby is a dynamic, open-source programming language focused on simplicity and productivity. It's often used with the Ruby on Rails framework for web development."
+            "keywords": ["ruby", "ruby programming", "ruby on rails", "ruby language", "rails framework"],
+            "response": "Ruby is a dynamic, open-source programming language created by Yukihiro 'Matz' Matsumoto in 1995. Emphasizes simplicity and productivity with the principle 'developer happiness'. Ruby on Rails is its popular web framework that follows convention over configuration. Used for web development, scripting, and DevOps tools. Ruby's elegant syntax and object-oriented nature make it popular for rapid application development."
         },
 
         "swift": {
-            "keywords": ["swift", "swift programming", "ios development"],
-            "response": "Swift is a powerful and intuitive programming language developed by Apple for iOS, macOS, watchOS, and tvOS app development."
+            "keywords": ["swift", "swift programming", "ios development", "swift language", "apple swift"],
+            "response": "Swift is a modern, safe, fast programming language introduced by Apple in 2014 for iOS, macOS, watchOS, tvOS, and Linux development. Designed to replace Objective-C with safer memory management, cleaner syntax, and better performance. Features include optionals, type inference, closures, and protocol-oriented programming. Swift is open-source and increasingly used for server-side development with frameworks like Vapor."
         },
 
         "kotlin": {
-            "keywords": ["kotlin", "kotlin programming", "android kotlin"],
-            "response": "Kotlin is a statically typed programming language that runs on the Java Virtual Machine. It's officially supported for Android development and known for its conciseness and safety."
+            "keywords": ["kotlin", "kotlin programming", "android kotlin", "kotlin language", "jetbrains kotlin"],
+            "response": "Kotlin is a statically typed, cross-platform programming language developed by JetBrains in 2011. Officially supported for Android development since 2017, as an alternative to Java. Runs on JVM, JavaScript, and native platforms. Known for conciseness, safety (null safety), and interoperability with Java. Used for Android apps, server-side development (Spring Boot), and multiplatform projects. Kotlin reduces boilerplate code while maintaining compatibility."
         },
 
         "go_lang": {
-            "keywords": ["go language", "golang", "go programming"],
-            "response": "Go (or Golang) is an open-source programming language developed by Google, known for its simplicity, efficiency, and built-in support for concurrent programming."
+            "keywords": ["go language", "golang", "go programming", "google go", "go lang"],
+            "response": "Go (or Golang) is an open-source programming language created by Google engineers (Robert Griesemer, Rob Pike, Ken Thompson) in 2009. Designed for simplicity, efficiency, and concurrency. Features garbage collection, structural typing, and CSP-style concurrency with goroutines and channels. Used for cloud services, distributed systems, CLI tools, and web servers. Go compiles to standalone binaries and has a minimalist, readable syntax."
         },
 
         "rust": {
-            "keywords": ["rust", "rust programming", "rust language"],
-            "response": "Rust is a systems programming language focused on safety, speed, and concurrency. It prevents segfaults and guarantees thread safety without a garbage collector."
+            "keywords": ["rust", "rust programming", "rust language", "mozilla rust", "systems programming rust"],
+            "response": "Rust is a systems programming language created by Mozilla Research in 2010, focusing on safety, speed, and concurrency. Its unique ownership system enforces memory safety without garbage collection, preventing segfaults and data races. Used for operating systems, game engines, web browsers (Firefox components), and embedded systems. Rust has been voted the 'most loved language' in Stack Overflow surveys for multiple years."
         },
 
         "php": {
-            "keywords": ["php", "php programming", "php web development"],
-            "response": "PHP is a popular server-side scripting language designed for web development, often used with databases like MySQL to create dynamic websites."
+            "keywords": ["php", "php programming", "php web development", "php language", "php hypertext preprocessor"],
+            "response": "PHP (Hypertext Preprocessor) is a server-side scripting language created by Rasmus Lerdorf in 1994. Originally for web development, it powers 78% of websites using server-side programming. Popular with WordPress, Drupal, and Laravel framework. PHP runs on most web servers and supports multiple databases (MySQL, PostgreSQL). Recent versions (PHP 7+) have significant performance improvements and modern features like type declarations."
         },
 
-        # Advanced Programming Concepts
+        "typescript": {
+            "keywords": ["typescript", "ts", "typescript programming", "microsoft typescript", "type safe javascript"],
+            "response": "TypeScript is a superset of JavaScript developed by Microsoft in 2012, adding static type checking. It compiles to plain JavaScript and is used for large-scale web applications. Features include interfaces, generics, enums, and decorators. TypeScript catches errors at compile time, improves IDE support, and is the primary language for Angular framework. Popular for enterprise frontend and Node.js backend development."
+        },
+
+        "scala": {
+            "keywords": ["scala", "scala programming", "scala language", "jvm scala", "functional programming scala"],
+            "response": "Scala (Scalable Language) is a multi-paradigm programming language created by Martin Odersky in 2004. It runs on JVM and combines object-oriented and functional programming. Used for big data processing (Apache Spark), web services (Play Framework), and financial systems. Scala's concise syntax, pattern matching, and immutability by default make it powerful for concurrent and distributed systems."
+        },
+
+        "perl": {
+            "keywords": ["perl", "perl programming", "perl language", "practical extraction and reporting language"],
+            "response": "Perl is a high-level, general-purpose programming language created by Larry Wall in 1987. Known for text processing, regular expressions, and system administration. The motto 'There's more than one way to do it' reflects its flexibility. Perl 5 is widely used for CGI scripting, bioinformatics, and legacy systems. Perl 6 (now Raku) is a redesigned language. Perl's CPAN repository has thousands of modules."
+        },
+
+        "haskell": {
+            "keywords": ["haskell", "haskell programming", "haskell language", "functional programming haskell"],
+            "response": "Haskell is a purely functional, statically typed programming language named after logician Haskell Curry. Created in 1990, it emphasizes immutability, lazy evaluation, and mathematical purity. Used in academia, finance, and blockchain (Cardano). Haskell's advanced type system includes type inference, algebraic data types, and monads for side effects. Learning Haskell improves understanding of functional programming concepts applicable in other languages."
+        },
+
+        "lua": {
+            "keywords": ["lua", "lua programming", "lua language", "scripting language lua", "embedded lua"],
+            "response": "Lua is a lightweight, embeddable scripting language created in Brazil in 1993. Designed for extensibility and simplicity with a small footprint. Used in game development (World of Warcraft, Roblox), embedded systems, and configuration files. Lua's table data structure combines arrays and dictionaries. It's often used as an extension language for applications written in C/C++. LuaJIT provides just-in-time compilation for performance."
+        },
+
+        "dart": {
+            "keywords": ["dart", "dart programming", "dart language", "google dart", "flutter dart"],
+            "response": "Dart is a client-optimized programming language developed by Google in 2011. Used for building mobile, web, and desktop apps with the Flutter framework. Dart compiles to native code for mobile, JavaScript for web, and supports ahead-of-time (AOT) compilation. Features include sound null safety, async/await, and rich standard library. Dart is increasingly popular for cross-platform app development with hot reload for rapid iteration."
+        },
+
+        "r_lang": {
+            "keywords": ["r language", "r programming", "r statistics", "r language for data science", "r project"],
+            "response": "R is a programming language and environment for statistical computing and graphics, created in 1993. Widely used by statisticians, data scientists, and researchers for data analysis, visualization, and machine learning. R has extensive packages (CRAN repository) for specialized statistical techniques. Integrated with RStudio IDE. R's vectorized operations and functional programming features make it powerful for data manipulation and statistical modeling."
+        },
+
+        "matlab": {
+            "keywords": ["matlab", "matlab programming", "matlab language", "matrix laboratory", "scientific computing matlab"],
+            "response": "MATLAB (Matrix Laboratory) is a proprietary numerical computing environment and programming language created by MathWorks in 1984. Used for matrix manipulations, algorithm implementation, data visualization, and numerical analysis. Popular in engineering, physics, and finance for simulation and modeling. MATLAB's toolboxes extend functionality for signal processing, control systems, and machine learning. Simulink provides graphical programming for dynamic systems."
+        },
+
+        "groovy": {
+            "keywords": ["groovy", "groovy programming", "groovy language", "apache groovy", "groovy on grails"],
+            "response": "Groovy is a dynamic language for the Java Virtual Machine (JVM) created in 2003. Combines features from Python, Ruby, and Smalltalk with Java-like syntax. Used for scripting, testing (Spock framework), and web development (Grails framework). Groovy compiles to Java bytecode and interoperates seamlessly with Java libraries. Features include optional typing, closures, and builders for DSLs (Domain Specific Languages)."
+        },
+
+        "julia": {
+            "keywords": ["julia", "julia programming", "julia language", "julia for scientific computing", "technical computing julia"],
+            "response": "Julia is a high-level, high-performance dynamic programming language for technical computing, created in 2012. Designed for numerical analysis and computational science, combining speed of C with ease of Python. Julia uses just-in-time (JIT) compilation via LLVM. Features multiple dispatch, parametric types, and built-in package manager. Used in scientific computing, machine learning, and data science where performance is critical."
+        },
+
+        "elixir": {
+            "keywords": ["elixir", "elixir programming", "elixir language", "elixir erlang vm", "phoenix framework"],
+            "response": "Elixir is a functional, concurrent programming language that runs on the Erlang VM (BEAM), created by José Valim in 2011. Designed for building scalable, maintainable applications with fault tolerance. Used for web development (Phoenix framework), embedded systems, and distributed systems. Elixir inherits Erlang's actor model and provides modern syntax, macros, and tooling. Phoenix LiveView enables real-time web applications."
+        },
+
+        "clojure": {
+            "keywords": ["clojure", "clojure programming", "clojure language", "lisp clojure", "jvm clojure"],
+            "response": "Clojure is a modern Lisp dialect for the JVM, created by Rich Hickey in 2007. A functional programming language emphasizing immutability and persistent data structures. Used for data processing, web development, and concurrent systems. ClojureScript compiles to JavaScript for frontend development. Features include software transactional memory, macro system, and focus on simplicity. Clojure embraces the JVM ecosystem while providing Lisp's power."
+        },
+
+        "erlang": {
+            "keywords": ["erlang", "erlang programming", "erlang language", "erlang otp", "concurrent programming erlang"],
+            "response": "Erlang is a functional programming language developed by Ericsson in 1986 for telecommunications systems. Designed for building highly available, distributed, soft real-time systems. The actor model and OTP (Open Telecom Platform) framework provide concurrency, fault tolerance, and hot code swapping. Used in messaging apps (WhatsApp, WeChat), gaming backends, and financial systems. Erlang's 'let it crash' philosophy simplifies error handling."
+        },
+
+        "fsharp": {
+            "keywords": ["f#", "f sharp", "fsharp programming", "functional programming f#", "dotnet f#"],
+            "response": "F# (F Sharp) is a functional-first, cross-platform programming language for .NET, created by Microsoft Research in 2005. Combines functional, object-oriented, and imperative programming. Used for data science, web development, and financial modeling. F# features type inference, pattern matching, asynchronous programming, and units of measure. It runs on .NET Framework, .NET Core, and JavaScript via Fable. F# emphasizes correctness and expressiveness."
+        },
+
+        "cobol": {
+            "keywords": ["cobol", "cobol programming", "cobol language", "common business oriented language"],
+            "response": "COBOL (Common Business-Oriented Language) is one of the oldest programming languages, created in 1959. Designed for business data processing with English-like syntax. Still used in legacy banking, finance, and government systems (estimated 200+ billion lines in production). COBOL handles large-scale batch and transaction processing. Despite its age, COBOL systems are being modernized or migrated due to retiring experts and Y2K-like concerns."
+        },
+
+        "fortran": {
+            "keywords": ["fortran", "fortran programming", "fortran language", "formula translation", "scientific computing fortran"],
+            "response": "Fortran (Formula Translation) is the first high-level programming language, created by IBM in 1957. Still used in scientific computing, numerical weather prediction, computational physics, and engineering. Modern Fortran (2003/2008) includes object-oriented features, coarrays for parallel programming, and interoperability with C. Fortran compilers produce highly optimized numerical code. Many legacy scientific codes are in Fortran, with ongoing maintenance and modernization."
+        },
+
+        "assembly": {
+            "keywords": ["assembly", "assembly language", "asm", "x86 assembly", "low level programming"],
+            "response": "Assembly language is a low-level programming language specific to a computer architecture. It provides symbolic representation of machine code instructions. Used for operating systems, embedded systems, device drivers, and performance-critical code. Different architectures have different assembly languages (x86, ARM, MIPS). Assembly programming requires understanding of registers, memory addressing, and instruction sets. Often used with higher-level languages for optimization or hardware control."
+        },
+
+        "visual_basic": {
+            "keywords": ["visual basic", "vb", "vb.net", "visual basic programming", "microsoft visual basic"],
+            "response": "Visual Basic is an event-driven programming language and IDE from Microsoft, first released in 1991. Visual Basic .NET (VB.NET) is the modern, object-oriented version for .NET Framework. Used for Windows desktop applications (WinForms), Office macros, and legacy business applications. Known for rapid application development with drag-and-drop GUI builder. While declining in popularity, VB.NET remains in enterprise maintenance and migration projects."
+        },
+
+        "delphi": {
+            "keywords": ["delphi", "delphi programming", "delphi language", "object pascal", "embarcadero delphi"],
+            "response": "Delphi is an integrated development environment (IDE) for rapid application development using Object Pascal language, originally by Borland (1995). Used for Windows desktop applications, database applications, and some mobile development. Delphi's visual component library (VCL) and FireMonkey framework support cross-platform development. Known for compiled performance, database connectivity, and RAD capabilities. Delphi remains in legacy enterprise systems and specific vertical markets."
+        },
+
+        "objective_c": {
+            "keywords": ["objective c", "objc", "objective-c programming", "apple objective c", "ios objective c"],
+            "response": "Objective-C is an object-oriented programming language that adds Smalltalk-style messaging to C, created in early 1980s. It was Apple's primary language for macOS and iOS development before Swift. Still used in legacy Apple codebases and some frameworks. Objective-C's dynamic runtime enables features like method swizzling and categories. While largely superseded by Swift, understanding Objective-C helps with maintaining and bridging to existing Apple ecosystem code."
+        },
+
+        "powershell": {
+            "keywords": ["powershell", "powershell scripting", "microsoft powershell", "windows powershell", "automation powershell"],
+            "response": "PowerShell is a task automation and configuration management framework from Microsoft, with a command-line shell and scripting language. Released in 2006, it's built on .NET. Used for system administration, automation, and DevOps on Windows, with cross-platform PowerShell Core for Linux/macOS. PowerShell uses cmdlets (command-lets) and pipelines objects rather than text. It's essential for Windows Server administration, Azure automation, and enterprise IT management."
+        },
+
+        "bash": {
+            "keywords": ["bash", "bash scripting", "bash shell", "linux bash", "shell scripting"],
+            "response": "Bash (Bourne Again SHell) is a Unix shell and command language, the default on most Linux distributions and macOS. Created in 1989 as a free replacement for Bourne shell. Used for shell scripting, system administration, automation, and CLI interaction. Bash scripts combine commands, control structures, variables, and functions. Essential for DevOps, deployment scripts, and Unix/Linux system management. Bash is also available on Windows via WSL or Git Bash."
+        },
+
+        "sql": {
+            "keywords": ["sql", "sql programming", "structured query language", "database query", "sql queries"],
+            "response": "SQL (Structured Query Language) is a domain-specific language for managing and querying relational databases, developed in the 1970s. Used for data definition (CREATE, ALTER), manipulation (INSERT, UPDATE, DELETE), and querying (SELECT). SQL is not a general-purpose programming language but is essential for database interaction. Variants include PostgreSQL, MySQL, SQL Server, Oracle SQL. Modern extensions add procedural features (PL/SQL, T-SQL) and JSON support."
+        },
+
+        "pl_sql": {
+            "keywords": ["pl/sql", "plsql", "oracle pl/sql", "procedural sql", "database programming"],
+            "response": "PL/SQL (Procedural Language for SQL) is Oracle Corporation's procedural extension to SQL. Adds programming constructs like variables, conditions, loops, and exceptions to SQL. Used for writing stored procedures, functions, triggers, and packages in Oracle Database. PL/SQL code executes within the database server, reducing network traffic and improving performance for data-intensive operations. Similar extensions exist for other databases (T-SQL for SQL Server, PL/pgSQL for PostgreSQL)."
+        },
+
+        "vba": {
+            "keywords": ["vba", "visual basic for applications", "excel vba", "office automation", "macro programming"],
+            "response": "VBA (Visual Basic for Applications) is an implementation of Visual Basic embedded in Microsoft Office applications (Excel, Access, Word) for automation. Used for creating macros, automating repetitive tasks, and building custom business solutions within Office. VBA provides access to Office object models for programmatic control. While being replaced by Office JavaScript API and Power Automate, VBA remains widely used in finance, accounting, and data analysis for Excel automation."
+        },
+
+        "ada": {
+            "keywords": ["ada", "ada programming", "ada language", "high integrity systems", "safety critical ada"],
+            "response": "Ada is a structured, statically typed, imperative programming language designed by the US Department of Defense in the 1980s for high-reliability systems. Used in aviation (air traffic control), railway, military, and space systems (International Space Station). Ada emphasizes reliability, maintainability, and readability with strong typing, runtime checking, and contract-based programming (pre/post conditions). The SPARK subset adds formal verification for safety-critical systems."
+        },
+
+        "prolog": {
+            "keywords": ["prolog", "prolog programming", "prolog language", "logic programming", "artificial intelligence prolog"],
+            "response": "Prolog (Programming in Logic) is a logic programming language associated with artificial intelligence and computational linguistics, created in 1972. Based on formal logic with facts, rules, and queries. Used for natural language processing, theorem proving, expert systems, and constraint solving. Prolog programs declare what is true and what needs to be proved, with automatic backtracking search. Modern variants include SWI-Prolog and visual programming with Mercury."
+        },
+
+        "scheme": {
+            "keywords": ["scheme", "scheme programming", "scheme language", "lisp scheme", "functional programming scheme"],
+            "response": "Scheme is a minimalist dialect of Lisp, created in 1975 by Gerald Sussman and Guy Steele. Emphasizes functional programming and teaching computer science concepts. Known for its elegant simplicity, lexical scoping, and first-class continuations. Used in education (MIT's SICP course), scripting, and language research. Scheme influenced JavaScript and many functional languages. Racket is a descendant of Scheme with extensive libraries and pedagogical tools."
+        },
+
+        "racket": {
+            "keywords": ["racket", "racket programming", "racket language", "scheme racket", "programming languages research"],
+            "response": "Racket is a general-purpose, multi-paradigm programming language and platform for language creation, descended from Scheme. Created as a pedagogical tool for programming language theory. Used for teaching, research, scripting, and application development. Racket's macro system enables creating domain-specific languages (DSLs). The DrRacket IDE supports interactive development. Racket emphasizes language-oriented programming and is used in courses like 'How to Design Programs'."
+        },
+
+        "smalltalk": {
+            "keywords": ["smalltalk", "smalltalk programming", "smalltalk language", "object oriented smalltalk", "live programming"],
+            "response": "Smalltalk is an object-oriented, dynamically typed programming language created in the 1970s at Xerox PARC. Pioneered many OOP concepts: classes, objects, inheritance, and the MVC pattern. Smalltalk environments are image-based with live programming and reflection. Influenced Objective-C, Ruby, and Java. While less common today, Smalltalk's philosophy of 'everything is an object' and integrated development environment concepts remain influential in modern IDEs and languages."
+        },
+
+        "ocaml": {
+            "keywords": ["ocaml", "ocaml programming", "ocaml language", "functional programming ocaml", "ml language"],
+            "response": "OCaml is an industrial-strength functional programming language from the ML family, developed in 1996. Combines functional, imperative, and object-oriented programming with strong static typing and type inference. Used in compiler development (Rust's original compiler), formal verification, financial systems, and academic research. OCaml's module system provides powerful abstraction. Tools like ReasonML compile OCaml to JavaScript, and BuckleScript enables web development."
+        },
+
+        "nim": {
+            "keywords": ["nim", "nim programming", "nim language", "nimrod", "systems programming nim"],
+            "response": "Nim is a statically typed, compiled systems programming language with syntax resembling Python, created in 2008. Features include metaprogramming via templates and macros, memory safety with optional garbage collection, and compilation to C, C++, or JavaScript. Used for game development, embedded systems, and high-performance applications. Nim aims to be efficient, expressive, and elegant, combining ideas from Python, Ada, and Modula."
+        },
+
+        "crystal": {
+            "keywords": ["crystal", "crystal programming", "crystal language", "ruby like crystal", "compiled crystal"],
+            "response": "Crystal is a statically typed, compiled programming language with syntax inspired by Ruby, created in 2014. Aims for Ruby-like productivity with C-like performance. Features type inference, macros, and concurrency via fibers (similar to goroutines). Used for web development (Kemal framework), CLI tools, and systems programming. Crystal compiles to native code using LLVM, providing fast execution while maintaining high-level syntax familiar to Ruby developers."
+        },
+
+        "zig": {
+            "keywords": ["zig", "zig programming", "zig language", "systems programming zig", "c replacement zig"],
+            "response": "Zig is a general-purpose programming language designed for robustness, optimality, and clarity, created in 2016. Positioned as a modern alternative to C with better safety, compilation, and tooling. Features manual memory management without hidden allocations, compile-time code execution, and cross-compilation as a first-class feature. Used for operating systems, compilers, embedded systems, and high-performance software. Zig can interoperate with C and aims to improve upon C's shortcomings."
+        },
+
+        "reasonml": {
+            "keywords": ["reasonml", "reason", "reason programming", "ocaml for javascript", "facebook reason"],
+            "response": "ReasonML is a syntax extension and toolchain for OCaml that compiles to JavaScript and native code, created by Facebook in 2016. Provides familiar JavaScript-like syntax while leveraging OCaml's strong type system and performance. Used for React applications via ReasonReact, type-safe JavaScript interop, and full-stack development. ReasonML brings functional programming benefits to web development with excellent type inference and pattern matching."
+        },
+
+        "elm": {
+            "keywords": ["elm", "elm programming", "elm language", "functional frontend", "web development elm"],
+            "response": "Elm is a domain-specific functional programming language for building reliable web applications, created in 2012. Compiles to JavaScript with a focus on simplicity, performance, and no runtime exceptions. Elm's architecture enforces unidirectional data flow (similar to Redux) and provides strong guarantees. Used for frontend web development with a emphasis on maintainability and developer experience. Elm's compiler gives helpful error messages and enforces semantic versioning."
+        },
+
+        "coffeescript": {
+            "keywords": ["coffeescript", "coffee script", "coffeescript programming", "javascript alternative", "syntactic sugar coffeescript"],
+            "response": "CoffeeScript is a programming language that transcompiles to JavaScript, created in 2009. Provides syntactic sugar inspired by Ruby, Python, and Haskell to enhance JavaScript's brevity and readability. Features include significant whitespace, list comprehensions, and pattern matching. Popular in early 2010s, especially with Ruby on Rails community. While less used today due to ES6+ improvements, CoffeeScript influenced JavaScript evolution and demonstrated demand for cleaner syntax."
+        },
+
+        "actionscript": {
+            "keywords": ["actionscript", "actionscript programming", "flash actionscript", "adobe actionscript", "flash platform"],
+            "response": "ActionScript is an object-oriented programming language originally developed by Macromedia (later Adobe) for Flash platform. Used for web animations, games, and rich internet applications (RIAs) in the 2000s. ActionScript 3.0, based on ECMAScript, enabled complex applications with performance improvements. With the decline of Flash (end of life in 2020), ActionScript usage has diminished. Knowledge remains relevant for maintaining legacy Flash content and understanding multimedia programming concepts."
+        },
+
+        "logo": {
+            "keywords": ["logo", "logo programming", "logo language", "turtle graphics", "educational programming"],
+            "response": "Logo is an educational programming language created in 1967, known for turtle graphics. Used to teach programming concepts to children through drawing with a 'turtle' cursor. Logo's simple syntax and immediate visual feedback make it accessible for beginners. While not used in production, Logo influenced educational programming environments (Scratch, Python Turtle) and constructionist learning. Logo demonstrates how programming can be approachable and creative rather than purely technical."
+        },
+
+        "scratch": {
+            "keywords": ["scratch", "scratch programming", "scratch language", "visual programming", "mit scratch"],
+            "response": "Scratch is a block-based visual programming language and online community developed by MIT Media Lab in 2007. Designed for children ages 8-16 to learn programming concepts through creating interactive stories, games, and animations. Scratch uses drag-and-drop code blocks instead of text syntax. With millions of users worldwide, Scratch introduces computational thinking, creativity, and collaboration. Scratch 3.0 runs in browsers and on tablets, making programming accessible without installation."
+        },
+
+        "blockly": {
+            "keywords": ["blockly", "blockly programming", "visual programming blockly", "google blockly", "block based coding"],
+            "response": "Blockly is a visual programming editor by Google that uses interlocking blocks. It's a library for developers to create block-based programming environments (like Scratch) within web applications. Blockly generates code in JavaScript, Python, PHP, Lua, or Dart. Used in educational tools (Code.org, MIT App Inventor), robotics programming (LEGO Mindstorms), and configuration interfaces. Blockly makes programming accessible by removing syntax barriers while teaching logical thinking."
+        },
+
+        "apl": {
+            "keywords": ["apl", "apl programming", "apl language", "array programming", "mathematical notation apl"],
+            "response": "APL (A Programming Language) is an array programming language developed in the 1960s, known for its concise mathematical notation using special symbols. Operates on entire arrays without explicit loops. Used for mathematical modeling, data analysis, and financial applications. APL's terse syntax (often one-liners) and powerful array operations enable rapid prototyping. Modern implementations (Dyalog APL, GNU APL) maintain compatibility while adding GUI, .NET integration, and web capabilities."
+        },
+
+        "j": {
+            "keywords": ["j language", "j programming", "array language j", "apl descendant", "ken iverson j"],
+            "response": "J is a high-level, array programming language developed by Kenneth Iverson and Roger Hui in 1990 as a successor to APL. Uses ASCII characters instead of special symbols, making it more accessible. J applies functions to entire arrays efficiently. Used for mathematical and statistical computing, data analysis, and research. J's tacit programming (point-free style) and combinators enable concise expression of complex operations. Open-source implementation available for various platforms."
+        },
+
+        "labview": {
+            "keywords": ["labview", "labview programming", "visual programming labview", "national instruments", "dataflow programming"],
+            "response": "LabVIEW (Laboratory Virtual Instrument Engineering Workbench) is a visual programming language and development environment from National Instruments, created in 1986. Uses dataflow programming with graphical block diagrams (G code). Primarily used for instrument control, data acquisition, industrial automation, and test/measurement systems. LabVIEW's graphical approach suits engineers and scientists without traditional programming background. Real-time and FPGA modules extend capabilities for embedded and high-performance applications."
+        },
+
+        "vhdl": {
+            "keywords": ["vhdl", "vhdl programming", "hardware description language", "digital circuit design", "fpga programming"],
+            "response": "VHDL (VHSIC Hardware Description Language) is a hardware description language used for designing digital circuits, created by US Department of Defense in 1980s. Describes structure and behavior of electronic systems, particularly for FPGAs and ASICs. Used in digital design, verification, and synthesis. VHDL is strongly typed and concurrent, reflecting hardware parallelism. Similar to Verilog, with differences in syntax and capabilities. Knowledge of VHDL is essential for digital hardware engineers."
+        },
+
+        "verilog": {
+            "keywords": ["verilog", "verilog programming", "hardware description verilog", "digital design", "asic design"],
+            "response": "Verilog is a hardware description language used for modeling electronic systems, created in 1984. Widely used for designing and verifying digital circuits at register-transfer level (RTL) and gate level. Used in FPGA and ASIC development for consumer electronics, communications, and computing. SystemVerilog extends Verilog with verification features. Verilog's C-like syntax makes it accessible to software engineers. Knowledge of Verilog is crucial for digital design and verification engineering roles."
+        },
+
+        "systemverilog": {
+            "keywords": ["systemverilog", "systemverilog programming", "hardware verification", "uvm", "verification language"],
+            "response": "SystemVerilog is a hardware description and verification language that extends Verilog, standardized in 2005. Combines features from Verilog, VHDL, C++, and verification languages. Used for design, modeling, and verification of digital systems. Key features: object-oriented programming, constrained random testing, assertions, and coverage. Universal Verification Methodology (UVM) based on SystemVerilog is industry standard for verification. Essential for ASIC/FPGA verification engineers in semiconductor industry."
+        },
+
+        "tcl": {
+            "keywords": ["tcl", "tcl programming", "tool command language", "scripting language tcl", "tk gui"],
+            "response": "Tcl (Tool Command Language) is a dynamic scripting language created in 1988. Known for simplicity and embeddability, often paired with Tk GUI toolkit. Used in electronic design automation (EDA) tools, network equipment scripting, legacy enterprise systems, and rapid prototyping. Tcl's 'everything is a string' philosophy and simple syntax make it easy to learn. While less common today, Tcl remains in specific domains like hardware design tools and legacy automation systems."
+        },
+
+        "awk": {
+            "keywords": ["awk", "awk programming", "text processing awk", "unix awk", "pattern scanning language"],
+            "response": "AWK is a domain-specific language designed for text processing and data extraction, created in 1977. Named after authors Aho, Weinberger, and Kernighan. Used for pattern scanning, processing log files, transforming text data, and generating reports. AWK programs consist of pattern-action pairs applied to input lines. Available on all Unix-like systems, often used in shell pipelines. GNU Awk (gawk) extends functionality. AWK demonstrates the Unix philosophy of small, composable tools."
+        },
+
+        "sed": {
+            "keywords": ["sed", "sed programming", "stream editor", "text processing sed", "unix sed"],
+            "response": "sed (stream editor) is a Unix utility for parsing and transforming text, using a simple programming language. Created in 1974 as part of Unix. Used for find-and-replace operations, text filtering, and batch editing. sed processes input line by line, applying commands (substitution, deletion, insertion). Often used in shell scripts for automated text manipulation. While limited compared to full programming languages, sed's simplicity and efficiency make it valuable for specific text processing tasks."
+        },
+
+        "make": {
+            "keywords": ["make", "makefile", "make programming", "build automation", "gnu make"],
+            "response": "Make is a build automation tool that automatically builds executable programs from source code by reading Makefiles. Created in 1976 for Unix. Makefiles specify dependencies and rules for compiling and linking. Used in C/C++ projects, but applicable to any build process. GNU Make is the most common implementation. Make's declarative approach to build processes has influenced modern build tools (CMake, Bazel, etc.). Understanding Make is fundamental for software build systems and DevOps."
+        },
+
+        "cmake": {
+            "keywords": ["cmake", "cmake programming", "build system cmake", "cross platform build", "meta build system"],
+            "response": "CMake is a cross-platform, open-source build system generator, created in 2000. Instead of building directly, CMake generates native build files (Makefiles, Visual Studio projects, etc.). Used primarily for C/C++ but supports other languages. CMakeLists.txt files describe build configuration. Features: out-of-source builds, dependency management, testing, packaging. CMake has become standard for cross-platform C++ development. Modern CMake (3.0+) emphasizes target-based usage and better practices."
+        },
+
+        "processing": {
+            "keywords": ["processing", "processing programming", "creative coding", "visual arts programming", "java processing"],
+            "response": "Processing is a flexible software sketchbook and language for learning to code within visual arts, created in 2001. Based on Java with simplified syntax for graphics programming. Used by artists, designers, educators, and beginners for creating visualizations, animations, and interactive art. Processing emphasizes immediate visual feedback. p5.js is JavaScript version for web. Processing has spawned creative coding community and influenced computational art education."
+        },
+
+        "p5_js": {
+            "keywords": ["p5.js", "p5js", "p5 javascript", "creative coding javascript", "processing web"],
+            "response": "p5.js is a JavaScript library for creative coding, making coding accessible for artists, designers, educators, and beginners. Based on Processing philosophy but for web. Used for creating interactive graphics, animations, data visualizations, and digital art in browser. p5.js simplifies drawing, interaction, and multimedia. The web editor allows coding without installation. p5.js community promotes inclusive, creative technology education and has extensive learning resources and examples."
+        },
+
+        "opencl": {
+            "keywords": ["opencl", "opencl programming", "parallel computing opencl", "gpu programming", "heterogeneous computing"],
+            "response": "OpenCL (Open Computing Language) is a framework for writing programs that execute across heterogeneous platforms (CPUs, GPUs, DSPs, FPGAs). Created by Khronos Group in 2009. Used for parallel computing, scientific simulations, image processing, and machine learning acceleration. OpenCL C is a C99-based language for writing kernels. While facing competition from CUDA and SYCL, OpenCL remains important for cross-vendor GPU programming and embedded heterogeneous systems."
+        },
+
+        "cuda": {
+            "keywords": ["cuda", "cuda programming", "nvidia cuda", "gpu programming cuda", "parallel computing cuda"],
+            "response": "CUDA (Compute Unified Device Architecture) is a parallel computing platform and programming model created by NVIDIA for general-purpose computing on GPUs. CUDA C/C++ extends C/C++ with keywords and libraries for GPU programming. Used for scientific computing, deep learning, computer vision, and high-performance computing. CUDA enables massive parallelism by executing thousands of threads on GPU. While NVIDIA-specific, CUDA dominates GPU computing due to performance and ecosystem (cuDNN, TensorRT)."
+        },
+
+        "hlsl": {
+            "keywords": ["hlsl", "hlsl programming", "high level shader language", "directx shaders", "gpu shader programming"],
+            "response": "HLSL (High-Level Shader Language) is a proprietary shading language developed by Microsoft for DirectX. Used for writing shaders (vertex, pixel, geometry, compute) that run on GPU in Direct3D applications. Syntax similar to C. Used in game development, 3D graphics, and GPU computing on Windows. HLSL compiles to bytecode for Direct3D runtime. Knowledge of HLSL is essential for graphics programming on Windows/Xbox and using tools like Unity/Unreal Engine with DirectX backend."
+        },
+
+        "glsl": {
+            "keywords": ["glsl", "glsl programming", "opengl shading language", "gpu shaders", "graphics programming"],
+            "response": "GLSL (OpenGL Shading Language) is a high-level shading language for OpenGL, based on C syntax. Used for writing shaders that execute on GPU for rendering graphics. Types: vertex, fragment, geometry, tessellation, compute shaders. Used in game development, scientific visualization, and creative coding. GLSL is cross-platform (unlike HLSL). Vulkan uses SPIR-V intermediate representation but often authored in GLSL. Knowledge of GLSL is fundamental for real-time graphics programming across platforms."
+        },
+
+        "shaderlab": {
+            "keywords": ["shaderlab", "unity shaders", "unity shader programming", "shader graph", "unity material system"],
+            "response": "ShaderLab is Unity's shading language for writing shaders in Unity game engine. Combines configuration of shader properties with HLSL/GLSL/Cg code snippets. Used for creating custom materials, visual effects, and post-processing in Unity games. Unity also provides Shader Graph for visual shader creation without code. ShaderLab abstracts differences between graphics APIs (DirectX, OpenGL, Metal). Knowledge of ShaderLab and shader programming enhances visual quality and performance in Unity projects."
+        },
+
+        "maxscript": {
+            "keywords": ["maxscript", "3ds max scripting", "autodesk maxscript", "3d animation scripting", "max script"],
+            "response": "MAXScript is a built-in scripting language for Autodesk 3ds Max, used for automating tasks, creating custom tools, and extending functionality. Syntax similar to JavaScript/Python. Used by 3D artists, technical artists, and pipeline developers for animation, modeling, rendering automation. MAXScript can access nearly all 3ds Max features programmatically. While Python scripting is also available, MAXScript remains integral to 3ds Max workflow, especially for legacy scripts and specific automation tasks."
+        },
+
+        "mel": {
+            "keywords": ["mel", "maya embedded language", "autodesk maya scripting", "3d animation mel", "maya scripting"],
+            "response": "MEL (Maya Embedded Language) is a scripting language for Autodesk Maya, used for automation, custom tools, and workflow enhancement. Created specifically for Maya with commands mapping to Maya functionality. Used by 3D artists, technical directors, and pipeline developers. While Python is now preferred for complex tools (Maya Python API), MEL remains for simpler scripts and legacy code. Understanding MEL helps with Maya customization and understanding Maya's architecture and history."
+        },
+
+        "gcode": {
+            "keywords": ["gcode", "g-code", "cnc programming", "3d printing gcode", "manufacturing programming"],
+            "response": "G-code is a programming language for computer numerical control (CNC) machines, including 3D printers, mills, and lathes. Consists of commands (G, M codes) controlling machine movements, speeds, temperatures, and functions. Not a general-purpose language but essential for manufacturing automation. 3D printer users often generate G-code from slicer software rather than writing manually. Understanding G-code helps troubleshoot prints, optimize settings, and create custom machine operations."
+        },
+
+        "lisp": {
+            "keywords": ["lisp", "lisp programming", "lisp language", "list processing", "ai lisp"],
+            "response": "Lisp (List Processing) is a family of programming languages with a long history, dating to 1958. Known for its distinctive parenthesized prefix notation and code-as-data philosophy (homoiconicity). Used historically in artificial intelligence research, symbolic computing, and as an extension language (Emacs Lisp). Modern dialects: Common Lisp, Scheme, Clojure. Lisp pioneered many concepts: garbage collection, dynamic typing, conditionals, higher-order functions. Lisp's macro system enables powerful metaprogramming."
+        },
+
+        "common_lisp": {
+            "keywords": ["common lisp", "common lisp programming", "lisp dialect", "ansi common lisp", "industrial lisp"],
+            "response": "Common Lisp is a dialect of Lisp standardized by ANSI, combining features from earlier Lisp dialects. Created in 1984 as a successor to MacLisp. Used in AI, rapid prototyping, and niche applications requiring interactive development. Features: powerful object system (CLOS), condition system, compiler, and extensive standard. Common Lisp implementations (SBCL, Clozure CL) provide high performance. While less mainstream, Common Lisp remains in research, education, and specific industries like defense and finance."
+        },
+
+        # Programming Concepts
         "object_oriented": {
-            "keywords": ["object oriented", "oop", "object oriented programming"],
-            "response": "Object-Oriented Programming (OOP) is a programming paradigm based on objects containing data and methods. Key concepts include classes, objects, inheritance, polymorphism, and encapsulation."
+            "keywords": ["object oriented", "oop", "object oriented programming", "oop principles", "class and object"],
+            "response": "Object-Oriented Programming (OOP) is a programming paradigm based on objects containing data (attributes) and methods (functions). Key concepts: Classes (blueprints), Objects (instances), Inheritance (reusing code), Polymorphism (many forms), Encapsulation (data hiding), and Abstraction (hiding complexity). OOP improves code organization, reusability, and maintainability."
         },
 
         "database": {
-            "keywords": ["database", "sql", "database management"],
-            "response": "A database is an organized collection of data stored and accessed electronically. SQL (Structured Query Language) is commonly used to manage relational databases."
+            "keywords": ["database", "sql", "database management", "relational database", "nosql"],
+            "response": "A database is an organized collection of data stored and accessed electronically. SQL (Structured Query Language) manages relational databases (MySQL, PostgreSQL). NoSQL databases (MongoDB, Cassandra) handle unstructured data. Key concepts: Tables, Rows, Columns, Primary/Foreign Keys, ACID properties (Atomicity, Consistency, Isolation, Durability), and normalization."
         },
 
         "web_development": {
-            "keywords": ["web development", "web developer", "frontend backend"],
-            "response": "Web development involves creating websites and web applications. It includes frontend (client-side, like HTML/CSS/JavaScript) and backend (server-side, like Node.js, Python, PHP) development."
+            "keywords": ["web development", "web developer", "frontend backend", "full stack", "web applications"],
+            "response": "Web development involves creating websites and web applications. Frontend (client-side) uses HTML (structure), CSS (styling), JavaScript (behavior). Backend (server-side) uses languages like Node.js, Python, Java, PHP with frameworks. Full-stack developers work on both. Modern web development includes APIs, responsive design, progressive web apps, and single-page applications (SPA)."
         },
 
         "machine_learning": {
-            "keywords": ["machine learning", "ml", "ai ml"],
-            "response": "Machine learning is a subset of artificial intelligence that enables systems to learn and improve from experience without explicit programming, using algorithms and statistical models."
+            "keywords": ["machine learning", "ml", "ai ml", "machine learning algorithms", "deep learning"],
+            "response": "Machine learning is a subset of AI that enables systems to learn from data without explicit programming. Types: Supervised (labeled data), Unsupervised (finding patterns), Reinforcement (reward-based). Algorithms include linear regression, decision trees, neural networks. Deep learning uses multi-layer neural networks for complex tasks like image/speech recognition. Libraries: TensorFlow, PyTorch, scikit-learn."
         },
 
         "cloud_computing": {
-            "keywords": ["cloud computing", "aws", "azure", "google cloud"],
-            "response": "Cloud computing delivers computing services over the internet, including storage, processing, and databases. Popular providers are AWS, Microsoft Azure, and Google Cloud Platform."
+            "keywords": ["cloud computing", "aws", "azure", "google cloud", "cloud services", "iaas paas saas"],
+            "response": "Cloud computing delivers computing services (servers, storage, databases, networking, software) over the internet. Deployment models: Public, Private, Hybrid. Service models: IaaS (Infrastructure), PaaS (Platform), SaaS (Software). Major providers: AWS, Microsoft Azure, Google Cloud Platform. Benefits: scalability, cost-efficiency, reliability. Concepts: virtualization, containers, serverless computing."
         },
 
-                # Expanded Geography and Countries
+        "data_structures": {
+            "keywords": ["data structures", "data structure", "linked list", "tree", "graph", "hash table"],
+            "response": "Data structures are ways to organize and store data efficiently. Fundamental types: Arrays, Linked Lists, Stacks, Queues, Trees (binary, BST, AVL), Graphs, Hash Tables. Each has operations (insert, delete, search) with different time/space complexities. Choosing the right data structure optimizes algorithm performance. Data structures are foundational for algorithm design and software development."
+        },
+
+        "algorithms": {
+            "keywords": ["algorithms", "algorithm design", "algorithm analysis", "sorting algorithms", "searching algorithms"],
+            "response": "Algorithms are step-by-step procedures for solving problems. Key algorithm categories: Sorting (Quick Sort, Merge Sort), Searching (Binary Search), Graph (Dijkstra's, BFS/DFS), Dynamic Programming. Algorithm analysis measures efficiency using Big O notation (time/space complexity). Design paradigms: Divide and Conquer, Greedy, Dynamic Programming, Backtracking. Algorithm knowledge is crucial for optimization and scalable solutions."
+        },
+
+        "design_patterns": {
+            "keywords": ["design patterns", "software patterns", "creational patterns", "structural patterns", "behavioral patterns"],
+            "response": "Design patterns are reusable solutions to common software design problems. Types: Creational (Singleton, Factory), Structural (Adapter, Decorator), Behavioral (Observer, Strategy). Patterns provide proven approaches, improve code readability and maintainability. The Gang of Four (GoF) book popularized 23 classic patterns. Understanding patterns helps in writing flexible, scalable, and clean code."
+        },
+
+        "software_architecture": {
+            "keywords": ["software architecture", "system design", "architectural patterns", "microservices", "monolithic"],
+            "response": "Software architecture defines the high-level structure of a system, its components, and their interactions. Patterns: Monolithic (single unit), Microservices (independent services), Client-Server, MVC (Model-View-Controller). Architecture decisions affect scalability, maintainability, performance. System design includes load balancing, caching, databases, APIs. Good architecture aligns with business requirements and technical constraints."
+        },
+
+        "api": {
+            "keywords": ["api", "application programming interface", "rest api", "web api", "api design"],
+            "response": "An API (Application Programming Interface) defines how software components interact. Web APIs enable communication between applications over HTTP. REST (Representational State Transfer) is a common architectural style using HTTP methods (GET, POST, PUT, DELETE). SOAP is another protocol. API design includes endpoints, request/response formats (JSON/XML), authentication (OAuth, API keys), versioning, and documentation."
+        },
+
+        "devops": {
+            "keywords": ["devops", "continuous integration", "continuous deployment", "ci cd", "infrastructure as code"],
+            "response": "DevOps combines development and operations to shorten development lifecycle and deliver high-quality software. Practices: Continuous Integration (CI), Continuous Deployment (CD), Infrastructure as Code (IaC), monitoring, and logging. Tools: Docker (containers), Kubernetes (orchestration), Jenkins (CI/CD), Terraform (IaC). DevOps culture emphasizes collaboration, automation, and iterative improvement."
+        },
+
+        "containerization": {
+            "keywords": ["containerization", "docker", "containers", "kubernetes", "container orchestration"],
+            "response": "Containerization packages an application with its dependencies into a container that runs consistently across environments. Docker is the most popular container platform. Containers are lightweight, portable, and isolated. Kubernetes orchestrates container deployment, scaling, and management. Benefits: consistency, efficiency, scalability. Containerization revolutionized deployment and microservices architecture."
+        },
+
+        "version_control": {
+            "keywords": ["version control", "git", "github", "gitlab", "source control"],
+            "response": "Version control systems track changes to code over time, enabling collaboration and rollback. Git is the most widely used distributed version control system. Platforms: GitHub, GitLab, Bitbucket. Key concepts: Repository, Commit, Branch, Merge, Pull Request. Version control is essential for team collaboration, code review, and maintaining project history. Git workflows include Git Flow and GitHub Flow."
+        },
+
+        "testing": {
+            "keywords": ["software testing", "unit testing", "integration testing", "test driven development", "testing frameworks"],
+            "response": "Software testing ensures code quality and functionality. Types: Unit (individual components), Integration (interfaces), System (entire system), Acceptance (user requirements). Test-Driven Development (TDD) writes tests before code. Testing frameworks: JUnit (Java), pytest (Python), Jest (JavaScript). Automated testing improves reliability and reduces bugs. Testing also includes performance, security, and usability testing."
+        },
+
+        "security": {
+            "keywords": ["cybersecurity", "application security", "web security", "encryption", "authentication"],
+            "response": "Application security protects software from threats. Common vulnerabilities: Injection attacks (SQL, XSS), broken authentication, sensitive data exposure. Security practices: Input validation, encryption (SSL/TLS), secure authentication (OAuth, JWT), regular updates. Security testing includes penetration testing and code analysis. Following security best practices and standards (OWASP) is crucial for protecting data and systems."
+        },
+
+        "concurrency": {
+            "keywords": ["concurrency", "multithreading", "parallel programming", "async programming", "threads"],
+            "response": "Concurrency enables multiple tasks to make progress simultaneously. Multithreading runs multiple threads within a process. Parallel programming uses multiple processors. Asynchronous programming handles tasks without blocking. Challenges: race conditions, deadlocks, thread safety. Concurrency improves performance on multi-core systems. Languages provide constructs: threads (Java), async/await (Python, JavaScript), goroutines (Go)."
+        },
+
+        "functional_programming": {
+            "keywords": ["functional programming", "fp", "lambda", "higher order functions", "immutable data"],
+            "response": "Functional Programming (FP) treats computation as evaluation of mathematical functions, avoiding state and mutable data. Principles: Pure functions (no side effects), Immutability, First-class functions, Higher-order functions, Recursion. FP languages: Haskell, Lisp. Many languages support FP features (JavaScript, Python, Scala). Benefits: predictability, testability, concurrency. FP complements OOP in modern development."
+        },
+
+        "compilers": {
+            "keywords": ["compilers", "compiler design", "interpreters", "lexical analysis", "syntax analysis"],
+            "response": "A compiler translates source code into machine code. Phases: Lexical Analysis (tokens), Syntax Analysis (parsing), Semantic Analysis (meaning), Optimization, Code Generation. Interpreters execute code directly without compilation. Just-In-Time (JIT) compilation combines both. Understanding compilers helps in writing efficient code and developing programming languages. Tools like Lex and Yacc assist in compiler construction."
+        },
+
+        "operating_systems": {
+            "keywords": ["operating systems", "os concepts", "process management", "memory management", "file systems"],
+            "response": "Operating systems manage hardware and provide services for applications. Core concepts: Process Management (scheduling, synchronization), Memory Management (virtual memory, paging), File Systems, I/O Systems. OS kernels (Linux, Windows NT) handle low-level operations. Understanding OS principles is essential for system programming, performance optimization, and developing efficient applications."
+        },
+
+        "networking": {
+            "keywords": ["computer networking", "network protocols", "tcp ip", "http", "socket programming"],
+            "response": "Computer networking enables communication between devices. TCP/IP is the fundamental protocol suite. Layers: Application (HTTP, FTP), Transport (TCP, UDP), Network (IP), Link (Ethernet). Key concepts: IP addresses, ports, DNS, routers, switches. Socket programming creates network applications. Understanding networking is crucial for web development, distributed systems, and cybersecurity."
+        },
+
+        "distributed_systems": {
+            "keywords": ["distributed systems", "distributed computing", "consensus algorithms", "distributed databases", "scalability"],
+            "response": "Distributed systems consist of multiple computers communicating to achieve a goal. Challenges: Concurrency, partial failures, consistency. Concepts: Consensus algorithms (Paxos, Raft), replication, sharding, CAP theorem (Consistency, Availability, Partition tolerance). Technologies: Distributed databases (Cassandra), message queues (Kafka). Distributed systems enable scalability, fault tolerance, and high availability for large-scale applications."
+        },
+
+        "big_data": {
+            "keywords": ["big data", "hadoop", "spark", "data processing", "data analytics"],
+            "response": "Big data handles large, complex datasets beyond traditional processing. Characteristics: Volume, Velocity, Variety, Veracity. Technologies: Hadoop (MapReduce, HDFS), Apache Spark (in-memory processing), NoSQL databases. Big data enables analytics, machine learning, and insights from massive data. Processing frameworks handle batch and stream processing. Cloud platforms offer managed big data services."
+        },
+
+        "data_science": {
+            "keywords": ["data science", "data analysis", "data visualization", "statistics", "predictive modeling"],
+            "response": "Data science extracts insights from data using statistics, programming, and domain knowledge. Process: Data collection, cleaning, exploration, modeling, visualization. Tools: Python (pandas, NumPy), R, SQL, visualization libraries (Matplotlib, Tableau). Techniques: Statistical analysis, machine learning, predictive modeling. Data science drives decision-making in business, science, and technology."
+        },
+
+        "artificial_intelligence": {
+            "keywords": ["artificial intelligence", "ai", "expert systems", "natural language processing", "computer vision"],
+            "response": "Artificial Intelligence (AI) creates systems that perform tasks requiring human intelligence. Subfields: Machine Learning, Natural Language Processing (NLP), Computer Vision, Robotics, Expert Systems. AI applications: chatbots, recommendation systems, autonomous vehicles. Approaches: Symbolic AI (rules-based), Statistical AI (data-driven). Modern AI uses deep learning for complex pattern recognition. Ethical considerations are important in AI development."
+        },
+
+        "natural_language_processing": {
+            "keywords": ["natural language processing", "nlp", "text mining", "sentiment analysis", "language models"],
+            "response": "Natural Language Processing (NLP) enables computers to understand, interpret, and generate human language. Tasks: Tokenization, Part-of-Speech tagging, Named Entity Recognition, Sentiment Analysis, Machine Translation. Techniques: Rule-based systems, Statistical models, Deep Learning (Transformers, BERT, GPT). Applications: Chatbots, search engines, text summarization. NLP bridges linguistics and computer science."
+        },
+
+        "computer_vision": {
+            "keywords": ["computer vision", "image processing", "object detection", "facial recognition", "cv algorithms"],
+            "response": "Computer Vision (CV) enables computers to interpret visual information from the world. Tasks: Image classification, Object detection, Segmentation, Facial recognition. Techniques: Traditional (edge detection, filters), Deep Learning (CNNs - Convolutional Neural Networks). Applications: Autonomous vehicles, medical imaging, surveillance. Libraries: OpenCV, TensorFlow, PyTorch. CV combines image processing, pattern recognition, and machine learning."
+        },
+
+        "robotics": {
+            "keywords": ["robotics", "robot programming", "autonomous systems", "robot operating system", "motion planning"],
+            "response": "Robotics involves designing, building, and programming robots. Key areas: Perception (sensors), Planning (pathfinding), Control (actuators). Robot Operating System (ROS) is a framework for robot software. Programming robots involves algorithms for navigation, manipulation, and decision-making. Robotics applications: manufacturing, healthcare, exploration. Integration of AI enables autonomous robots."
+        },
+
+        "embedded_systems": {
+            "keywords": ["embedded systems", "microcontroller programming", "iot devices", "real time systems", "firmware"],
+            "response": "Embedded systems are specialized computing systems within larger devices. Components: Microcontrollers/microprocessors, sensors, actuators. Programming: C/C++ often used for efficiency and hardware control. Real-time operating systems (RTOS) handle timing constraints. Embedded systems power IoT devices, automotive systems, medical devices. Development requires hardware knowledge and low-level programming skills."
+        },
+
+        "game_development": {
+            "keywords": ["game development", "game engines", "unity", "unreal engine", "game programming"],
+            "response": "Game development creates video games using programming, design, and art. Game engines: Unity (C#), Unreal Engine (C++), Godot. Concepts: Game loops, physics engines, collision detection, AI for NPCs, rendering graphics. Game programming involves graphics (OpenGL/DirectX), audio, input handling, networking for multiplayer. Development includes pre-production, production, testing, and deployment across platforms."
+        },
+
+        "mobile_development": {
+            "keywords": ["mobile development", "android development", "ios development", "react native", "flutter"],
+            "response": "Mobile development creates applications for smartphones/tablets. Native: Android (Java/Kotlin), iOS (Swift/Objective-C). Cross-platform: React Native (JavaScript), Flutter (Dart), Xamarin (C#). Development involves UI design, API integration, performance optimization. App stores (Google Play, Apple App Store) distribute apps. Mobile development considers device fragmentation, battery life, and user experience."
+        },
+
+        "desktop_development": {
+            "keywords": ["desktop development", "gui applications", "desktop apps", "electron", "qt framework"],
+            "response": "Desktop development creates applications for Windows, macOS, Linux. Native: Windows (C#/WPF, C++), macOS (Swift, Objective-C), Linux (C++, GTK). Cross-platform: Electron (HTML/CSS/JS), Java (Swing, JavaFX), Qt (C++). Desktop apps have access to system resources, file systems. Modern desktop apps often use web technologies packaged as native apps (e.g., VS Code, Slack)."
+        },
+
+        "blockchain_development": {
+            "keywords": ["blockchain development", "smart contracts", "ethereum", "dapps", "web3"],
+            "response": "Blockchain development creates decentralized applications (DApps) on blockchain networks. Smart contracts (self-executing code) run on platforms like Ethereum (Solidity). Development involves cryptography, consensus algorithms, peer-to-peer networking. Web3 technologies enable interaction with blockchains. Use cases: cryptocurrencies, DeFi, NFTs, supply chain. Development tools: Truffle, Hardhat, MetaMask."
+        },
+
+        "quantum_computing_programming": {
+            "keywords": ["quantum computing programming", "quantum algorithms", "qiskit", "quantum programming languages"],
+            "response": "Quantum computing programming uses quantum algorithms that leverage superposition and entanglement. Quantum programming languages: Q# (Microsoft), Qiskit (IBM Python framework), Cirq (Google). Concepts: Qubits, quantum gates, quantum circuits. Algorithms: Shor's (factoring), Grover's (search). Quantum programming is experimental, targeting future quantum computers for problems intractable for classical computers."
+        },
+
+        "performance_optimization": {
+            "keywords": ["performance optimization", "code optimization", "profiling", "memory optimization", "algorithm optimization"],
+            "response": "Performance optimization improves software speed and efficiency. Techniques: Algorithm optimization (better time complexity), Code profiling (identifying bottlenecks), Memory optimization (reducing footprint), Parallelization, Caching. Tools: Profilers (VisualVM, gprof), monitoring. Optimization follows 'measure first' principle and considers trade-offs (readability vs. performance). Critical for high-load systems and resource-constrained environments."
+        },
+
+        "code_quality": {
+            "keywords": ["code quality", "clean code", "code review", "refactoring", "coding standards"],
+            "response": "Code quality ensures software is maintainable, readable, and reliable. Principles: Clean Code (meaningful names, small functions), DRY (Don't Repeat Yourself), SOLID principles. Practices: Code reviews, Refactoring (improving structure without changing behavior), Unit testing, Static analysis. Coding standards and style guides (PEP 8, Google Style) promote consistency. High-quality code reduces bugs and technical debt."
+        },
+
+        "software_development_lifecycle": {
+            "keywords": ["software development lifecycle", "sdlc", "agile methodology", "waterfall model", "devops lifecycle"],
+            "response": "Software Development Lifecycle (SDLC) is the process for planning, creating, testing, deploying, and maintaining software. Models: Waterfall (sequential), Agile (iterative, Scrum, Kanban), DevOps (continuous). Phases: Requirements, Design, Implementation, Testing, Deployment, Maintenance. SDLC ensures systematic development, quality control, and project management. Modern approaches emphasize collaboration, adaptability, and automation."
+        },
+
+        "project_management": {
+            "keywords": ["software project management", "agile project management", "scrum master", "project planning", "risk management"],
+            "response": "Software project management plans, executes, and controls software projects. Methodologies: Agile (Scrum, Kanban), Waterfall, Hybrid. Roles: Product Owner, Scrum Master, Development Team. Tools: Jira, Trello, Asana. Activities: Requirement gathering, sprint planning, daily stand-ups, retrospectives. Risk management identifies and mitigates potential problems. Effective management delivers projects on time, within budget, meeting quality standards."
+        },
+
+        "technical_documentation": {
+            "keywords": ["technical documentation", "api documentation", "code documentation", "user manuals", "technical writing"],
+            "response": "Technical documentation explains software for developers, users, and stakeholders. Types: API documentation (Swagger/OpenAPI), Code comments (Javadoc, Doxygen), User manuals, Architecture diagrams. Good documentation improves usability, maintenance, and onboarding. Documentation tools: Markdown, Sphinx, ReadTheDocs. Technical writing requires clarity, accuracy, and audience awareness. Documentation is crucial for open-source and enterprise software."
+        },
+
+        "open_source": {
+            "keywords": ["open source", "open source software", "contributing to open source", "licenses", "github repositories"],
+            "response": "Open source software has source code publicly available for use, modification, and distribution. Licenses: MIT, GPL, Apache govern usage. Contributing: Fix bugs, add features, improve documentation. Platforms: GitHub, GitLab, Bitbucket host repositories. Open source fosters collaboration, transparency, and innovation. Many technologies (Linux, Kubernetes, React) are open source. Participation builds skills and community."
+        },
+
+        "career_development": {
+            "keywords": ["programming career", "software engineer career", "tech interviews", "coding bootcamps", "computer science degree"],
+            "response": "Programming careers offer diverse paths: Software Engineer, Data Scientist, DevOps, etc. Education: Computer Science degrees, coding bootcamps, self-learning. Skills: Technical (languages, tools), Soft (communication, problem-solving). Career growth: Junior to Senior, Lead, Architect. Interview preparation: Data structures, algorithms, system design, behavioral questions. Continuous learning through courses, conferences, and projects is essential in evolving tech field."
+        },
+
+        "programming_paradigms": {
+            "keywords": ["programming paradigms", "imperative programming", "declarative programming", "procedural programming", "logic programming"],
+            "response": "Programming paradigms are styles of programming. Imperative: How to achieve (C, Java). Declarative: What to achieve (SQL, HTML). Sub-paradigms: Procedural (functions), Object-Oriented, Functional, Logic (Prolog), Event-driven. Multi-paradigm languages (Python, JavaScript) support multiple styles. Understanding paradigms helps choose appropriate approaches for different problems and write more expressive code."
+        },
+
+        "software_engineering_principles": {
+            "keywords": ["software engineering principles", "solid principles", "dry principle", "kiss principle", "yagni"],
+            "response": "Software engineering principles guide design and development. SOLID: Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation, Dependency Inversion. Other principles: DRY (Don't Repeat Yourself), KISS (Keep It Simple, Stupid), YAGNI (You Aren't Gonna Need It). These principles promote maintainable, scalable, and robust software. They are fundamental in object-oriented design and general software architecture."
+        },
+
+        "debugging": {
+            "keywords": ["debugging", "debugging techniques", "debugging tools", "logging", "breakpoints"],
+            "response": "Debugging identifies and fixes bugs in software. Techniques: Print debugging, Logging, Using debuggers (breakpoints, stepping), Rubber duck debugging (explaining code). Tools: IDE debuggers (VS Code, IntelliJ), command-line (GDB), browser dev tools. Effective debugging requires systematic approach: reproduce bug, isolate cause, fix, test. Logging frameworks capture runtime information for post-mortem analysis."
+        },
+
+        "code_review": {
+            "keywords": ["code review", "peer review", "pull request review", "code review best practices", "collaborative coding"],
+            "response": "Code review is examining code changes by peers before merging. Benefits: catching bugs, sharing knowledge, maintaining standards. Process: Submit pull request, reviewers comment, iterate, approve. Best practices: Be constructive, focus on code not person, review small changes, use checklists. Tools: GitHub, GitLab, Bitbucket facilitate code review. Code review improves code quality and team collaboration."
+        },
+
+        "refactoring": {
+            "keywords": ["refactoring", "code refactoring", "refactoring techniques", "improving code design", "technical debt"],
+            "response": "Refactoring improves code structure without changing external behavior. Techniques: Extract Method, Rename Variable, Move Method, Replace Conditional with Polymorphism. Refactoring reduces technical debt, improves readability, and eases future modifications. Done incrementally with tests to ensure correctness. Tools: IDE refactoring support, linters. Regular refactoring maintains code health as requirements evolve."
+        },
+
+        "continuous_integration": {
+            "keywords": ["continuous integration", "ci", "jenkins", "github actions", "automated testing"],
+            "response": "Continuous Integration (CI) automatically builds and tests code changes frequently. Developers integrate code into shared repository multiple times daily. CI servers (Jenkins, GitHub Actions, GitLab CI) run automated tests, check code style, and provide feedback. Benefits: early bug detection, consistent builds, faster release cycles. CI is part of DevOps practices, often followed by Continuous Deployment (CD)."
+        },
+
+        "microservices": {
+            "keywords": ["microservices", "microservices architecture", "service oriented architecture", "api gateway", "service mesh"],
+            "response": "Microservices architecture structures an application as a collection of loosely coupled, independently deployable services. Each service implements specific business capability and communicates via APIs (HTTP/RPC). Benefits: Scalability, flexibility, technology diversity. Challenges: Complexity, data consistency, networking. Patterns: API Gateway, Service Discovery, Circuit Breaker. Technologies: Docker, Kubernetes, Istio (service mesh) support microservices."
+        },
+
+        "serverless": {
+            "keywords": ["serverless", "serverless computing", "aws lambda", "azure functions", "function as a service"],
+            "response": "Serverless computing runs code without managing servers. Functions are triggered by events and scale automatically. Providers: AWS Lambda, Azure Functions, Google Cloud Functions. Benefits: No server management, pay-per-use, automatic scaling. Use cases: APIs, data processing, event-driven applications. Serverless architectures combine functions with other cloud services (databases, messaging). Considerations: cold starts, vendor lock-in, debugging."
+        },
+
+        "graphql": {
+            "keywords": ["graphql", "graphql api", "graphql vs rest", "apollo", "graphql schema"],
+            "response": "GraphQL is a query language for APIs that allows clients to request exactly the data they need. Unlike REST, GraphQL has a single endpoint and flexible queries. Components: Schema (types, queries, mutations), Resolvers (functions fetching data). Tools: Apollo, Relay. Benefits: Efficient data fetching, strong typing, introspective API. GraphQL is used by Facebook, GitHub, and many modern applications for flexible data access."
+        },
+
+        "rest": {
+            "keywords": ["rest", "restful api", "rest architecture", "http methods", "rest principles"],
+            "response": "REST (Representational State Transfer) is an architectural style for designing networked applications. RESTful APIs use HTTP methods: GET (retrieve), POST (create), PUT (update), DELETE (remove). Principles: Statelessness, client-server separation, uniform interface, cacheability. Resources are identified by URIs, representations (JSON/XML) transfer state. REST is widely used for web APIs due to simplicity and compatibility with HTTP."
+        },
+
+        "soap": {
+            "keywords": ["soap", "soap api", "web services", "xml protocol", "enterprise integration"],
+            "response": "SOAP (Simple Object Access Protocol) is a protocol for exchanging structured information in web services using XML. It operates over HTTP, SMTP, etc. Features: Standards-based (WS-*), built-in error handling, security. SOAP uses WSDL (Web Services Description Language) to describe services. Common in enterprise environments for reliable, secure communication. Compared to REST, SOAP is more rigid but offers more standards."
+        },
+
+        "websockets": {
+            "keywords": ["websockets", "real time communication", "bidirectional communication", "socket.io", "web sockets protocol"],
+            "response": "WebSockets provide full-duplex, bidirectional communication between client and server over a single, long-lived connection. Unlike HTTP's request-response, WebSockets enable real-time data exchange. Use cases: chat apps, live feeds, gaming, collaborative tools. Libraries: Socket.IO, ws. Protocol: Starts with HTTP handshake, upgrades to WebSocket. WebSockets are essential for low-latency, interactive applications."
+        },
+
+        "progressive_web_apps": {
+            "keywords": ["progressive web apps", "pwa", "offline web apps", "service workers", "web app manifest"],
+            "response": "Progressive Web Apps (PWAs) are web applications that provide native app-like experience. Features: Offline functionality (Service Workers), installable (Web App Manifest), push notifications, fast loading. PWAs work across platforms and are discoverable via web. Technologies: Service Workers cache resources, manifest defines app metadata. PWAs bridge web and mobile apps, improving engagement and performance."
+        },
+
+        "responsive_design": {
+            "keywords": ["responsive design", "responsive web design", "mobile first", "css media queries", "flexbox grid"],
+            "response": "Responsive design ensures web applications work well on various devices and screen sizes. Techniques: Fluid grids, Flexible images, CSS media queries. Approach: Mobile-first design, then enhance for larger screens. CSS frameworks: Bootstrap, Foundation. CSS features: Flexbox, Grid layout. Responsive design improves user experience, SEO, and maintenance by having one codebase for all devices."
+        },
+
+        "accessibility": {
+            "keywords": ["web accessibility", "a11y", "wcag", "screen readers", "accessible design"],
+            "response": "Web accessibility (a11y) ensures websites are usable by people with disabilities. Guidelines: WCAG (Web Content Accessibility Guidelines) - Perceivable, Operable, Understandable, Robust. Techniques: Semantic HTML, ARIA attributes, keyboard navigation, color contrast, alt text. Testing: Screen readers (NVDA, VoiceOver), automated tools (axe). Accessibility is a legal requirement in many regions and improves usability for all users."
+        },
+
+        "seo": {
+            "keywords": ["seo", "search engine optimization", "web seo", "meta tags", "page speed"],
+            "response": "SEO (Search Engine Optimization) improves website visibility in search engine results. Technical SEO: Site speed, mobile-friendliness, secure connections (HTTPS), structured data (JSON-LD). On-page: Title tags, meta descriptions, header tags, quality content. Off-page: Backlinks, social signals. SEO tools: Google Search Console, analytics. Good SEO practices increase organic traffic and are essential for online presence."
+        },
+
+        "cross_browser_compatibility": {
+            "keywords": ["cross browser compatibility", "browser testing", "polyfills", "vendor prefixes", "web standards"],
+            "response": "Cross-browser compatibility ensures websites work across different browsers (Chrome, Firefox, Safari, Edge). Challenges: Different rendering engines, CSS support, JavaScript APIs. Techniques: Feature detection, polyfills (for missing features), vendor prefixes for CSS, progressive enhancement. Testing: BrowserStack, Sauce Labs. Following web standards and testing early helps deliver consistent user experiences."
+        },
+
+        "internationalization": {
+            "keywords": ["internationalization", "i18n", "localization", "multi language support", "unicode"],
+            "response": "Internationalization (i18n) designs software to support multiple languages and regions. Localization (l10n) adapts for specific locale. Techniques: Externalize strings (resource files), support Unicode, format dates/numbers/currencies per locale, handle text direction (RTL). Libraries: ICU, i18next. Internationalization is important for global applications, improving reach and user experience for diverse audiences."
+        },
+
+        "scalability": {
+            "keywords": ["scalability", "scalable architecture", "horizontal scaling", "vertical scaling", "load balancing"],
+            "response": "Scalability is a system's ability to handle increased load. Vertical scaling: Adding resources to a single node. Horizontal scaling: Adding more nodes. Techniques: Load balancing, caching (CDN, Redis), database sharding, stateless design, asynchronous processing. Scalability planning considers growth patterns and bottlenecks. Cloud platforms provide auto-scaling. Scalable systems maintain performance under varying loads."
+        },
+
+        "fault_tolerance": {
+            "keywords": ["fault tolerance", "high availability", "redundancy", "failover", "disaster recovery"],
+            "response": "Fault tolerance ensures system continues operating despite failures. Techniques: Redundancy (multiple instances), Failover (automatic switching to backup), Replication (data copies), Circuit Breakers (prevent cascade failures). Design: Retry mechanisms, graceful degradation, health checks. High availability aims for minimal downtime (e.g., 99.99% uptime). Fault tolerance is critical for reliable services, especially in distributed systems."
+        },
+
+        "monitoring": {
+            "keywords": ["monitoring", "application monitoring", "logs", "metrics", "alerting"],
+            "response": "Monitoring tracks system performance and health. Components: Logging (events), Metrics (numerical data), Tracing (request flow), Alerting (notifications). Tools: Prometheus (metrics), ELK Stack (logs), Grafana (visualization), New Relic, Datadog. Monitoring helps detect issues, understand usage patterns, and ensure SLA compliance. Observability (logs, metrics, traces) provides insights into system internals."
+        },
+
+        "logging": {
+            "keywords": ["logging", "application logs", "structured logging", "log levels", "log aggregation"],
+            "response": "Logging records events during software execution for debugging and auditing. Log levels: DEBUG, INFO, WARN, ERROR. Best practices: Structured logging (JSON), meaningful messages, appropriate levels, avoid sensitive data. Log aggregation: Centralize logs from multiple sources (Fluentd, Logstash). Analysis: Search, visualize, set alerts. Effective logging is crucial for troubleshooting and understanding application behavior in production."
+        },
+
+        "performance_monitoring": {
+            "keywords": ["performance monitoring", "apm", "application performance management", "latency", "throughput"],
+            "response": "Performance monitoring measures application speed, responsiveness, and resource usage. Key metrics: Latency (response time), Throughput (requests per second), Error rate, CPU/Memory usage. APM tools: New Relic, AppDynamics, Dynatrace provide deep insights. Real User Monitoring (RUM) captures end-user experience. Performance monitoring identifies bottlenecks and ensures applications meet performance goals."
+        },
+
+        "load_testing": {
+            "keywords": ["load testing", "performance testing", "stress testing", "jmeter", "locust"],
+            "response": "Load testing evaluates system performance under expected and peak loads. Types: Load testing (normal load), Stress testing (beyond capacity), Soak testing (endurance). Tools: JMeter, Locust, Gatling. Metrics: Response time, throughput, error rate, resource utilization. Load testing helps identify performance limits, plan capacity, and ensure stability before deployment. It is part of performance engineering."
+        },
+
+        "security_testing": {
+            "keywords": ["security testing", "penetration testing", "vulnerability scanning", "owasp testing", "security audit"],
+            "response": "Security testing identifies vulnerabilities in software. Types: Penetration testing (simulated attacks), Vulnerability scanning (automated tools), Code review, Security audits. OWASP Top 10 lists common vulnerabilities (injection, XSS). Tools: Burp Suite, OWASP ZAP, Nessus. Security testing should be integrated into SDLC (DevSecOps). Regular testing protects against breaches and ensures compliance with security standards."
+        },
+        # Expanded Geography and Countries
         "geography": {
             "keywords": ["geography", "geographical", "world geography", "study of geography", "physical geography", "human geography"],
             "response": "Geography is the study of Earth's landscapes, environments, and the relationships between people and their environments. It includes physical geography (landforms, climate, ecosystems) and human geography (population, culture, economics). Geography helps us understand spatial relationships and global interconnections."
