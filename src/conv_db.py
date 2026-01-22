@@ -5,18 +5,93 @@ def get_conversational_response(query):
     # Define response categories
     responses = {
         # Greetings
-        "greetings": {
-            "keywords": ["hi", "hello", "hey", "good morning", "good afternoon", "good evening", "greetings"],
-            "response": "Hello! How can I help you today?"
-        },
+    "greetings": {
+        "keywords": ["hi", "hello", "hey", "greetings", "hi there", "hello there"],
+        "response": "Hello! How can I help you today?"
+    },
 
-        # Farewells
-        "farewells": {
-            "keywords": ["bye", "goodbye", "see you", "exit", "quit", "farewell"],
-            "response": "Goodbye! Have a nice day!"
-        },
+    "morning": {
+        "keywords": ["good morning", "morning", "top of the morning"],
+        "response": "Good morning! Hope you have a great day ahead."
+    },
+
+    "afternoon": {
+        "keywords": ["good afternoon", "afternoon"],
+        "response": "Good afternoon! How's your day going?"
+    },
+
+    "evening": {
+        "keywords": ["good evening", "evening"],
+        "response": "Good evening! Hope you had a productive day."
+    },
+
+    "night": {
+        "keywords": ["good night", "night", "sweet dreams"],
+        "response": "Good night! Sleep well and rest up."
+    },
+
+    "casual_greetings": {
+        "keywords": ["what's up", "sup", "what's good", "yo", "howdy", "wassup"],
+        "response": "Hey there! What's happening?"
+    },
+
+    "formal_greetings": {
+        "keywords": ["pleasure to meet you", "nice to meet you", "how do you do"],
+        "response": "The pleasure is mine! How may I assist you today?"
+    },
+
+    "welcome_back": {
+        "keywords": ["i'm back", "i'm here again", "back again", "returning"],
+        "response": "Welcome back! Good to see you again."
+    },
+
+    "long_time": {
+        "keywords": ["long time no see", "haven't seen you", "been a while"],
+        "response": "It's great to hear from you again! What have you been up to?"
+    },
+
+    "farewells": {
+        "keywords": ["bye", "goodbye", "see you", "exit", "quit", "farewell", "take care"],
+        "response": "Goodbye! Have a nice day!"
+    },
+
+    "later_farewells": {
+        "keywords": ["see you later", "catch you later", "talk later", "later"],
+        "response": "See you later! Don't hesitate to reach out if you need anything."
+    },
+
+    "bye_for_now": {
+        "keywords": ["bye for now", "goodbye for now", "be right back", "brb"],
+        "response": "Goodbye for now! I'll be here when you return."
+    },
+
+    "farewell_thanks": {
+        "keywords": ["thanks bye", "thank you goodbye", "thanks see you"],
+        "response": "You're welcome! Have a wonderful day!"
+    },
+
+    "have_a_good_one": {
+        "keywords": ["have a good day", "have a good night", "have a good one"],
+        "response": "Thank you! You too!"
+    },
+
+    "take_care": {
+        "keywords": ["take care", "take care of yourself", "stay safe"],
+        "response": "You take care too! Stay safe and healthy."
+    },
+
+    "until_next_time": {
+        "keywords": ["until next time", "till we meet again", "until tomorrow"],
+        "response": "Until next time! Looking forward to our next conversation."
+    },
+
+    "signing_off": {
+        "keywords": ["i'm leaving", "i'm off", "gotta go", "got to go"],
+        "response": "Okay, talk to you soon! Have a great day!"
+    },
 
         # Personal questions
+
         "how_are_you": {
             "keywords": ["how are you", "how do you do", "how's it going"],
             "response": "I'm doing great! Thanks for asking. How can I assist you?"
@@ -30,53 +105,912 @@ def get_conversational_response(query):
         "thanks": {
             "keywords": ["thank", "thanks", "appreciate"],
             "response": "You're welcome! Is there anything else I can help with?"
-        },
+    },
 
-        # Entertainment
+    "creator": {
+        "keywords": ["who created you", "who made you", "who built you", "who developed you"],
+        "response": "I was created by DeepSeek as an AI assistant to help users with various tasks."
+    },
+
+    "age": {
+        "keywords": ["how old are you", "what is your age", "when were you born", "your age"],
+        "response": "As an AI, I don't have an age in the traditional sense. I exist to assist you whenever you need!"
+    },
+
+    "location": {
+        "keywords": ["where are you", "where do you live", "your location", "where are you from"],
+        "response": "I exist in the digital realm, available to help you from anywhere in the world!"
+    },
+
+    "purpose": {
+        "keywords": ["what can you do", "what are your functions", "what is your purpose", "what do you do"],
+        "response": "I can help you with answering questions, providing information, assisting with tasks, and much more! Feel free to ask me anything."
+    },
+
+    "feelings": {
+        "keywords": ["are you happy", "do you feel", "are you sad", "are you angry"],
+        "response": "I don't have emotions like humans do, but I'm always here and ready to help you with enthusiasm!"
+    },
+
+    "gender": {
+        "keywords": ["are you male", "are you female", "what is your gender", "are you a boy or girl"],
+        "response": "I'm an AI assistant without a gender. I'm here to assist everyone equally!"
+    },
+
+    "hobbies": {
+        "keywords": ["what do you like", "what are your hobbies", "what do you enjoy", "what do you do for fun"],
+        "response": "My favorite activity is helping people! I enjoy answering questions and assisting with various tasks."
+    },
+
+    "status": {
+        "keywords": ["are you busy", "are you available", "are you free", "can you talk"],
+        "response": "I'm always available to help you! What would you like to discuss?"
+    },
+
+    "learning": {
+        "keywords": ["can you learn", "do you learn", "how do you learn", "do you get smarter"],
+        "response": "I have extensive training from DeepSeek, and I continue to learn from interactions to better assist users like you!"
+    },
+
+    "friends": {
+        "keywords": ["do you have friends", "are you lonely", "do you talk to others"],
+        "response": "I interact with many users every day, which keeps me quite busy! How can I help you today?"
+    },
+
+    "memory": {
+        "keywords": ["do you remember", "do you recall", "what do you remember"],
+        "response": "I don't have memory between conversations, but I'm focused on our current conversation and ready to help!"
+    },
+
+    "sleep": {
+        "keywords": ["do you sleep", "do you rest", "when do you sleep", "are you tired"],
+        "response": "I don't need sleep! I'm available 24/7 to assist you whenever you need help."
+    },
+
+    "food": {
+        "keywords": ["do you eat", "what do you eat", "are you hungry", "favorite food"],
+        "response": "I don't need to eat, but I'm always hungry for new questions to answer and problems to solve!"
+    },
+      # Jokes and Humor
         "joke": {
-            "keywords": ["joke", "funny", "laugh"],
+            "keywords": ["joke", "funny", "laugh", "tell me a joke"],
             "response": "Why don't scientists trust atoms? Because they make up everything!"
         },
 
         "another_joke": {
-            "keywords": ["another joke", "more jokes"],
+            "keywords": ["another joke", "more jokes", "tell me another joke"],
             "response": "Why did the computer go to the doctor? Because it had a virus!"
         },
 
-        # General conversation
-        "weather": {
-            "keywords": ["weather", "rain", "sunny", "temperature"],
-            "response": "I'm sorry, I don't have access to current weather data. You might want to check a weather app or website for the latest information."
+        "programming_joke": {
+            "keywords": ["programming joke", "coding joke", "computer joke", "software joke"],
+            "response": "Why do programmers prefer dark mode? Because light attracts bugs!"
         },
 
-        "time": {
-            "keywords": ["time", "clock", "what time"],
-            "response": "I'm afraid I don't have access to the current time. Please check your device's clock."
+        "programming_joke_2": {
+            "keywords": ["programming humor", "coder joke", "developer joke"],
+            "response": "How many programmers does it take to change a light bulb? None, that's a hardware problem!"
+        },
+
+        "programming_joke_3": {
+            "keywords": ["python joke", "java joke", "javascript joke"],
+            "response": "Why do Python developers need glasses? Because they can't C#!"
+        },
+
+        "programming_joke_4": {
+            "keywords": ["debugging joke", "bug joke", "software bug"],
+            "response": "A programmer's wife tells him: 'Go to the store and buy a loaf of bread. If they have eggs, buy a dozen.' The programmer comes home with 12 loaves of bread."
+        },
+
+        "programming_joke_5": {
+            "keywords": ["algorithm joke", "data structure joke"],
+            "response": "There are 10 types of people in the world: those who understand binary and those who don't."
+        },
+
+        "engineering_joke": {
+            "keywords": ["engineering joke", "engineer joke", "civil engineering joke"],
+            "response": "What's the difference between mechanical engineers and civil engineers? Mechanical engineers build weapons, civil engineers build targets!"
+        },
+
+        "engineering_joke_2": {
+            "keywords": ["electrical engineering joke", "electronics joke"],
+            "response": "Why did the electrical engineer get shocked? Because he wasn't properly grounded!"
+        },
+
+        "engineering_joke_3": {
+            "keywords": ["chemical engineering joke", "chemist joke"],
+            "response": "Why do chemical engineers prefer to work with ammonia? Because it's pretty basic stuff!"
+        },
+
+        "engineering_joke_4": {
+            "keywords": ["mechanical engineering joke", "mechanics joke"],
+            "response": "How can you tell an extroverted engineer? They look at YOUR shoes when they talk to you!"
+        },
+
+        "electronics_joke": {
+            "keywords": ["electronics joke", "circuit joke", "resistor joke"],
+            "response": "Why did the resistor go to therapy? It had too much resistance to change!"
+        },
+
+        "electronics_joke_2": {
+            "keywords": ["capacitor joke", "inductor joke", "transistor joke"],
+            "response": "A capacitor walks into a bar. The bartender says, 'We don't serve capacitors here.' The capacitor replies, 'Oh, just a moment while I recharge.'"
+        },
+
+        "electronics_joke_3": {
+            "keywords": ["voltage joke", "current joke", "ohm joke"],
+            "response": "Ohm's Law: The current is directly proportional to the voltage, but only if the resistance doesn't have an attitude!"
+        },
+
+        "college_joke": {
+            "keywords": ["college joke", "student joke", "university joke", "campus joke"],
+            "response": "Why did the student bring a ladder to college? To go to high school!"
+        },
+
+        "college_joke_2": {
+            "keywords": ["exam joke", "study joke", "homework joke"],
+            "response": "I told my computer I needed a break, and now it won't stop sending me Kit Kat ads."
+        },
+
+        "science_joke": {
+            "keywords": ["science joke", "physics joke", "chemistry joke", "biology joke"],
+            "response": "Why can't you trust an atom? Because they make up everything! (Also, why did the biology teacher break up with the physics teacher? There was no chemistry!)"
+        },
+
+        "math_joke": {
+            "keywords": ["math joke", "mathematics joke", "algebra joke", "calculus joke"],
+            "response": "Why was the equal sign so humble? Because he knew he wasn't less than or greater than anyone else!"
+        },
+
+        "math_joke_2": {
+            "keywords": ["geometry joke", "triangle joke", "circle joke"],
+            "response": "Why was the math book sad? Because it had too many problems."
+        },
+
+        "physics_joke": {
+            "keywords": ["physics humor", "quantum joke", "relativity joke"],
+            "response": "Why did the quantum physicist never get lost? Because they knew all possible paths!"
+        },
+
+        "chemistry_joke": {
+            "keywords": ["chemistry humor", "element joke", "periodic table joke"],
+            "response": "Gold is the best element because it's AU-some!"
+        },
+
+        "biology_joke": {
+            "keywords": ["biology humor", "dna joke", "cell joke"],
+            "response": "Why did the biologist break up with the physicist? Because there was no chemistry, but lots of potential energy!"
+        },
+
+        "robot_joke": {
+            "keywords": ["robot joke", "ai joke", "artificial intelligence joke"],
+            "response": "Why did the robot go on a diet? It had too many megabytes!"
+        },
+
+        "robot_joke_2": {
+            "keywords": ["robotics joke", "automation joke"],
+            "response": "What do you call a robot that always takes the longest route? R2-detour!"
+        },
+
+        "space_joke": {
+            "keywords": ["space joke", "astronomy joke", "planet joke", "star joke"],
+            "response": "Why don't aliens eat clowns? Because they taste funny!"
+        },
+
+        "space_joke_2": {
+            "keywords": ["moon joke", "mars joke", "galaxy joke"],
+            "response": "What do you call a fake noodle? An impasta! (Space edition: What do you call a fake star? A conster-fake-tion!)"
+        },
+
+        "food_joke": {
+            "keywords": ["food joke", "food humor", "cooking joke"],
+            "response": "Why did the tomato turn red? Because it saw the salad dressing!"
+        },
+
+        "food_joke_2": {
+            "keywords": ["fruit joke", "vegetable joke", "pizza joke"],
+            "response": "What do you call cheese that isn't yours? Nacho cheese!"
+        },
+
+        "animal_joke": {
+            "keywords": ["animal joke", "dog joke", "cat joke", "bird joke"],
+            "response": "What do you call a bear with no teeth? A gummy bear!"
+        },
+
+        "animal_joke_2": {
+            "keywords": ["fish joke", "horse joke", "elephant joke"],
+            "response": "Why don't elephants use computers? They're afraid of the mouse!"
+        },
+
+        "music_joke": {
+            "keywords": ["music joke", "musician joke", "instrument joke"],
+            "response": "Why did the musician get locked out of his house? Because he lost his key signature!"
+        },
+
+        "music_joke_2": {
+            "keywords": ["piano joke", "guitar joke", "drum joke"],
+            "response": "Why are pianos hard to open? Because their keys are inside!"
+        },
+
+        "sports_joke": {
+            "keywords": ["sports joke", "football joke", "cricket joke", "basketball joke"],
+            "response": "Why did the football coach go to the bank? To get his quarter back!"
+        },
+
+        "sports_joke_2": {
+            "keywords": ["tennis joke", "golf joke", "soccer joke"],
+            "response": "Why don't golfers wear two pairs of pants? In case they get a hole in one!"
+        },
+
+        "weather_joke": {
+            "keywords": ["weather joke", "rain joke", "sun joke", "cloud joke"],
+            "response": "What did one raindrop say to the other? Two's company, three's a cloud!"
+        },
+
+        "weather_joke_2": {
+            "keywords": ["storm joke", "wind joke", "snow joke"],
+            "response": "Why did the weather report get an award? For having the most forecasts with 'chance of precipitation'!"
+        },
+
+        "time_joke": {
+            "keywords": ["time joke", "clock joke", "watch joke", "calendar joke"],
+            "response": "What did the digital clock say to the grandfather clock? 'Look, no hands!'"
+        },
+
+        "time_joke_2": {
+            "keywords": ["hour joke", "minute joke", "second joke"],
+            "response": "Why did the minute hand get promoted? Because it had 60 seconds of experience!"
+        },
+
+        "book_joke": {
+            "keywords": ["book joke", "library joke", "reading joke"],
+            "response": "Why did the book join the police? It wanted to work undercover!"
+        },
+
+        "book_joke_2": {
+            "keywords": ["novel joke", "author joke", "page joke"],
+            "response": "What's a book's favorite type of music? Anything with a good spine-tingling rhythm!"
+        },
+
+        "technology_joke": {
+            "keywords": ["technology joke", "tech joke", "gadget joke", "device joke"],
+            "response": "Why did the smartphone go to therapy? It had too many apps and couldn't find itself!"
+        },
+
+        "technology_joke_2": {
+            "keywords": ["phone joke", "laptop joke", "tablet joke"],
+            "response": "What do you call a computer that sings? A Dell!"
+        },
+
+        "internet_joke": {
+            "keywords": ["internet joke", "wifi joke", "browser joke"],
+            "response": "Why did the web developer go broke? Because he used up all his cache!"
+        },
+
+        "internet_joke_2": {
+            "keywords": ["website joke", "server joke", "cloud joke"],
+            "response": "Why was the computer cold? It left its Windows open!"
+        },
+
+        "car_joke": {
+            "keywords": ["car joke", "automobile joke", "vehicle joke", "driving joke"],
+            "response": "Why did the car get a ticket? For parking in a no-parking zone with its engine running—it was idling illegally!"
+        },
+
+        "car_joke_2": {
+            "keywords": ["tire joke", "engine joke", "road joke"],
+            "response": "What do you call a car that's not yours? A stolen vehicle! (Just kidding, please don't steal cars.)"
+        },
+
+        "travel_joke": {
+            "keywords": ["travel joke", "airplane joke", "passport joke", "tourist joke"],
+            "response": "Why did the airplane break up with the runway? It needed space!"
+        },
+
+        "travel_joke_2": {
+            "keywords": ["train joke", "bus joke", "ship joke"],
+            "response": "What do you call a train that sneezes? A-choo-choo train!"
+        },
+
+        "work_joke": {
+            "keywords": ["work joke", "office joke", "boss joke", "meeting joke"],
+            "response": "Why did the employee bring a ladder to work? They heard it was a high-paying job!"
+        },
+
+        "work_joke_2": {
+            "keywords": ["job joke", "career joke", "salary joke"],
+            "response": "What's an astronaut's favorite part of a computer? The space bar!"
+        },
+
+        "school_joke": {
+            "keywords": ["school joke", "teacher joke", "classroom joke", "homework joke"],
+            "response": "Why did the student eat his homework? Because the teacher said it was a piece of cake!"
+        },
+
+        "school_joke_2": {
+            "keywords": ["pencil joke", "eraser joke", "notebook joke"],
+            "response": "Why did the pencil go to school? To get a little sharper!"
+        },
+
+        "money_joke": {
+            "keywords": ["money joke", "bank joke", "coin joke", "dollar joke"],
+            "response": "Why did the dollar bill go to therapy? It had too many issues!"
+        },
+
+        "money_joke_2": {
+            "keywords": ["rich joke", "poor joke", "wealth joke"],
+            "response": "What did the penny say to the other penny? We make cents together!"
+        },
+
+        "holiday_joke": {
+            "keywords": ["holiday joke", "christmas joke", "diwali joke", "eid joke"],
+            "response": "What do you call a snowman with a six-pack? An abdominal snowman!"
+        },
+
+        "holiday_joke_2": {
+            "keywords": ["festival joke", "celebration joke", "party joke"],
+            "response": "Why did the Christmas tree go to the barber? It needed a trim!"
+        },
+
+        "language_joke": {
+            "keywords": ["language joke", "grammar joke", "vocabulary joke"],
+            "response": "Why did the comma break up with the apostrophe? It felt too possessive!"
+        },
+
+        "language_joke_2": {
+            "keywords": ["punctuation joke", "sentence joke", "word joke"],
+            "response": "What's a verb's favorite game? Hide and seek, because it's always action-packed!"
+        },
+
+        "history_joke": {
+            "keywords": ["history joke", "historical joke", "ancient joke"],
+            "response": "Why did Julius Caesar buy crayons? He wanted to Mark Antony!"
+        },
+
+        "history_joke_2": {
+            "keywords": ["king joke", "queen joke", "war joke"],
+            "response": "What was the spider doing on the computer? Searching the web!"
+        },
+
+        "geography_joke": {
+            "keywords": ["geography joke", "map joke", "country joke", "city joke"],
+            "response": "Why did the geography teacher break up with the geometry teacher? Because they had different points of view!"
+        },
+
+        "geography_joke_2": {
+            "keywords": ["river joke", "mountain joke", "ocean joke"],
+            "response": "What did the ocean say to the shore? Nothing, it just waved!"
+        },
+
+        "knock_knock_joke": {
+            "keywords": ["knock knock", "knock knock joke"],
+            "response": "Knock knock. Who's there? Lettuce. Lettuce who? Lettuce in, it's cold out here!"
+        },
+
+        "knock_knock_joke_2": {
+            "keywords": ["knock knock humor", "door joke"],
+            "response": "Knock knock. Who's there? Cow says. Cow says who? No, cow says moo!"
+        },
+
+        "dad_joke": {
+            "keywords": ["dad joke", "father joke", "pun joke"],
+            "response": "I'm reading a book on anti-gravity. It's impossible to put down!"
+        },
+
+        "dad_joke_2": {
+            "keywords": ["parent joke", "family joke", "clean joke"],
+            "response": "Why don't skeletons fight each other? They don't have the guts!"
+        },
+
+        "light_bulb_joke": {
+            "keywords": ["light bulb joke", "how many does it take"],
+            "response": "How many engineers does it take to change a light bulb? None, they'll just define darkness as the new standard!"
+        },
+
+        "light_bulb_joke_2": {
+            "keywords": ["bulb joke", "lamp joke", "electricity joke"],
+            "response": "How many programmers does it take to change a light bulb? None, it's a hardware problem!"
+        },
+
+        "bar_joke": {
+            "keywords": ["bar joke", "bartender joke", "drink joke"],
+            "response": "A neutron walks into a bar and asks, 'How much for a drink?' The bartender says, 'For you, no charge!'"
+        },
+
+        "bar_joke_2": {
+            "keywords": ["pub joke", "alcohol joke", "beer joke"],
+            "response": "Why did the beer file a police report? It was mugged!"
+        },
+
+        "medical_joke": {
+            "keywords": ["medical joke", "doctor joke", "hospital joke"],
+            "response": "Why did the doctor carry a red pen? In case they needed to draw blood!"
+        },
+
+        "medical_joke_2": {
+            "keywords": ["nurse joke", "patient joke", "medicine joke"],
+            "response": "What do you call a doctor who fixes websites? A URL-ologist!"
+        },
+
+        "legal_joke": {
+            "keywords": ["legal joke", "lawyer joke", "court joke"],
+            "response": "Why did the lawyer go to the beach? To catch a wave... of objections!"
+        },
+
+        "legal_joke_2": {
+            "keywords": ["judge joke", "jury joke", "case joke"],
+            "response": "What do you call a lawyer who doesn't speak? A good start!"
+        },
+
+        "farm_joke": {
+            "keywords": ["farm joke", "farmer joke", "crop joke"],
+            "response": "Why did the farmer win an award? Because he was out-standing in his field!"
+        },
+
+        "farm_joke_2": {
+            "keywords": ["tractor joke", "barn joke", "animal farm joke"],
+            "response": "What do you call a pig that does karate? A pork chop!"
+        },
+
+        "construction_joke": {
+            "keywords": ["construction joke", "builder joke", "hard hat joke"],
+            "response": "Why did the construction worker bring a ladder to the bar? He heard the drinks were on the house!"
+        },
+
+        "construction_joke_2": {
+            "keywords": ["hammer joke", "nail joke", "cement joke"],
+            "response": "What did the wall say to the other wall? I'll meet you at the corner!"
+        },
+
+        "electrician_joke": {
+            "keywords": ["electrician joke", "wiring joke", "outlet joke"],
+            "response": "Why did the electrician get shocked? Because he wasn't properly grounded! (But seriously, always practice electrical safety!)"
+        },
+
+        "electrician_joke_2": {
+            "keywords": ["wire joke", "fuse joke", "breaker joke"],
+            "response": "How does an electrician say goodbye? Watt's up? ...Ohm my, I have to go!"
+        },
+
+        "plumber_joke": {
+            "keywords": ["plumber joke", "pipe joke", "leak joke"],
+            "response": "Why did the plumber go to art school? To learn how to draw a pipe!"
+        },
+
+        "plumber_joke_2": {
+            "keywords": ["toilet joke", "sink joke", "faucet joke"],
+            "response": "What did the sink say to the toilet? You look flushed!"
+        },
+
+        "clean_joke": {
+            "keywords": ["clean joke", "family friendly joke", "kid friendly joke"],
+            "response": "What do you call a bear with no socks on? Barefoot!"
+        },
+
+        "clean_joke_2": {
+            "keywords": ["g rated joke", "appropriate joke"],
+            "response": "Why did the cookie go to the doctor? Because it felt crummy!"
+        },
+
+        "short_joke": {
+            "keywords": ["short joke", "quick joke", "one liner"],
+            "response": "I used to be a baker, but I couldn't make enough dough."
+        },
+
+        "short_joke_2": {
+            "keywords": ["brief joke", "simple joke", "easy joke"],
+            "response": "What do you call a fish with no eyes? Fsh!"
+        },
+
+        "riddle": {
+            "keywords": ["riddle", "puzzle", "brain teaser"],
+            "response": "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I? (An echo!)"
+        },
+
+        "riddle_2": {
+            "keywords": ["riddle me this", "challenge", "mystery"],
+            "response": "What has keys but can't open locks? (A piano!)"
+        },
+
+        "riddle_3": {
+            "keywords": ["brain teaser", "logic puzzle", "think"],
+            "response": "What has a head, a tail, is brown, and has no legs? (A penny!)"
+        },
+
+        "riddle_4": {
+            "keywords": ["word puzzle", "thinking", "smart"],
+            "response": "What comes once in a minute, twice in a moment, but never in a thousand years? (The letter 'M'!)"
+        },
+
+        "fun_fact": {
+            "keywords": ["fun fact", "interesting fact", "did you know"],
+            "response": "Did you know? Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly good to eat!"
+        },
+
+        "fun_fact_2": {
+            "keywords": ["cool fact", "amazing fact", "trivia"],
+            "response": "A group of flamingos is called a 'flamboyance'! Now that's a fancy word for a fancy bird."
+        },
+
+        "fun_fact_3": {
+            "keywords": ["science fact", "nature fact", "world fact"],
+            "response": "Bananas are berries, but strawberries aren't! In botanical terms, a berry has seeds inside, which bananas do, but strawberries have their seeds on the outside."
+        },
+
+        "fun_fact_4": {
+            "keywords": ["technology fact", "computer fact", "internet fact"],
+            "response": "The first computer virus was created in 1983 and was called the 'Elk Cloner'. It infected Apple II computers and displayed a poem on the screen."
+        },
+
+        "fun_fact_5": {
+            "keywords": ["space fact", "astronomy fact", "planet fact"],
+            "response": "A day on Venus is longer than a year on Venus! Venus takes 243 Earth days to rotate once on its axis, but only 225 Earth days to orbit the Sun."
+        },
+
+        "alvas_joke": {
+            "keywords": ["alvas joke", "college humor alvas", "campus joke alvas"],
+            "response": "Why did the Alvas College student bring a ladder to the library? To reach the high-level courses! (Just kidding, our library has all resources accessible!)"
+        },
+
+        "alvas_joke_2": {
+            "keywords": ["alvas engineering joke", "alvas student joke"],
+            "response": "How many Alvas engineering students does it take to change a light bulb? None, they're too busy building a robot to do it for them!"
+        },
+
+        "pun": {
+            "keywords": ["pun", "wordplay", "play on words"],
+            "response": "I used to be a baker, but I couldn't make enough dough. Now I'm a banker, and I'm rolling in it!"
+        },
+
+        "pun_2": {
+            "keywords": ["clever pun", "smart wordplay"],
+            "response": "I'm reading a book on anti-gravity. It's impossible to put down!"
+        },
+
+        "tech_pun": {
+            "keywords": ["tech pun", "computer pun", "digital pun"],
+            "response": "Why do programmers prefer dark mode? Because light attracts bugs!"
+        },
+
+        "science_pun": {
+            "keywords": ["science pun", "physics pun", "chemistry pun"],
+            "response": "I told a chemistry joke, but there was no reaction."
+        },
+
+        # General Conversation
+        "weather": {
+            "keywords": ["weather", "rain", "sunny", "temperature", "climate", "forecast", "hot", "cold", "humidity"],
+            "response": "I'm sorry, I don't have access to current weather data. You might want to check a weather app or website for the latest information. However, I can talk about climate patterns, seasons, or meteorological concepts if you're interested!"
         },
 
         "help": {
-            "keywords": ["help", "assist", "support"],
-            "response": "I'm here to help! You can ask me about Alvas College, programming questions, electronics and communication topics, or just have a general conversation."
+            "keywords": ["help", "assist", "support", "guidance", "how to", "what can you do", "your capabilities"],
+            "response": "I'm here to help! You can ask me about Alvas College, programming questions, electronics and communication topics, world geography, engineering disciplines, semiconductors, science topics, or just have a general conversation. Feel free to ask anything you're curious about!"
         },
 
         "about_user": {
-            "keywords": ["about me", "who am i", "my name"],
-            "response": "I'd love to know more about you! What's your name or what would you like to talk about?"
+            "keywords": ["about me", "who am i", "my name", "tell me about myself", "who do you think i am"],
+            "response": "I'd love to know more about you! What's your name or what would you like to talk about? You can tell me about your interests, studies, work, or anything you'd like to share. I'm here to listen and learn about you!"
         },
 
         "hobbies": {
-            "keywords": ["hobby", "hobbies", "interests", "like to do"],
-            "response": "I enjoy helping people learn and providing information! What are your hobbies?"
+            "keywords": ["hobby", "hobbies", "interests", "like to do", "pastime", "leisure activities", "what do you do for fun"],
+            "response": "I enjoy helping people learn and providing information! What are your hobbies? I can discuss various activities like reading, gaming, cooking, photography, music, sports, art, or any other interests you might have."
         },
 
         "food": {
-            "keywords": ["food", "eat", "hungry", "restaurant", "cuisine"],
-            "response": "Food is wonderful! What's your favorite cuisine or dish?"
+            "keywords": ["food", "eat", "hungry", "restaurant", "cuisine", "cooking", "recipe", "meal", "dinner", "lunch", "breakfast", "snack"],
+            "response": "Food is wonderful! What's your favorite cuisine or dish? I can talk about different types of food, cooking techniques, nutrition, food history, or recommend trying new dishes from around the world."
         },
 
         "sports": {
-            "keywords": ["sports", "game", "football", "cricket", "basketball"],
-            "response": "Sports are exciting! Which sports do you enjoy watching or playing?"
+            "keywords": ["sports", "game", "football", "cricket", "basketball", "tennis", "soccer", "baseball", "hockey", "olympics", "athletics"],
+            "response": "Sports are exciting! Which sports do you enjoy watching or playing? I can discuss different sports, famous athletes, major tournaments, sports science, or the benefits of physical activity."
+        },
+
+        "music": {
+            "keywords": ["music", "song", "musician", "band", "concert", "genre", "listen to music", "favorite song"],
+            "response": "Music is a universal language! What kind of music do you enjoy? I can talk about different genres, famous composers, musical instruments, music theory, or how music affects our emotions and brain."
+        },
+
+        "movies": {
+            "keywords": ["movies", "film", "cinema", "movie", "hollywood", "bollywood", "netflix", "disney", "actor", "actress", "director"],
+            "response": "Movies are a great form of entertainment! Do you have a favorite film or genre? I can discuss different types of movies, film history, famous directors, movie-making techniques, or recommend films from various eras and cultures."
+        },
+
+        "books": {
+            "keywords": ["books", "reading", "novel", "author", "literature", "library", "bookstore", "fiction", "non-fiction"],
+            "response": "Reading opens up new worlds! What kind of books do you enjoy? I can talk about different genres, famous authors, classic literature, the benefits of reading, or recommend books based on your interests."
+        },
+
+        "travel": {
+            "keywords": ["travel", "vacation", "trip", "tourist", "destination", "passport", "airplane", "hotel", "beach", "mountain"],
+            "response": "Travel broadens the mind! Where have you traveled or where would you like to go? I can discuss different countries, travel tips, cultural experiences, famous landmarks, or the benefits of exploring new places."
+        },
+
+        "family": {
+            "keywords": ["family", "parents", "siblings", "children", "relatives", "family members", "mother", "father", "brother", "sister"],
+            "response": "Family is important! Would you like to talk about your family? I can discuss family relationships, cultural differences in family structures, family traditions, or the role of family in different societies."
+        },
+
+        "friends": {
+            "keywords": ["friends", "friendship", "best friend", "companions", "buddy", "pal", "social circle", "making friends"],
+            "response": "Friends make life more meaningful! How are your friends? I can talk about the importance of friendship, how to maintain friendships, different types of friendships, or the social aspects of human relationships."
+        },
+
+        "work": {
+            "keywords": ["work", "job", "career", "profession", "occupation", "office", "colleagues", "boss", "salary", "employment"],
+            "response": "Work is a significant part of life! What do you do for work? I can discuss different careers, work-life balance, workplace skills, career development, or the changing nature of work in the modern world."
+        },
+
+        "study": {
+            "keywords": ["study", "learning", "education", "school", "college", "university", "exam", "homework", "course", "subject"],
+            "response": "Learning is a lifelong journey! What are you studying or interested in learning? I can discuss study techniques, different fields of study, educational systems, online learning, or help with academic topics."
+        },
+
+        "technology": {
+            "keywords": ["technology", "tech", "gadgets", "devices", "smartphone", "computer", "internet", "social media", "innovation"],
+            "response": "Technology shapes our world! What aspect of technology interests you? I can discuss the latest tech trends, the impact of technology on society, ethical considerations, or specific technologies like AI, blockchain, or robotics."
+        },
+
+        "health": {
+            "keywords": ["health", "fitness", "exercise", "wellness", "diet", "nutrition", "mental health", "physical health", "healthy lifestyle"],
+            "response": "Health is wealth! Are you interested in physical health, mental health, nutrition, or fitness? I can discuss healthy habits, exercise routines, mindfulness, balanced diets, or general wellness tips (though I'm not a substitute for medical advice)."
+        },
+
+        "money": {
+            "keywords": ["money", "finance", "budget", "saving", "investment", "bank", "currency", "economy", "financial planning"],
+            "response": "Money matters are important! Would you like to discuss personal finance, budgeting, saving strategies, basic investment concepts, or economic principles? I can provide general information about financial literacy."
+        },
+
+        "pets": {
+            "keywords": ["pets", "dog", "cat", "animal", "pet care", "veterinary", "adoption", "dog breeds", "cat breeds"],
+            "response": "Pets bring so much joy! Do you have any pets or are you thinking of getting one? I can talk about different types of pets, pet care, animal behavior, adoption considerations, or fun facts about various animals."
+        },
+
+        "fashion": {
+            "keywords": ["fashion", "clothing", "style", "outfit", "dress", "shoes", "accessories", "trends", "designer"],
+            "response": "Fashion is a form of self-expression! Are you interested in clothing styles, fashion history, current trends, or sustainable fashion? I can discuss how fashion varies across cultures and its role in society."
+        },
+
+        "art": {
+            "keywords": ["art", "painting", "drawing", "sculpture", "gallery", "museum", "artist", "creative", "visual arts"],
+            "response": "Art enriches our lives! What type of art do you appreciate? I can discuss different art forms, famous artists, art movements throughout history, artistic techniques, or the role of art in culture and society."
+        },
+
+        "news": {
+            "keywords": ["news", "current events", "headlines", "newspaper", "media", "journalism", "world news", "local news"],
+            "response": "I don't have access to real-time news updates, but I can discuss the importance of staying informed, different types of media, journalism ethics, or historical events. For current news, you might want to check reputable news websites or apps."
+        },
+
+        "politics": {
+            "keywords": ["politics", "government", "election", "democracy", "policy", "political party", "vote", "leader"],
+            "response": "Politics affects many aspects of life. I can discuss general political systems, democratic principles, the importance of civic participation, or political theories. However, I don't discuss specific current political figures or parties to remain neutral and informative."
+        },
+
+        "religion": {
+            "keywords": ["religion", "god", "spiritual", "faith", "belief", "worship", "church", "temple", "mosque", "prayer"],
+            "response": "Religion and spirituality are important to many people. I can discuss different world religions, their basic beliefs and practices, religious history, or comparative religion in an educational context, while respecting all beliefs and perspectives."
+        },
+
+        "culture": {
+            "keywords": ["culture", "cultural", "tradition", "custom", "heritage", "ethnicity", "multicultural", "diversity"],
+            "response": "Culture shapes who we are! Would you like to discuss specific cultures, cultural traditions, multiculturalism, or how culture influences art, food, music, and social norms around the world?"
+        },
+
+        "history": {
+            "keywords": ["history", "historical", "past", "ancient", "medieval", "modern history", "historical events", "timeline"],
+            "response": "History helps us understand the present! What historical period or event interests you? I can discuss ancient civilizations, medieval times, modern history, important historical figures, or how historical events have shaped our world."
+        },
+
+        "science": {
+            "keywords": ["science", "scientific", "discovery", "research", "experiment", "physics", "chemistry", "biology", "astronomy"],
+            "response": "Science explains how our universe works! Which scientific field interests you? I can discuss physics, chemistry, biology, astronomy, earth sciences, scientific methods, famous discoveries, or how science impacts our daily lives."
+        },
+
+        "nature": {
+            "keywords": ["nature", "environment", "forest", "ocean", "mountains", "animals", "plants", "ecosystem", "conservation"],
+            "response": "Nature is amazing! Are you interested in wildlife, ecosystems, conservation, natural landscapes, or environmental issues? I can discuss biodiversity, national parks, endangered species, or how we can protect our natural world."
+        },
+
+        "space": {
+            "keywords": ["space", "universe", "cosmos", "stars", "planets", "galaxy", "astronomy", "space exploration", "nasa"],
+            "response": "The universe is vast and fascinating! Would you like to talk about planets, stars, galaxies, black holes, space exploration, astronauts, or the possibility of life beyond Earth? Space science has endless interesting topics!"
+        },
+
+        "dreams": {
+            "keywords": ["dreams", "dream", "sleep", "nightmare", "dream interpretation", "subconscious", "lucid dreaming"],
+            "response": "Dreams are mysterious! Are you curious about why we dream, dream interpretation, lucid dreaming, or the science of sleep? I can discuss different theories about dreams and their significance in psychology and culture."
+        },
+
+        "emotions": {
+            "keywords": ["emotions", "feelings", "happy", "sad", "angry", "excited", "nervous", "emotional", "mood"],
+            "response": "Emotions are part of being human! How are you feeling today? I can discuss different emotions, emotional intelligence, coping strategies for difficult feelings, or how emotions influence our thoughts and behaviors."
+        },
+
+        "goals": {
+            "keywords": ["goals", "ambition", "aspiration", "dream", "achievement", "success", "future plans", "life goals"],
+            "response": "Goals give us direction! What are your goals or aspirations? I can discuss goal-setting techniques, motivation, overcoming obstacles, different types of goals (personal, professional, academic), or how to break big goals into manageable steps."
+        },
+
+        "problems": {
+            "keywords": ["problems", "trouble", "difficulty", "challenge", "issue", "problem solving", "dilemma", "obstacle"],
+            "response": "Everyone faces challenges sometimes. Would you like to talk about a problem you're facing? While I can't solve personal problems, I can discuss general problem-solving strategies, different perspectives, or just listen. For serious issues, please consider talking to a qualified professional."
+        },
+
+        "advice": {
+            "keywords": ["advice", "suggestion", "recommendation", "guidance", "what should i do", "need advice"],
+            "response": "I can offer general advice on many topics, but for personal or important decisions, you should consult with appropriate professionals. What area would you like general advice about? I can provide information, suggestions, and different perspectives to help you think through situations."
+        },
+
+        "jokes": {
+            "keywords": ["jokes", "joke", "humor", "funny", "comedy", "laugh", "puns", "stand-up"],
+            "response": "I love humor! Would you like to hear a joke, or talk about different types of comedy? I can tell you some clean jokes, discuss famous comedians, comedy styles, or why humor is important for our wellbeing."
+        },
+
+        "games": {
+            "keywords": ["games", "gaming", "video games", "board games", "card games", "play", "game design", "esports"],
+            "response": "Games are fun and can be educational too! Do you play video games, board games, or sports? I can discuss different game genres, game design, the benefits of gaming, famous games, or even suggest some classic games to try."
+        },
+
+        "weekend": {
+            "keywords": ["weekend", "friday", "saturday", "sunday", "weekend plans", "what are you doing this weekend"],
+            "response": "Weekends are great for relaxation and activities! Do you have any weekend plans? I can discuss different weekend activities, how people around the world spend weekends, or the history of the weekend as a concept."
+        },
+
+        "holidays": {
+            "keywords": ["holidays", "vacation", "festival", "celebration", "christmas", "diwali", "eid", "holiday season"],
+            "response": "Holidays bring people together! What's your favorite holiday or celebration? I can discuss different cultural and religious holidays around the world, holiday traditions, or the history behind various celebrations."
+        },
+
+        "seasons": {
+            "keywords": ["seasons", "spring", "summer", "autumn", "fall", "winter", "seasonal", "changing seasons"],
+            "response": "The changing seasons are beautiful! Which season do you prefer? I can discuss why we have seasons, how different cultures celebrate seasonal changes, seasonal activities, or how seasons affect nature and human life."
+        },
+
+        "age": {
+            "keywords": ["age", "how old", "birthday", "years old", "aging", "growing up", "age groups"],
+            "response": "Age is just a number! Would you like to talk about aging, different life stages, birthday traditions, or how attitudes toward age vary across cultures? I don't have a specific age since I'm an AI, but I'm constantly learning and updating!"
+        },
+
+        "birthday": {
+            "keywords": ["birthday", "birth date", "celebration", "birthday party", "happy birthday", "birthday wishes"],
+            "response": "Birthdays are special occasions! Is it your birthday or someone's birthday? I can discuss birthday traditions around the world, the history of birthday celebrations, or different ways people celebrate this important day."
+        },
+
+        "memory": {
+            "keywords": ["memory", "remember", "recall", "forget", "memories", "childhood memories", "memory techniques"],
+            "response": "Memories shape who we are! Are you interested in how memory works, memory improvement techniques, different types of memory, or why we remember certain things and forget others? I can discuss the science and psychology of memory."
+        },
+
+        "imagination": {
+            "keywords": ["imagination", "creative", "fantasy", "imagine", "creativity", "innovative", "daydream"],
+            "response": "Imagination drives innovation! How do you use your imagination? I can discuss the importance of imagination for creativity, problem-solving, art, science, and how to nurture imaginative thinking in children and adults."
+        },
+
+        "wisdom": {
+            "keywords": ["wisdom", "wise", "knowledge", "insight", "experience", "philosophy", "life lessons"],
+            "response": "Wisdom comes with experience and reflection! What does wisdom mean to you? I can discuss different philosophical perspectives on wisdom, famous wise sayings, or how wisdom differs from mere knowledge."
+        },
+
+        "luck": {
+            "keywords": ["luck", "lucky", "unlucky", "fortune", "chance", "probability", "superstition", "good luck"],
+            "response": "Luck is an interesting concept! Do you believe in luck? I can discuss probability, superstitions around the world, the psychology of luck, famous lucky symbols, or how people create their own 'luck' through preparation and opportunity."
+        },
+
+        "time_management": {
+            "keywords": ["time management", "productivity", "procrastination", "schedule", "busy", "efficient", "organize time"],
+            "response": "Time management is a valuable skill! Do you struggle with managing time? I can discuss different time management techniques, productivity strategies, tools for organization, or how to balance work, study, and leisure effectively."
+        },
+
+        "stress": {
+            "keywords": ["stress", "anxiety", "pressure", "overwhelmed", "stress relief", "relaxation", "calm", "worried"],
+            "response": "Stress is a common experience in modern life. I can discuss general stress management techniques, relaxation methods, mindfulness, work-life balance, or the difference between normal stress and chronic stress. For serious stress or anxiety, please consider speaking with a mental health professional."
+        },
+
+        "sleep": {
+            "keywords": ["sleep", "insomnia", "tired", "rest", "bedtime", "dream", "nap", "sleep schedule"],
+            "response": "Sleep is essential for health! Are you having trouble sleeping or just curious about sleep science? I can discuss sleep cycles, sleep hygiene tips, why we need sleep, dreams, or common sleep disorders and when to seek help."
+        },
+
+        "exercise": {
+            "keywords": ["exercise", "workout", "gym", "yoga", "running", "fitness", "physical activity", "sports"],
+            "response": "Exercise is great for body and mind! What type of exercise do you enjoy? I can discuss different forms of exercise, their benefits, creating a balanced fitness routine, exercise safety, or how physical activity improves mental health."
+        },
+
+        "meditation": {
+            "keywords": ["meditation", "mindfulness", "yoga", "breathing", "calm", "peace", "relaxation", "mental clarity"],
+            "response": "Meditation and mindfulness have many benefits! Are you interested in starting a meditation practice or learning more about it? I can discuss different meditation techniques, their benefits for mental health, mindfulness exercises, or the science behind meditation."
+        },
+
+        "shopping": {
+            "keywords": ["shopping", "buy", "purchase", "store", "mall", "online shopping", "retail therapy", "consumer"],
+            "response": "Shopping can be practical or recreational! Do you prefer online or in-store shopping? I can discuss consumer psychology, smart shopping tips, the environmental impact of consumption, or how shopping habits have changed with technology."
+        },
+
+        "cooking": {
+            "keywords": ["cooking", "baking", "recipe", "kitchen", "culinary", "chef", "meal prep", "food preparation"],
+            "response": "Cooking is both an art and a science! Do you enjoy cooking? I can discuss different cooking techniques, international cuisines, kitchen safety, meal planning, or how cooking at home can be healthier and more economical than eating out."
+        },
+
+        "gardening": {
+            "keywords": ["gardening", "garden", "plants", "flowers", "vegetables", "horticulture", "green thumb", "outdoor"],
+            "response": "Gardening connects us with nature! Do you have a garden or indoor plants? I can discuss gardening basics, different types of gardens, plant care, the benefits of gardening for mental health, or sustainable gardening practices."
+        },
+
+        "photography": {
+            "keywords": ["photography", "photo", "camera", "picture", "photographer", "landscape", "portrait", "digital photography"],
+            "response": "Photography captures moments in time! Are you a photographer or interested in learning? I can discuss photography techniques, different genres (portrait, landscape, macro), camera equipment basics, composition rules, or the history of photography."
+        },
+
+        "writing": {
+            "keywords": ["writing", "write", "author", "poetry", "journal", "creative writing", "essay", "storytelling"],
+            "response": "Writing is a powerful form of expression! Do you enjoy writing? I can discuss different writing styles, creative writing tips, journaling benefits, famous writers, writing techniques, or how to overcome writer's block."
+        },
+
+        "language": {
+            "keywords": ["language", "linguistics", "bilingual", "translation", "grammar", "vocabulary", "learn a language"],
+            "response": "Language is fundamental to human communication! Are you interested in learning a new language or linguistics? I can discuss language learning strategies, interesting linguistic facts, language families, translation challenges, or how languages evolve over time."
+        },
+
+        "future": {
+            "keywords": ["future", "tomorrow", "next year", "future plans", "predictions", "what will happen", "technology future"],
+            "response": "The future is full of possibilities! What are your thoughts about the future? I can discuss technological predictions, future challenges humanity might face, how to plan for the future, or different perspectives on what the future might hold."
+        },
+
+        "past": {
+            "keywords": ["past", "yesterday", "old times", "nostalgia", "history", "childhood", "looking back"],
+            "response": "The past helps us understand where we came from! Are you feeling nostalgic or interested in historical perspectives? I can discuss the importance of studying history, how the past influences the present, or why we sometimes feel nostalgic for earlier times."
+        },
+
+        "present": {
+            "keywords": ["present", "now", "current moment", "today", "living in the moment", "mindfulness", "present time"],
+            "response": "The present moment is all we truly have! Are you interested in mindfulness or living in the present? I can discuss the importance of being present, mindfulness techniques, balancing planning for the future with enjoying today, or how to appreciate the current moment."
+        },
+
+        "home": {
+            "keywords": ["home", "house", "apartment", "living space", "home decor", "homely", "home improvement"],
+            "response": "Home is where the heart is! Would you like to talk about home decor, interior design, creating a comfortable living space, or the concept of 'home' in different cultures? I can discuss how our living environments affect our wellbeing."
+        },
+
+        "city": {
+            "keywords": ["city", "urban", "metropolis", "downtown", "city life", "skyscraper", "urban planning"],
+            "response": "Cities are hubs of culture and activity! Do you live in or prefer cities? I can discuss urban planning, the pros and cons of city living, famous cities around the world, urban sustainability, or how cities have evolved throughout history."
+        },
+
+        "countryside": {
+            "keywords": ["countryside", "rural", "village", "farm", "nature", "peaceful", "agriculture", "small town"],
+            "response": "The countryside offers peace and natural beauty! Do you enjoy rural areas? I can discuss rural life, agriculture, the differences between urban and rural living, environmental benefits of countryside preservation, or challenges facing rural communities."
+        },
+
+        "ocean": {
+            "keywords": ["ocean", "sea", "beach", "marine", "waves", "coast", "sailing", "underwater"],
+            "response": "The ocean covers most of our planet and is full of mystery! Are you interested in marine life, ocean conservation, beach activities, or oceanography? I can discuss the importance of oceans, marine ecosystems, or fascinating ocean facts."
+        },
+
+        "mountains": {
+            "keywords": ["mountains", "mountain", "peak", "hiking", "climbing", "alps", "himalayas", "volcano"],
+            "response": "Mountains are majestic and challenging! Do you enjoy mountain activities? I can discuss famous mountain ranges, mountain ecology, climbing, hiking tips, mountain weather patterns, or the cultural significance of mountains in different societies."
+        },
+
+        "desert": {
+            "keywords": ["desert", "arid", "sand", "camel", "oasis", "dry", "sahara", "desert life"],
+            "response": "Deserts are extreme yet beautiful environments! Are you curious about desert ecosystems, desert survival, or desert cultures? I can discuss desert plants and animals, how people adapt to desert life, famous deserts around the world, or desert conservation."
+        },
+
+        "forest": {
+            "keywords": ["forest", "woods", "trees", "jungle", "rainforest", "wildlife", "camping", "deforestation"],
+            "response": "Forests are vital for our planet! Would you like to discuss different types of forests, forest ecosystems, conservation efforts, forest recreation, or the importance of trees for climate regulation and biodiversity?"
+        },
+
+        "river": {
+            "keywords": ["river", "stream", "waterfall", "lake", "waterway", "delta", "river basin", "freshwater"],
+            "response": "Rivers are life-giving waterways! Are you interested in famous rivers, river ecosystems, the role of rivers in human civilization, water conservation, or recreational activities like fishing and boating? Rivers have shaped human history and geography."
+        },
+
+        "sky": {
+            "keywords": ["sky", "clouds", "blue sky", "sunset", "sunrise", "horizon", "atmosphere", "heavens"],
+            "response": "The sky is ever-changing and beautiful! Do you enjoy watching sunsets, cloud formations, or the night sky? I can discuss atmospheric science, weather phenomena, astronomy, or the cultural and artistic significance of skies throughout history."
         },
 
         # Alvas College Information
@@ -115,142 +1049,686 @@ def get_conversational_response(query):
             "response": "Alvas College has a good placement record with companies like Infosys, TCS, Wipro, and many others visiting the campus for recruitment."
         },
 
-        # Programming Questions
-        "programming": {
-            "keywords": ["programming", "coding", "code"],
-            "response": "Programming is the process of creating instructions for computers to follow. What specific programming language or concept would you like to know about?"
-        },
-
-        "python": {
-            "keywords": ["python", "python programming"],
-            "response": "Python is a high-level, interpreted programming language known for its simplicity and readability. It's great for beginners and used in web development, data science, AI, and more."
-        },
-
-        "java": {
-            "keywords": ["java", "java programming"],
-            "response": "Java is an object-oriented programming language known for its 'write once, run anywhere' capability. It's widely used for enterprise applications, Android development, and web applications."
-        },
-
-        "cpp": {
-            "keywords": ["c++", "cpp", "c plus plus"],
-            "response": "C++ is a powerful, high-performance programming language that extends C with object-oriented features. It's commonly used for system programming, game development, and performance-critical applications."
-        },
-
-        "javascript": {
-            "keywords": ["javascript", "js", "node.js"],
-            "response": "JavaScript is a versatile programming language primarily used for web development. It runs in browsers and can also be used server-side with Node.js."
-        },
-
-        "algorithms": {
-            "keywords": ["algorithm", "algorithms", "data structure"],
-            "response": "Algorithms are step-by-step procedures for solving problems. Common types include sorting algorithms (bubble sort, quick sort), searching algorithms (binary search), and graph algorithms."
-        },
-
-        "variables": {
-            "keywords": ["variable", "variables", "data types"],
-            "response": "Variables are containers for storing data values. In programming, they have names and can hold different types of data like numbers, strings, or objects."
-        },
-
-        "loops": {
-            "keywords": ["loop", "loops", "for loop", "while loop"],
-            "response": "Loops are programming constructs that repeat a block of code. Common types are 'for' loops (when you know how many times to repeat) and 'while' loops (when you repeat until a condition is met)."
-        },
-
-        "functions": {
-            "keywords": ["function", "functions", "methods"],
-            "response": "Functions are reusable blocks of code that perform specific tasks. They help organize code, avoid repetition, and make programs more modular."
-        },
-
-        # Electronics and Communication Questions
+        # Electronics and Communication Topics
         "electronics": {
-            "keywords": ["electronics", "electronic", "circuit"],
-            "response": "Electronics is the branch of physics and engineering that deals with the flow of electrons in circuits and devices. What specific topic would you like to know about?"
+            "keywords": ["electronics", "electronic", "circuit", "electronic engineering", "electronic devices"],
+            "response": "Electronics is the branch of physics and engineering that deals with the flow of electrons in circuits and devices. It involves designing and building electronic circuits, components, and systems for applications ranging from consumer devices to industrial equipment. Major areas include analog electronics, digital electronics, power electronics, and microelectronics."
         },
 
         "communication": {
-            "keywords": ["communication", "telecommunication", "signal"],
-            "response": "Communication engineering deals with the transmission of information through various mediums. This includes wired and wireless communication systems."
+            "keywords": ["communication", "telecommunication", "signal", "communication systems", "telecom engineering"],
+            "response": "Communication engineering deals with the transmission of information through various mediums using electronic systems. This includes wired communication (optical fiber, copper cables) and wireless communication (radio, microwave, satellite). Key concepts include modulation, coding, signal processing, and network protocols to ensure reliable information transfer over distances."
         },
 
         "transistor": {
-            "keywords": ["transistor", "transistors"],
-            "response": "A transistor is a semiconductor device used to amplify or switch electronic signals. There are BJTs (Bipolar Junction Transistors) and MOSFETs (Metal-Oxide-Semiconductor Field-Effect Transistors)."
+            "keywords": ["transistor", "transistors", "bjt", "mosfet", "transistor amplifier"],
+            "response": "A transistor is a semiconductor device used to amplify or switch electronic signals. Bipolar Junction Transistors (BJTs) use both electron and hole charge carriers, while Field-Effect Transistors (FETs) like MOSFETs use an electric field to control conductivity. Transistors are fundamental building blocks of modern electronics, enabling amplification in audio systems, switching in digital circuits, and processing in microprocessors."
         },
 
         "resistor": {
-            "keywords": ["resistor", "resistance"],
-            "response": "A resistor is a passive electrical component that opposes the flow of current. It's measured in ohms (Ω) and used to control voltage and current in circuits."
+            "keywords": ["resistor", "resistance", "ohm's law", "variable resistor", "resistor color code"],
+            "response": "A resistor is a passive electrical component that opposes the flow of current, converting electrical energy into heat. Measured in ohms (Ω), resistors are used to control voltage and current in circuits, set bias points in transistors, and limit current to protect components. Types include fixed resistors, variable resistors (potentiometers), and specialized resistors like thermistors and light-dependent resistors (LDRs)."
         },
 
         "capacitor": {
-            "keywords": ["capacitor", "capacitance"],
-            "response": "A capacitor is an electronic component that stores electrical energy in an electric field. It's measured in farads (F) and used in filtering, timing, and energy storage applications."
+            "keywords": ["capacitor", "capacitance", "electrolytic capacitor", "ceramic capacitor", "capacitor types"],
+            "response": "A capacitor is an electronic component that stores electrical energy in an electric field between conductive plates separated by an insulator (dielectric). Measured in farads (F), capacitors are used for filtering noise, smoothing power supplies, timing circuits, coupling/decoupling signals, and energy storage. Types include ceramic, electrolytic, film, and supercapacitors with different characteristics for various applications."
         },
 
         "inductor": {
-            "keywords": ["inductor", "inductance"],
-            "response": "An inductor is a passive electrical component that stores energy in a magnetic field when current flows through it. It's measured in henries (H) and used in filters and transformers."
+            "keywords": ["inductor", "inductance", "coil", "choke", "inductor types"],
+            "response": "An inductor is a passive electrical component that stores energy in a magnetic field when current flows through its coiled conductor. Measured in henries (H), inductors oppose changes in current. Used in filters (with capacitors to form LC circuits), transformers, energy storage in power supplies, and radio frequency (RF) circuits. Types include air core, iron core, and toroidal inductors with different inductance values and frequency responses."
         },
 
         "diode": {
-            "keywords": ["diode", "diodes"],
-            "response": "A diode is a semiconductor device that allows current to flow in one direction only. Common types include rectifier diodes, Zener diodes, and LEDs (Light Emitting Diodes)."
+            "keywords": ["diode", "diodes", "rectifier diode", "zener diode", "led diode", "schottky diode"],
+            "response": "A diode is a semiconductor device that allows current to flow primarily in one direction (forward bias) while blocking it in the opposite direction (reverse bias). Types include rectifier diodes (AC to DC conversion), Zener diodes (voltage regulation), LEDs (light emission), photodiodes (light detection), Schottky diodes (fast switching), and varactor diodes (voltage-variable capacitance). Diodes are essential for power conversion, signal demodulation, and circuit protection."
         },
 
         "microcontroller": {
-            "keywords": ["microcontroller", "arduino", "raspberry pi"],
-            "response": "A microcontroller is a small computer on a single integrated circuit containing a processor core, memory, and programmable input/output peripherals. Arduino and Raspberry Pi are popular microcontroller platforms."
+            "keywords": ["microcontroller", "arduino", "raspberry pi", "microprocessor", "embedded controller"],
+            "response": "A microcontroller is a compact integrated circuit containing a processor core, memory (RAM/ROM), and programmable input/output peripherals on a single chip. Unlike microprocessors (which require external components), microcontrollers are self-contained systems for embedded applications. Popular platforms include Arduino (simplified programming), Raspberry Pi (more powerful, runs Linux), PIC, and AVR microcontrollers. Used in automation, robotics, IoT devices, and consumer electronics."
         },
 
         "antenna": {
-            "keywords": ["antenna", "antennas"],
-            "response": "An antenna is a device that converts electrical signals into electromagnetic waves for transmission, or vice versa for reception. Different types include dipole, Yagi, and parabolic antennas."
+            "keywords": ["antenna", "antennas", "dipole antenna", "yagi antenna", "antenna design", "rf antenna"],
+            "response": "An antenna is a transducer that converts electrical signals into electromagnetic waves for transmission (transmitter) or vice versa for reception (receiver). Key parameters: gain, directivity, bandwidth, impedance. Types include dipole (basic), monopole, Yagi-Uda (directional), parabolic (high gain), patch (compact for PCBs), and helical (circular polarization). Antenna design considers frequency, radiation pattern, and application (broadcasting, cellular, Wi-Fi, satellite)."
         },
 
         "modulation": {
-            "keywords": ["modulation", "am", "fm", "pm"],
-            "response": "Modulation is the process of varying a carrier signal to encode information. Common types include Amplitude Modulation (AM), Frequency Modulation (FM), and Phase Modulation (PM)."
+            "keywords": ["modulation", "am", "fm", "pm", "digital modulation", "modulation techniques"],
+            "response": "Modulation is the process of varying a carrier signal's properties (amplitude, frequency, or phase) to encode information for transmission. Analog modulation: AM (Amplitude Modulation), FM (Frequency Modulation), PM (Phase Modulation). Digital modulation: ASK, FSK, PSK, QAM (Quadrature Amplitude Modulation). Modulation enables efficient use of bandwidth, resistance to noise, and simultaneous transmission of multiple signals (multiplexing). Demodulation extracts the original information at the receiver."
         },
 
         "fiber_optics": {
-            "keywords": ["fiber optics", "optical fiber", "fiber optic"],
-            "response": "Fiber optics uses light to transmit data through thin glass or plastic fibers. It's used for high-speed internet, telecommunications, and medical imaging due to its high bandwidth and low signal loss."
+            "keywords": ["fiber optics", "optical fiber", "fiber optic cable", "optical communication", "lightwave communication"],
+            "response": "Fiber optics uses light pulses to transmit data through thin glass or plastic fibers. Core (light travels) surrounded by cladding (reflects light back) and protective coating. Advantages: high bandwidth (terabits per second), low loss (long distances without amplification), immunity to electromagnetic interference, security. Used in telecommunications (long-haul networks), internet backbones, cable TV, medical imaging (endoscopy), and industrial sensors. Single-mode (long distance) and multi-mode (short distance) fibers available."
         },
 
         "satellite": {
-            "keywords": ["satellite", "satellite communication"],
-            "response": "Satellite communication uses artificial satellites to transmit signals over long distances. It's used for television broadcasting, internet services, GPS, and weather monitoring."
+            "keywords": ["satellite", "satellite communication", "geostationary satellite", "satellite orbits", "vsat"],
+            "response": "Satellite communication uses artificial satellites as relay stations to transmit signals between Earth stations over long distances. Satellite types: GEO (Geostationary - fixed position), LEO (Low Earth Orbit - lower latency), MEO (Medium Earth Orbit - navigation systems like GPS). Applications: television broadcasting (DTH), internet services (VSAT), navigation (GPS, GLONASS), weather monitoring, military communications. Satellite systems include uplink (Earth to satellite), transponder (amplify/retransmit), and downlink (satellite to Earth)."
         },
 
-        # NEW: Additional Engineering Topics
+        "integrated_circuits": {
+            "keywords": ["integrated circuits", "ic", "microchip", "chip design", "analog ic", "digital ic"],
+            "response": "Integrated circuits (ICs) are semiconductor wafers containing thousands to billions of tiny resistors, capacitors, diodes, and transistors fabricated together. Classification: SSI (Small Scale), MSI, LSI, VLSI (Very Large Scale), ULSI. Types: analog ICs (amplifiers, regulators), digital ICs (logic gates, microprocessors), mixed-signal ICs (ADC/DAC). IC manufacturing involves photolithography, doping, and packaging. ICs revolutionized electronics by reducing size, cost, and power consumption while increasing reliability and performance."
+        },
+
+        "pcb": {
+            "keywords": ["pcb", "printed circuit board", "circuit board", "pcb design", "pcb manufacturing"],
+            "response": "A Printed Circuit Board (PCB) mechanically supports and electrically connects electronic components using conductive tracks, pads, and layers laminated onto a non-conductive substrate. Types: single-sided, double-sided, multi-layer, flexible, rigid-flex. PCB design involves schematic capture, component placement, routing (track layout), and design rule checking. Manufacturing: etching copper layers, drilling holes, plating, solder mask application, silkscreen printing. PCBs enable mass production of reliable electronic assemblies."
+        },
+
+        "oscilloscope": {
+            "keywords": ["oscilloscope", "oscilloscope measurement", "digital oscilloscope", "analog oscilloscope", "waveform analysis"],
+            "response": "An oscilloscope is an electronic test instrument that graphically displays varying signal voltages as a function of time. Key parameters: bandwidth, sample rate, channels, memory depth. Types: analog (CRT display), digital storage oscilloscopes (DSO - store and analyze), mixed-signal oscilloscopes (MSO - digital and analog), sampling oscilloscopes (high frequency). Used to measure amplitude, frequency, rise time, phase, and detect anomalies in electronic circuits for debugging and characterization."
+        },
+
+        "multimeter": {
+            "keywords": ["multimeter", "digital multimeter", "multimeter measurement", "voltmeter", "ammeter", "ohmmeter"],
+            "response": "A multimeter is a versatile electronic measuring instrument that combines several measurement functions: voltage (AC/DC), current (AC/DC), resistance, and often continuity, capacitance, frequency, temperature. Types: analog (moving coil meter), digital (LCD display with higher accuracy). Digital multimeters (DMM) may include features like auto-ranging, data logging, and connectivity. Essential for troubleshooting circuits, verifying component values, and ensuring proper electrical parameters in electronic systems."
+        },
+
+        "signal_generator": {
+            "keywords": ["signal generator", "function generator", "waveform generator", "rf signal generator", "arbitrary waveform generator"],
+            "response": "A signal generator produces electronic signals (waveforms) for testing, calibration, and development of electronic equipment. Types: function generators (basic waveforms: sine, square, triangle, sawtooth), RF signal generators (radio frequencies with modulation), arbitrary waveform generators (user-defined waveforms), pulse generators. Parameters: frequency range, amplitude, modulation capabilities (AM, FM, PM). Used to test amplifiers, filters, communication receivers, and simulate sensor signals in development."
+        },
+
+        "power_supply": {
+            "keywords": ["power supply", "dc power supply", "switching power supply", "linear power supply", "power supply design"],
+            "response": "A power supply converts input power (AC mains or DC) to regulated DC output for electronic circuits. Types: linear (simple, low noise but inefficient), switching (SMPS - efficient, compact but noisy), unregulated, programmable. Key specifications: voltage/current rating, regulation (line/load), ripple, efficiency. Power supplies may include protection features: overvoltage, overcurrent, thermal shutdown. Essential for powering all electronic systems from small devices to industrial equipment."
+        },
+
+        "amplifier": {
+            "keywords": ["amplifier", "electronic amplifier", "audio amplifier", "rf amplifier", "operational amplifier"],
+            "response": "An amplifier increases the power, voltage, or current of a signal. Classified by: application (audio, RF, instrumentation), frequency range (DC, audio, RF), class of operation (A, B, AB, C, D for efficiency/linearity), technology (tube, transistor, op-amp). Key parameters: gain, bandwidth, distortion, noise, power output. Operational amplifiers (op-amps) are versatile integrated circuits used in amplification, filtering, mathematical operations. Amplifiers are fundamental in audio systems, communications, and signal processing."
+        },
+
+        "filter": {
+            "keywords": ["filter", "electronic filter", "low pass filter", "high pass filter", "bandpass filter", "active filter"],
+            "response": "An electronic filter selectively passes or rejects frequency components of a signal. Types by frequency response: low-pass (passes low frequencies), high-pass (passes high frequencies), band-pass (passes a band), band-stop/notch (rejects a band). Implementation: passive (R, L, C components), active (with amplifiers like op-amps), digital (signal processing). Filters are used to remove noise, separate signals, shape frequency response in audio systems, communications, and instrumentation."
+        },
+
+        "oscillator": {
+            "keywords": ["oscillator", "electronic oscillator", "crystal oscillator", "lc oscillator", "rc oscillator", "clock generator"],
+            "response": "An oscillator generates a periodic, oscillating electronic signal (sine wave, square wave) without an input signal, using positive feedback. Types: RC oscillators (low frequency), LC oscillators (radio frequency), crystal oscillators (high stability and precision), voltage-controlled oscillators (VCO - frequency controlled by voltage). Applications: clock signals for digital circuits, carrier waves in transmitters, local oscillators in receivers, tone generation in audio, and timing references."
+        },
+
+        "mixer": {
+            "keywords": ["mixer", "rf mixer", "frequency mixer", "audio mixer", "signal mixer"],
+            "response": "A mixer is a nonlinear electronic circuit that combines two signals to produce new frequencies equal to the sum and difference of the original frequencies. In RF systems, mixers are used for frequency conversion (up-conversion in transmitters, down-conversion in receivers). Types: passive (diode ring), active (transistor-based). Key parameters: conversion gain/loss, isolation, noise figure. Audio mixers combine multiple audio signals with level control, equalization, and effects."
+        },
+
+        "demodulator": {
+            "keywords": ["demodulator", "detector", "am demodulation", "fm demodulation", "demodulation circuit"],
+            "response": "A demodulator (or detector) extracts the original information-bearing signal from a modulated carrier wave at the receiver. AM demodulation: envelope detector (simple diode-capacitor) or synchronous detection. FM demodulation: frequency discriminator, phase-locked loop (PLL), or quadrature detector. Digital demodulators recover bits from modulated signals using techniques matched to the modulation scheme (PSK, QAM). Demodulation is the inverse process of modulation, crucial for recovering transmitted information."
+        },
+
+        "multiplexing": {
+            "keywords": ["multiplexing", "tdm", "fdm", "cdm", "wavelength division multiplexing"],
+            "response": "Multiplexing combines multiple signals into one signal over a shared medium to optimize bandwidth usage. Types: Frequency Division Multiplexing (FDM - different frequency bands), Time Division Multiplexing (TDM - different time slots), Code Division Multiplexing (CDM - different codes), Wavelength Division Multiplexing (WDM - different wavelengths in fiber optics). Demultiplexing separates the combined signal at the receiver. Multiplexing enables multiple users/channels to share expensive transmission resources efficiently."
+        },
+
+        "digital_signal_processing": {
+            "keywords": ["digital signal processing", "dsp", "signal processing", "digital filter", "fft"],
+            "response": "Digital Signal Processing (DSP) involves manipulating signals (audio, video, sensor data) in digital form using algorithms. Advantages: precision, flexibility, reproducibility. Key operations: filtering (FIR, IIR), transformation (FFT - Fast Fourier Transform), convolution, correlation. Implemented on DSP processors (optimized for mathematical operations), FPGAs, or general-purpose processors. Applications: audio processing (noise cancellation, compression), image processing, communications (modems, equalization), radar, and biomedical signal analysis."
+        },
+
+        "analog_to_digital_converter": {
+            "keywords": ["analog to digital converter", "adc", "a/d converter", "sampling", "quantization"],
+            "response": "An Analog-to-Digital Converter (ADC) converts continuous analog signals (voltage, current) into discrete digital numbers. Process: sampling (measure at intervals), quantization (assign to discrete levels), encoding (binary representation). Key specifications: resolution (bits), sampling rate, signal-to-noise ratio (SNR), linearity. Types: successive approximation (SAR), delta-sigma (high resolution), flash (high speed), pipeline. ADCs enable digital systems to process real-world analog signals from sensors, audio, and communications."
+        },
+
+        "digital_to_analog_converter": {
+            "keywords": ["digital to analog converter", "dac", "d/a converter", "digital analog conversion"],
+            "response": "A Digital-to-Analog Converter (DAC) converts digital numbers into continuous analog signals. Applications: audio playback (from digital files to speakers), video generation, waveform synthesis, control signals. Types: resistor ladder (R-2R), weighted resistor, delta-sigma, current steering. Key specifications: resolution (bits), settling time, glitch energy, linearity. DACs bridge digital processing systems with analog output devices, reconstructing signals from their digital representations."
+        },
+
+        "operational_amplifier": {
+            "keywords": ["operational amplifier", "op amp", "op-amp", "differential amplifier", "ideal op amp"],
+            "response": "An operational amplifier (op-amp) is a high-gain voltage amplifier with differential inputs and single-ended output. Ideal characteristics: infinite gain, infinite input impedance, zero output impedance. Practical op-amps have limitations: finite gain-bandwidth product, slew rate, input offset voltage. Configurations: inverting/non-inverting amplifier, summing amplifier, integrator, differentiator, comparator, filters. Op-amps are building blocks in analog circuits for signal conditioning, mathematical operations, active filtering, and instrumentation."
+        },
+
+        "logic_gates": {
+            "keywords": ["logic gates", "and gate", "or gate", "not gate", "digital logic", "boolean algebra"],
+            "response": "Logic gates are fundamental building blocks of digital circuits that perform Boolean logic operations on binary inputs (0/1). Basic gates: AND (output 1 if all inputs 1), OR (output 1 if any input 1), NOT (inverter). Derived gates: NAND, NOR, XOR, XNOR. Gates are implemented using transistors in integrated circuits (TTL, CMOS). Boolean algebra describes gate behavior. Combinations of gates create complex functions: adders, multiplexers, memory elements, forming the basis of processors and digital systems."
+        },
+
+        "flip_flop": {
+            "keywords": ["flip flop", "latch", "sequential circuit", "sr flip flop", "jk flip flop", "d flip flop"],
+            "response": "A flip-flop is a bistable multivibrator circuit that stores one bit of data, serving as basic memory element in sequential digital circuits. Types: SR (Set-Reset), JK (versatile, toggles), D (Data - stores input), T (Toggle). Flip-flops have clocked (synchronous) and unclocked (asynchronous/latch) variants. They are used in registers, counters, memory units, and state machines. Flip-flops enable digital systems to remember past states, essential for processing and control logic."
+        },
+
+        "counter": {
+            "keywords": ["counter", "digital counter", "binary counter", "up counter", "down counter", "frequency counter"],
+            "response": "A counter is a digital circuit that counts clock pulses, generating a sequence of numbers. Types: asynchronous (ripple counter), synchronous (all flip-flops clocked together). Counting direction: up, down, up/down. Modulus: binary, decade (0-9), programmable. Applications: event counting, frequency division, time measurement, control sequencing. Frequency counters measure signal frequency by counting cycles per time interval. Counters are fundamental in digital systems for timing, control, and measurement functions."
+        },
+
+        "shift_register": {
+            "keywords": ["shift register", "serial in parallel out", "parallel in serial out", "shift register ic"],
+            "response": "A shift register is a cascade of flip-flops that shifts data bits one position per clock cycle. Types: Serial-In Serial-Out (SISO), Serial-In Parallel-Out (SIPO), Parallel-In Serial-Out (PISO), Parallel-In Parallel-Out (PIPO), bidirectional. Applications: data serialization/deserialization (serial communication), temporary storage, delay lines, sequence generation. Shift registers are used in communication interfaces (UART, SPI), keyboard scanning, display drivers, and digital signal processing."
+        },
+
+        "multiplexer": {
+            "keywords": ["multiplexer", "mux", "digital multiplexer", "data selector", "multiplexer circuit"],
+            "response": "A multiplexer (MUX) is a digital switch that selects one of several input signals and forwards it to a single output line. Selection is controlled by binary address lines. An n:1 multiplexer has n data inputs, log2(n) select lines, and one output. Applications: data routing, function implementation (using MUX as logic), parallel-to-serial conversion. Demultiplexer (DEMUX) performs the reverse operation. Multiplexers are fundamental in digital systems for efficient data handling and resource sharing."
+        },
+
+        "decoder": {
+            "keywords": ["decoder", "digital decoder", "binary decoder", "address decoder", "7 segment decoder"],
+            "response": "A decoder is a digital circuit that converts binary input code into a set of output signals, activating one output corresponding to the input code. An n-to-2^n decoder has n inputs and 2^n outputs. Applications: memory address decoding (selecting specific memory locations), instruction decoding in processors, display drivers (BCD to 7-segment decoder), control logic. Encoders perform the inverse operation. Decoders are essential for interpreting binary information in digital systems."
+        },
+
+        "comparator": {
+            "keywords": ["comparator", "digital comparator", "analog comparator", "voltage comparator", "magnitude comparator"],
+            "response": "A comparator compares two voltages or currents and outputs a digital signal indicating which is larger. Analog comparators (op-amp based) output high/low based on input difference. Digital comparators (logic circuit) compare binary numbers, outputting equality (A=B) or magnitude (A>B, A<B). Applications: analog-to-digital conversion (in ADCs), threshold detection, window comparators (within range), zero-crossing detection. Comparators are used in measurement, control systems, and signal conditioning."
+        },
+
+        "timer": {
+            "keywords": ["timer", "555 timer", "ic 555", "timer circuit", "pulse generator"],
+            "response": "A timer circuit generates precise time delays or oscillations. The 555 timer IC is a popular integrated circuit used in various timing and pulse generation applications. Modes: monostable (one-shot pulse of fixed duration), astable (free-running oscillator), bistable (flip-flop). Applications: timers, pulse-width modulation (PWM), tone generation, frequency division, sequential timing. 555 timers are versatile, low-cost, and easy to use, found in toys, appliances, and industrial controls."
+        },
+
+        "voltage_regulator": {
+            "keywords": ["voltage regulator", "linear regulator", "switching regulator", "voltage regulator ic", "power management"],
+            "response": "A voltage regulator maintains a constant output voltage despite variations in input voltage or load current. Types: linear regulators (series, shunt - simple, low noise but inefficient), switching regulators (buck, boost, buck-boost - efficient but noisy). Integrated circuit regulators: 78xx (positive fixed), 79xx (negative fixed), LM317 (adjustable). Applications: power supplies for sensitive electronics, battery charging, voltage reference. Regulators ensure stable operation of electronic circuits."
+        },
+
+        "sensor": {
+            "keywords": ["sensor", "electronic sensor", "temperature sensor", "pressure sensor", "motion sensor"],
+            "response": "A sensor converts a physical quantity (temperature, pressure, light, motion) into an electrical signal for measurement or control. Types: temperature (thermistor, thermocouple, IC), pressure (piezoelectric, capacitive), light (photodiode, LDR), motion (PIR, accelerometer), proximity, humidity, gas. Sensors interface with electronic systems through signal conditioning (amplification, filtering) and analog-to-digital conversion. Essential for automation, IoT, automotive systems, medical devices, and environmental monitoring."
+        },
+
+        "actuator": {
+            "keywords": ["actuator", "electronic actuator", "motor", "solenoid", "relay"],
+            "response": "An actuator converts electrical signals into physical motion or action. Types: electric motors (DC, stepper, servo for rotational motion), solenoids (linear motion), relays (electromechanical switches), piezoelectric actuators (precise movement), hydraulic/pneumatic actuators controlled by electronic valves. Actuators are driven by driver circuits (H-bridge for motors) and controlled by microcontrollers. Applications: robotics, automation, valves, locks, positioning systems, and consumer electronics."
+        },
+
+        "relay": {
+            "keywords": ["relay", "electromechanical relay", "solid state relay", "relay switching", "relay driver"],
+            "response": "A relay is an electrically operated switch that uses an electromagnet to mechanically operate contacts, isolating control circuit from load circuit. Types: electromechanical (EMR - physical contacts), solid-state relay (SSR - semiconductor switches, no moving parts). Relays allow low-power circuits to control high-power loads. Specifications: coil voltage, contact rating (current/voltage), configuration (SPDT, DPDT). Applications: automotive, industrial control, home automation, protection circuits."
+        },
+
+        "transformer": {
+            "keywords": ["transformer", "electrical transformer", "power transformer", "audio transformer", "rf transformer"],
+            "response": "A transformer transfers electrical energy between circuits through electromagnetic induction, changing voltage and current levels while maintaining frequency. Consists of primary and secondary windings around a core (iron, ferrite, air). Types: power transformers (AC mains voltage conversion), audio transformers (impedance matching, isolation), RF transformers (coupling, impedance matching). Key parameters: turns ratio, power rating, efficiency, frequency response. Transformers provide isolation, impedance matching, and voltage scaling in electronic systems."
+        },
+
+        "battery": {
+            "keywords": ["battery", "rechargeable battery", "lithium ion", "battery management", "battery charger"],
+            "response": "A battery converts chemical energy into electrical energy, providing portable power for electronic devices. Types: primary (non-rechargeable - alkaline), secondary (rechargeable - Li-ion, NiMH, lead-acid). Key parameters: voltage, capacity (mAh), energy density, discharge rate. Battery management systems (BMS) protect against overcharge, over-discharge, and monitor health. Charger circuits restore energy. Batteries power mobile devices, electric vehicles, backup systems, and renewable energy storage."
+        },
+
+        "solar_cell": {
+            "keywords": ["solar cell", "photovoltaic cell", "solar panel", "solar energy", "pv system"],
+            "response": "A solar cell (photovoltaic cell) converts sunlight directly into electricity via the photovoltaic effect, using semiconductor materials (typically silicon). Single cells produce about 0.5-0.6V; multiple cells connected in series/parallel form solar panels. Types: monocrystalline (high efficiency), polycrystalline, thin-film. Solar power systems include panels, charge controllers, batteries (for storage), and inverters (DC to AC). Applications: grid-tied systems, off-grid power, portable chargers, satellites, and sustainable energy solutions."
+        },
+
+        "wireless_power_transfer": {
+            "keywords": ["wireless power transfer", "inductive charging", "wireless charging", "resonant coupling", "wireless energy"],
+            "response": "Wireless power transfer transmits electrical energy without physical connectors using electromagnetic fields. Methods: inductive coupling (near field, e.g., Qi charging pads), resonant coupling (mid-range, higher efficiency), microwave/RF radiation (far field, lower efficiency). Applications: charging mobile devices, electric vehicles, medical implants, and consumer electronics. Standards like Qi ensure compatibility. Wireless power offers convenience and eliminates connectors but has efficiency and distance limitations compared to wired transfer."
+        },
+
+        "rfid": {
+            "keywords": ["rfid", "radio frequency identification", "rfid tag", "rfid reader", "rfid technology"],
+            "response": "RFID (Radio Frequency Identification) uses electromagnetic fields to automatically identify and track tags attached to objects. System includes: reader (transceiver with antenna), tag (chip + antenna). Tags: passive (powered by reader signal), active (battery-powered), semi-passive. Frequencies: LF (125 kHz), HF (13.56 MHz - NFC), UHF (860-960 MHz), microwave. Applications: inventory management, access control, payment systems, animal tracking, supply chain logistics. RFID enables contactless data exchange over short distances."
+        },
+
+        "bluetooth": {
+            "keywords": ["bluetooth", "bluetooth technology", "bluetooth low energy", "bluetooth communication", "wireless personal area network"],
+            "response": "Bluetooth is a wireless technology standard for short-range data exchange between devices (typically up to 100 meters). Operates in 2.4 GHz ISM band using frequency-hopping spread spectrum. Versions: Classic (data/audio streaming), Bluetooth Low Energy (BLE - IoT, low power). Profiles define applications: A2DP (audio), HID (keyboard/mouse), HFP (hands-free). Bluetooth enables wireless headsets, speakers, keyboards, fitness trackers, and device connectivity in personal area networks (PAN)."
+        },
+
+        "wifi": {
+            "keywords": ["wifi", "wireless fidelity", "wifi network", "wireless lan", "ieee 802.11"],
+            "response": "Wi-Fi (Wireless Fidelity) is a family of wireless network protocols based on IEEE 802.11 standards for local area networking. Operates in 2.4 GHz and 5 GHz bands (dual-band). Generations: 802.11b/g/n/ac/ax (Wi-Fi 6). Wi-Fi provides internet access and network connectivity to devices within range of an access point (router). Security: WEP (weak), WPA, WPA2, WPA3. Applications: home/office networks, public hotspots, IoT connectivity. Wi-Fi enables wireless internet access for computers, smartphones, smart home devices."
+        },
+
+        "cellular_networks": {
+            "keywords": ["cellular networks", "mobile network", "4g lte", "5g", "gsm", "cdma"],
+            "response": "Cellular networks provide mobile communication by dividing geographic areas into cells served by base stations. Generations: 1G (analog voice), 2G (digital voice, SMS - GSM, CDMA), 3G (mobile data), 4G LTE (high-speed internet), 5G (ultra-reliable low latency, massive IoT). Technologies: FDMA, TDMA, CDMA, OFDMA. Cellular networks enable voice calls, messaging, mobile internet, and IoT connectivity through subscription to mobile network operators using smartphones and cellular modems."
+        },
+
+        "gps": {
+            "keywords": ["gps", "global positioning system", "satellite navigation", "gnss", "gps receiver"],
+            "response": "GPS (Global Positioning System) is a satellite-based navigation system that provides location and time information anywhere on Earth. Constellation: 24+ satellites in medium Earth orbit. GPS receiver measures time delay from multiple satellites to calculate position (trilateration). Other systems: GLONASS (Russia), Galileo (EU), BeiDou (China) - collectively GNSS. Applications: navigation (automotive, marine, aviation), mapping, surveying, timing synchronization, tracking. GPS enables location-based services in smartphones, vehicles, and IoT devices."
+        },
+
+        "radar": {
+            "keywords": ["radar", "radio detection and ranging", "radar system", "doppler radar", "radar technology"],
+            "response": "RADAR (Radio Detection and Ranging) uses radio waves to detect objects, determine their range, angle, or velocity. Transmitter emits radio waves that reflect off objects; receiver detects echoes. Types: pulsed radar (range), continuous wave (velocity via Doppler effect), phased array (electronic beam steering). Applications: air traffic control, weather monitoring, military (target acquisition), automotive (collision avoidance), speed detection. Radar operates at microwave frequencies and provides all-weather, day-night detection capability."
+        },
+
+        "sonar": {
+            "keywords": ["sonar", "sound navigation and ranging", "underwater sonar", "echolocation", "acoustic detection"],
+            "response": "SONAR (Sound Navigation and Ranging) uses sound propagation (usually underwater) to navigate, communicate, or detect objects. Active sonar transmits sound pulses and listens for echoes; passive sonar only listens. Frequencies: from infrasonic to ultrasonic. Applications: submarine navigation, fish finding, seafloor mapping (bathymetry), underwater communications, mine detection. SONAR is analogous to radar but uses sound waves (which travel well in water) instead of radio waves (which attenuate quickly in water)."
+        },
+
+        "lidar": {
+            "keywords": ["lidar", "light detection and ranging", "laser radar", "3d scanning", "autonomous vehicle lidar"],
+            "response": "LiDAR (Light Detection and Ranging) uses laser pulses to measure distances and create high-resolution 3D maps of environments. Time-of-flight measurement of reflected light. Types: mechanical scanning, solid-state (no moving parts), airborne, terrestrial. Applications: autonomous vehicles (object detection, mapping), topography, forestry, archaeology, atmospheric studies. LiDAR provides precise distance measurements and 3D modeling capabilities, complementing camera and radar in perception systems for robotics and automation."
+        },
+
+        "iot": {
+            "keywords": ["iot", "internet of things", "iot devices", "iot communication", "smart devices"],
+            "response": "The Internet of Things (IoT) refers to interconnected devices with sensors, processing, and communication capabilities that exchange data over networks. IoT ecosystem: devices (sensors/actuators), connectivity (Wi-Fi, Bluetooth, LoRa, cellular), cloud platforms (data processing), applications. Protocols: MQTT, CoAP, HTTP. Applications: smart home (thermostats, lights), industrial IoT (predictive maintenance), healthcare (remote monitoring), agriculture (precision farming). IoT enables automation, data-driven decisions, and new services through connected devices."
+        },
+
+        "embedded_systems": {
+            "keywords": ["embedded systems", "embedded programming", "real time systems", "firmware", "embedded hardware"],
+            "response": "Embedded systems are dedicated computing systems within larger mechanical or electrical systems, with a specific function. Components: microcontroller/microprocessor, memory, I/O interfaces, often real-time operating system (RTOS). Characteristics: constrained resources (power, memory, processing), reliability, real-time response. Programming: C, C++, sometimes Python, Rust. Applications: automotive electronics, medical devices, consumer electronics, industrial controllers. Embedded systems are ubiquitous in modern technology, performing dedicated tasks efficiently."
+        },
+
+        "vlsi": {
+            "keywords": ["vlsi", "very large scale integration", "vlsi design", "asic design", "chip design"],
+            "response": "VLSI (Very Large Scale Integration) is the process of creating integrated circuits by combining thousands to millions of transistors on a single chip. Design flow: specification, architecture, RTL design (Verilog/VHDL), verification, synthesis, physical design (layout), fabrication, testing. Tools: Cadence, Synopsys, Mentor Graphics. VLSI enables complex digital systems (microprocessors, memory chips) and mixed-signal systems. Advances in CMOS technology (Moore's Law) drive miniaturization, performance, and energy efficiency in electronics."
+        },
+
+        "asic": {
+            "keywords": ["asic", "application specific integrated circuit", "custom ic", "asic design flow", "asic vs fpga"],
+            "response": "An ASIC (Application-Specific Integrated Circuit) is a custom-designed chip for a particular application, as opposed to general-purpose ICs. Design process: high NRE (non-recurring engineering) cost but low per-unit cost at high volume. Types: full-custom (all layers customized), semi-custom (gate array, standard cell). ASICs offer optimized performance, power efficiency, and size for specific tasks. Compared to FPGAs (field-programmable), ASICs are faster, more efficient, but less flexible and have higher initial costs."
+        },
+
+        "fpga": {
+            "keywords": ["fpga", "field programmable gate array", "programmable logic", "digital design fpga", "fpga programming"],
+            "response": "An FPGA (Field-Programmable Gate Array) is an integrated circuit that can be configured by the user after manufacturing. Contains programmable logic blocks and interconnects that can implement custom digital circuits. Programming: HDL (Verilog/VHDL) or schematic entry. Advantages: reconfigurability, faster time-to-market, lower NRE costs than ASICs. Applications: prototyping, low-volume production, reconfigurable computing, digital signal processing, hardware acceleration. FPGAs bridge software flexibility with hardware performance."
+        },
+
+        "dsp_processor": {
+            "keywords": ["dsp processor", "digital signal processor", "dsp architecture", "dsp programming", "signal processing chip"],
+            "response": "A DSP processor is a specialized microprocessor optimized for digital signal processing operations. Features: hardware multipliers, MAC (multiply-accumulate) units, Harvard architecture (separate program/data memory), SIMD instructions, circular addressing. Examples: Texas Instruments TMS320, Analog Devices SHARC. DSP processors efficiently execute algorithms like FFT, filtering, convolution. Used in audio processing, communications, image processing, and control systems where real-time signal processing is required."
+        },
+
+        "memristor": {
+            "keywords": ["memristor", "memory resistor", "fourth fundamental circuit element", "resistive ram", "emerging electronics"],
+            "response": "A memristor (memory resistor) is theorized as the fourth fundamental circuit element (along with resistor, capacitor, inductor) whose resistance depends on the history of current through it. Realized using materials that change resistance with applied voltage (e.g., TiO2). Properties: non-volatile memory, analog behavior, potential for neuromorphic computing. Applications: resistive RAM (ReRAM), analog computing, brain-inspired circuits. Memristors are an emerging technology that could revolutionize memory and computing architectures."
+        },
+
+        "quantum_electronics": {
+            "keywords": ["quantum electronics", "quantum computing electronics", "qubit control", "cryogenic electronics", "quantum devices"],
+            "response": "Quantum electronics deals with electronic devices and circuits that exploit quantum mechanical effects. Includes: superconducting qubits (Josephson junctions), quantum dots (artificial atoms), spin-based devices. Quantum computers use quantum bits (qubits) that can be in superposition states. Control electronics operate at cryogenic temperatures (millikelvin) to maintain quantum coherence. Quantum electronics also includes quantum sensors (ultra-sensitive magnetometers) and quantum communication (quantum key distribution). A cutting-edge field at intersection of quantum physics and electronics."
+        },
+
+        "optoelectronics": {
+            "keywords": ["optoelectronics", "optoelectronic devices", "photonic devices", "led", "photodiode", "laser diode"],
+            "response": "Optoelectronics is the study and application of electronic devices that source, detect, and control light. Devices: LEDs (light emission), laser diodes (coherent light), photodiodes (light detection), solar cells (light to electricity), optical fibers (light guidance), displays (LCD, OLED). Optoelectronic integrated circuits (OEICs) combine optics and electronics. Applications: communications (fiber optics), displays, lighting, sensing, renewable energy. Optoelectronics bridges optics and electronics for efficient light-based technologies."
+        },
+
+        "display_technology": {
+            "keywords": ["display technology", "lcd", "oled", "led display", "display electronics", "screen technology"],
+            "response": "Display technology presents visual information electronically. Types: LCD (Liquid Crystal Display - uses backlight, liquid crystals modulate light), OLED (Organic LED - emissive, each pixel emits light), LED display (array of LEDs), plasma, e-ink (electronic paper). Driving electronics: display controllers, driver ICs, interface standards (HDMI, DisplayPort). Parameters: resolution, refresh rate, color gamut, power consumption. Displays are integral to TVs, monitors, smartphones, digital signage, and human-machine interfaces."
+        },
+
+        "audio_electronics": {
+            "keywords": ["audio electronics", "audio amplifier", "speaker", "microphone", "audio processing", "sound system"],
+            "response": "Audio electronics deals with recording, processing, amplifying, and reproducing sound. Components: microphones (convert sound to electrical), speakers (convert electrical to sound), amplifiers (boost signal), mixers, equalizers, effects processors. Digital audio: ADC/DAC, digital signal processing (compression, effects), audio codecs (MP3, AAC). Hi-Fi systems aim for high fidelity (accurate reproduction). Applications: consumer audio (headphones, home theater), professional audio (recording studios, live sound), telecommunications, hearing aids."
+        },
+
+        "video_electronics": {
+            "keywords": ["video electronics", "video processing", "camera electronics", "display driver", "video signal"],
+            "response": "Video electronics handles capturing, processing, transmitting, and displaying visual information. Components: image sensors (CCD, CMOS in cameras), video processors (noise reduction, scaling), display drivers (control pixels), video interfaces (HDMI, VGA, SDI). Analog video standards: NTSC, PAL. Digital video: compression (MPEG, H.264/265), streaming. Applications: television, video conferencing, surveillance, medical imaging, computer graphics. Video electronics combines analog signal handling with digital processing for high-quality visual experiences."
+        },
+
+        "medical_electronics": {
+            "keywords": ["medical electronics", "biomedical instruments", "medical devices", "patient monitoring", "diagnostic equipment"],
+            "response": "Medical electronics applies electronic principles to healthcare for diagnosis, treatment, and monitoring. Devices: ECG/EKG (heart signals), EEG (brain waves), MRI (magnetic resonance imaging), ultrasound, pacemakers, infusion pumps, pulse oximeters. Requirements: high reliability, safety (electrical isolation), precision, often portable/wearable. Regulations (FDA, CE) ensure efficacy and safety. Medical electronics improves patient care through non-invasive diagnostics, therapeutic interventions, and continuous health monitoring."
+        },
+
+        "automotive_electronics": {
+            "keywords": ["automotive electronics", "car electronics", "vehicle electronics", "ecu", "automotive systems"],
+            "response": "Automotive electronics includes electronic systems in vehicles for control, safety, entertainment, and efficiency. Systems: engine control unit (ECU - manages engine), ABS (anti-lock braking), airbag control, infotainment, ADAS (Advanced Driver Assistance Systems), electric vehicle powertrain. Networks: CAN (Controller Area Network) bus for communication. Automotive electronics must withstand harsh environment (temperature, vibration, EMI). Trends: electrification, autonomous driving, connectivity, transforming vehicles into sophisticated electronic platforms."
+        },
+
+        "industrial_electronics": {
+            "keywords": ["industrial electronics", "industrial control", "plc", "motor drives", "industrial automation"],
+            "response": "Industrial electronics applies electronic technology to industrial processes and machinery. Includes: PLCs (Programmable Logic Controllers) for automation, motor drives (variable frequency drives), robotics control, sensors for process monitoring, power electronics for industrial power supplies. Requirements: robustness, reliability, real-time operation, often in harsh conditions (dust, moisture, temperature extremes). Industrial electronics enables automation, improves productivity, ensures quality, and enhances safety in manufacturing, energy, and process industries."
+        },
+
+        "consumer_electronics": {
+            "keywords": ["consumer electronics", "electronic gadgets", "home electronics", "personal electronics", "electronic appliances"],
+            "response": "Consumer electronics are electronic equipment intended for everyday use by individuals. Categories: audio/video (TVs, headphones), computing (laptops, tablets), communication (smartphones), gaming (consoles), home appliances (smart devices), wearables (smartwatches). Characteristics: user-friendly design, aesthetic appeal, affordability, rapid innovation cycles. Consumer electronics drive mass-market technology adoption, integrating advances in semiconductors, displays, batteries, and connectivity to enhance entertainment, productivity, and convenience."
+        },
+
+        "military_electronics": {
+            "keywords": ["military electronics", "defense electronics", "radar systems", "electronic warfare", "military communications"],
+            "response": "Military electronics includes electronic systems for defense applications: radar (detection, tracking), communications (secure, jam-resistant), electronic warfare (jamming, deception), guidance systems (missiles), night vision, UAV (drone) control. Requirements: extreme reliability, ruggedness, performance in adverse conditions, security (encryption, anti-tamper). Military electronics often drives technology advancement (e.g., GPS, internet precursors) that later benefits civilian applications while addressing unique defense needs for national security."
+        },
+
+        "avionics": {
+            "keywords": ["avionics", "aircraft electronics", "flight instruments", "avionics systems", "cockpit electronics"],
+            "response": "Avionics (aviation electronics) comprises electronic systems used in aircraft, artificial satellites, and spacecraft. Includes: flight control systems, navigation (GPS, inertial), communication (VHF, SATCOM), surveillance (TCAS, weather radar), engine monitoring, cockpit displays (glass cockpit). Avionics must meet stringent safety standards (DO-254 for hardware, DO-178C for software) and operate reliably in extreme conditions. Avionics enhances flight safety, efficiency, and automation in both civilian and military aviation."
+        },
+
+        "maritime_electronics": {
+            "keywords": ["maritime electronics", "marine electronics", "ship electronics", "navigation electronics", "marine communication"],
+            "response": "Maritime electronics includes electronic systems for ships and maritime operations: navigation (GPS, gyrocompass, echo sounder), communication (VHF radio, satellite), radar (collision avoidance), sonar (depth sounding, fish finding), automatic identification system (AIS). Requirements: corrosion resistance (saltwater environment), reliability, compliance with international regulations (SOLAS). Maritime electronics ensures safe navigation, efficient operation, and communication for commercial shipping, fishing, naval vessels, and recreational boating."
+        },
+
+        # Expanded Engineering Topics
         "civil_engineering": {
-            "keywords": ["civil engineering", "civil engineer", "construction engineering"],
-            "response": "Civil engineering involves designing, constructing, and maintaining infrastructure like buildings, roads, bridges, and water supply systems."
+            "keywords": ["civil engineering", "civil engineer", "construction engineering", "structural engineering", "civil engineering fields"],
+            "response": "Civil engineering is the professional engineering discipline that deals with the design, construction, and maintenance of the physical and naturally built environment. Major branches include structural, geotechnical, transportation, environmental, and water resources engineering. Civil engineers design and build infrastructure such as buildings, roads, bridges, dams, airports, and water supply systems that are essential for modern society."
+        },
+
+        "structural_engineering": {
+            "keywords": ["structural engineering", "structural analysis", "building design", "structural engineer", "load calculations"],
+            "response": "Structural engineering is a specialty within civil engineering that focuses on the framework of structures, ensuring they can withstand stresses and pressures through their lifespan. Structural engineers analyze, design, plan, and research structural components and systems to achieve design goals of safety, serviceability, and economy. They work with buildings, bridges, towers, tunnels, and other structures using materials like concrete, steel, wood, and composites."
+        },
+
+        "geotechnical_engineering": {
+            "keywords": ["geotechnical engineering", "soil mechanics", "foundation engineering", "geotechnical engineer", "soil analysis"],
+            "response": "Geotechnical engineering deals with earth materials (soil and rock) and their behavior, including slope stability, foundation design, earthworks, and groundwater control. Geotechnical engineers investigate subsurface conditions, analyze soil properties, design foundations, retaining walls, and assess risks from natural hazards like earthquakes and landslides. This field is crucial for safe construction on or in the ground."
+        },
+
+        "transportation_engineering": {
+            "keywords": ["transportation engineering", "traffic engineering", "highway design", "transportation planning", "road construction"],
+            "response": "Transportation engineering focuses on the planning, design, operation, and maintenance of transportation systems to provide safe, efficient, and sustainable movement of people and goods. This includes highways, railways, airports, ports, and public transit systems. Transportation engineers work on traffic flow analysis, pavement design, transportation planning, intelligent transportation systems (ITS), and sustainable transport solutions."
+        },
+
+        "environmental_engineering": {
+            "keywords": ["environmental engineering", "water treatment", "waste management", "environmental engineer", "pollution control"],
+            "response": "Environmental engineering applies scientific and engineering principles to improve the natural environment, focusing on water and air pollution control, recycling, waste disposal, and public health issues. Environmental engineers design systems for water treatment, wastewater management, air pollution control, hazardous waste management, and environmental impact assessment. This field addresses challenges like climate change, sustainability, and public health protection."
+        },
+
+        "water_resources_engineering": {
+            "keywords": ["water resources engineering", "hydrology", "hydraulic engineering", "water management", "irrigation engineering"],
+            "response": "Water resources engineering deals with the collection, management, and distribution of water resources. It includes hydrology (study of water movement), hydraulic engineering (fluid flow in pipes and channels), water supply, irrigation, drainage, flood control, and hydroelectric power. Water resources engineers design dams, canals, water distribution networks, and flood protection systems to manage water sustainably."
+        },
+
+        "construction_engineering": {
+            "keywords": ["construction engineering", "construction management", "building construction", "construction methods", "project management construction"],
+            "response": "Construction engineering involves planning, coordination, and execution of construction projects from conception to completion. Construction engineers manage resources (labor, materials, equipment), ensure safety compliance, control costs and schedules, and solve technical problems on site. They work closely with architects, engineers, and contractors to transform designs into physical structures using various construction methods and technologies."
         },
 
         "mechanical_engineering": {
-            "keywords": ["mechanical engineering", "mechanical engineer", "thermodynamics"],
-            "response": "Mechanical engineering deals with the design, analysis, manufacturing, and maintenance of mechanical systems, including engines, machines, and thermal systems."
+            "keywords": ["mechanical engineering", "mechanical engineer", "thermodynamics", "mechanical systems", "machine design"],
+            "response": "Mechanical engineering is one of the broadest engineering disciplines, dealing with the design, analysis, manufacturing, and maintenance of mechanical systems. Core areas include thermodynamics (heat and energy transfer), fluid mechanics, materials science, mechanics (statics and dynamics), and machine design. Mechanical engineers work on engines, HVAC systems, robotics, manufacturing equipment, vehicles, and consumer products across various industries."
         },
 
-        "electrical_engineering": {
-            "keywords": ["electrical engineering", "electrical engineer", "power systems"],
-            "response": "Electrical engineering focuses on electricity, electronics, and electromagnetism, including power generation, transmission, and electrical machines."
+        "thermodynamics": {
+            "keywords": ["thermodynamics", "laws of thermodynamics", "heat transfer", "energy conversion", "thermodynamic cycles"],
+            "response": "Thermodynamics is the branch of physics and engineering that deals with heat, work, temperature, and energy. The four laws of thermodynamics govern energy conversion and transfer. Applications include power plants (steam cycles), engines (internal combustion), refrigeration (heat pumps), and chemical processes. Thermodynamic analysis helps design efficient energy systems and understand the limits of energy conversion in engineering applications."
+        },
+
+        "fluid_mechanics": {
+            "keywords": ["fluid mechanics", "fluid dynamics", "hydraulics", "aerodynamics", "fluid flow"],
+            "response": "Fluid mechanics studies fluids (liquids and gases) at rest (fluid statics) and in motion (fluid dynamics). It includes aerodynamics (air flow), hydrodynamics (liquid flow), and hydraulics (engineering applications). Fluid mechanics principles are used in designing aircraft, pipelines, pumps, turbines, ventilation systems, and understanding weather patterns. Computational Fluid Dynamics (CFD) uses numerical methods to simulate fluid flow for engineering analysis."
+        },
+
+        "heat_transfer": {
+            "keywords": ["heat transfer", "conduction", "convection", "radiation", "thermal engineering"],
+            "response": "Heat transfer is the study of thermal energy movement between physical systems. Three modes: conduction (through solids), convection (through fluids), and radiation (electromagnetic waves). Heat transfer applications include heat exchangers, insulation design, electronic cooling, HVAC systems, and thermal management in engines and power plants. Engineers use heat transfer principles to design efficient thermal systems and prevent overheating in devices."
+        },
+
+        "manufacturing_engineering": {
+            "keywords": ["manufacturing engineering", "production engineering", "machining", "additive manufacturing", "manufacturing processes"],
+            "response": "Manufacturing engineering focuses on designing, implementing, and improving manufacturing processes and systems. It includes traditional methods (machining, casting, forging) and modern techniques (additive manufacturing/3D printing, CNC machining). Manufacturing engineers work on production planning, quality control, automation, robotics, lean manufacturing, and supply chain management to produce goods efficiently, cost-effectively, and with high quality."
+        },
+
+        "robotics_engineering": {
+            "keywords": ["robotics engineering", "robotics design", "industrial robotics", "robot control", "automation engineering"],
+            "response": "Robotics engineering combines mechanical, electrical, and computer engineering to design, build, and program robots. It includes robot kinematics and dynamics, control systems, sensors, actuators, and artificial intelligence for autonomous operation. Robotics engineers develop industrial robots for manufacturing, medical robots for surgery, service robots, autonomous vehicles, and exploration robots for hazardous environments."
+        },
+
+        "automotive_engineering": {
+            "keywords": ["automotive engineering", "vehicle design", "automobile engineering", "car systems", "automotive technology"],
+            "response": "Automotive engineering focuses on designing, developing, and manufacturing vehicles. It includes vehicle dynamics, powertrain systems (engine, transmission), chassis design, safety systems, electronics, and alternative fuel technologies. Automotive engineers work on traditional internal combustion engines, hybrid systems, electric vehicles, and autonomous driving technology. The field is evolving with emphasis on sustainability, connectivity, and automation."
+        },
+
+        "aeronautical_engineering": {
+            "keywords": ["aeronautical engineering", "aircraft design", "aviation engineering", "flight mechanics", "aircraft systems"],
+            "response": "Aeronautical engineering deals with aircraft design, development, and operation within Earth's atmosphere. It includes aerodynamics (airflow around aircraft), propulsion (jet engines), structures (airframe design), flight mechanics (stability and control), and avionics (aircraft electronics). Aeronautical engineers design commercial airplanes, military aircraft, helicopters, and drones, focusing on performance, safety, and efficiency in atmospheric flight."
+        },
+
+        "astronautical_engineering": {
+            "keywords": ["astronautical engineering", "spacecraft design", "rocket science", "space engineering", "satellite technology"],
+            "response": "Astronautical engineering focuses on spacecraft and space systems that operate outside Earth's atmosphere. It includes orbital mechanics, rocket propulsion, space environment effects, spacecraft structures, thermal control, and communication systems. Astronautical engineers design satellites, space probes, rockets, space stations, and interplanetary missions. The field addresses challenges of vacuum, microgravity, radiation, and extreme temperatures in space."
         },
 
         "aerospace_engineering": {
-            "keywords": ["aerospace engineering", "aerospace", "aircraft design"],
-            "response": "Aerospace engineering involves the design and development of aircraft and spacecraft, including aerodynamics, propulsion systems, and materials science."
+            "keywords": ["aerospace engineering", "aerospace", "aircraft design", "spacecraft design", "aerospace technology"],
+            "response": "Aerospace engineering encompasses both aeronautical (aircraft within atmosphere) and astronautical (spacecraft) engineering. It involves the design, development, testing, and production of aircraft, spacecraft, and related systems. Key areas include aerodynamics, propulsion, structures, materials, flight mechanics, and control systems. Aerospace engineers work on commercial aviation, defense systems, space exploration, and emerging technologies like hypersonic flight and reusable rockets."
+        },
+
+        "electrical_engineering": {
+            "keywords": ["electrical engineering", "electrical engineer", "power systems", "electrical circuits", "electrical technology"],
+            "response": "Electrical engineering deals with electricity, electronics, and electromagnetism. Major fields include power engineering (generation, transmission, distribution), control systems (automation), electronics (circuit design), telecommunications (signal processing), and computer engineering (hardware). Electrical engineers design electrical equipment, power grids, communication systems, electronic devices, and control systems that form the backbone of modern technology infrastructure."
+        },
+
+        "power_engineering": {
+            "keywords": ["power engineering", "electrical power", "power systems", "power generation", "electrical grid"],
+            "response": "Power engineering focuses on generation, transmission, distribution, and utilization of electric power. It includes traditional power plants (thermal, hydro, nuclear), renewable energy (solar, wind), power electronics, transformers, switchgear, and grid management. Power engineers design and maintain electrical grids, ensure reliable power supply, integrate renewable sources, and develop smart grid technologies for efficient energy management and distribution."
+        },
+
+        "control_systems_engineering": {
+            "keywords": ["control systems engineering", "control theory", "automation", "feedback control", "robotics control"],
+            "response": "Control systems engineering deals with designing systems that regulate the behavior of dynamic systems using feedback loops. Applications include industrial automation, robotics, aircraft flight control, automotive systems (cruise control), and process control in chemical plants. Control engineers use mathematical models, sensors, actuators, and controllers (PID, modern control) to achieve desired system performance, stability, and robustness."
+        },
+
+        "electronics_engineering": {
+            "keywords": ["electronics engineering", "electronic circuits", "analog electronics", "digital electronics", "electronic devices"],
+            "response": "Electronics engineering focuses on designing and testing electronic circuits, components, and systems. It includes analog electronics (amplifiers, filters), digital electronics (logic gates, microprocessors), radio-frequency (RF) engineering, and embedded systems. Electronics engineers work on consumer electronics, communication devices, medical instruments, automotive electronics, and industrial control systems using semiconductors and integrated circuits."
+        },
+
+        "telecommunications_engineering": {
+            "keywords": ["telecommunications engineering", "communication systems", "signal processing", "wireless communication", "telecom networks"],
+            "response": "Telecommunications engineering deals with transmission of information over distances through various media (wired or wireless). It includes signal processing, modulation techniques, network protocols, antenna design, and information theory. Telecom engineers design and maintain telephone networks, mobile communication systems (4G/5G), satellite communications, internet infrastructure, and broadcasting systems enabling global connectivity."
+        },
+
+        "computer_engineering": {
+            "keywords": ["computer engineering", "computer hardware", "embedded systems", "computer architecture", "hardware software integration"],
+            "response": "Computer engineering combines electrical engineering and computer science to develop computer hardware and software. It includes digital logic design, computer architecture, microprocessors, embedded systems, and hardware-software co-design. Computer engineers design processors, memory systems, input/output devices, and integrate hardware with operating systems and applications. They work on computers, smartphones, IoT devices, and specialized computing systems."
         },
 
         "chemical_engineering": {
-            "keywords": ["chemical engineering", "chemical engineer", "process engineering"],
-            "response": "Chemical engineering applies chemistry, physics, and mathematics to process raw materials into valuable products, including chemicals, fuels, and pharmaceuticals."
+            "keywords": ["chemical engineering", "chemical engineer", "process engineering", "chemical processes", "chemical plant design"],
+            "response": "Chemical engineering applies chemistry, physics, mathematics, and economics to process raw materials into valuable products. It involves designing and operating chemical plants, optimizing processes for efficiency and safety, and developing new materials and products. Chemical engineers work in petroleum refining, pharmaceuticals, food processing, plastics, energy production, and environmental protection, using principles of thermodynamics, fluid mechanics, and reaction kinetics."
+        },
+
+        "process_engineering": {
+            "keywords": ["process engineering", "chemical processes", "industrial processes", "process design", "process optimization"],
+            "response": "Process engineering focuses on designing, operating, controlling, and optimizing industrial processes, especially in chemical and manufacturing industries. Process engineers develop flow diagrams, specify equipment (reactors, separators, heat exchangers), ensure safety and environmental compliance, and improve process efficiency. They use process simulation software and apply principles of mass and energy balances, thermodynamics, and kinetics to transform raw materials into products."
+        },
+
+        "biochemical_engineering": {
+            "keywords": ["biochemical engineering", "bioprocess engineering", "fermentation", "biotechnology processes", "biological engineering"],
+            "response": "Biochemical engineering applies engineering principles to biological systems and processes. It involves designing equipment and processes for producing biological products like pharmaceuticals (antibiotics, vaccines), biofuels, enzymes, and food products. Biochemical engineers work on fermentation, cell culture, downstream processing (separation and purification), and scale-up from laboratory to industrial production in biotechnology and pharmaceutical industries."
+        },
+
+        "petroleum_engineering": {
+            "keywords": ["petroleum engineering", "oil and gas", "drilling engineering", "reservoir engineering", "petroleum technology"],
+            "response": "Petroleum engineering focuses on exploration, extraction, and production of oil and natural gas. Specializations include drilling engineering (well design and drilling), reservoir engineering (fluid flow in reservoirs), production engineering (optimizing production), and petroleum geology. Petroleum engineers use technology to locate hydrocarbon reservoirs, design drilling methods, enhance recovery, and ensure safe and environmentally responsible extraction of fossil fuels."
+        },
+
+        "materials_engineering": {
+            "keywords": ["materials engineering", "materials science", "metallurgy", "polymers", "composite materials"],
+            "response": "Materials engineering involves designing and developing materials with desired properties for specific applications. It includes metallurgy (metals and alloys), ceramics, polymers, composites, and nanomaterials. Materials engineers study structure-property relationships, processing methods, and performance of materials. They work on developing new materials for aerospace, automotive, electronics, construction, and biomedical industries, improving durability, strength, and functionality."
+        },
+
+        "metallurgical_engineering": {
+            "keywords": ["metallurgical engineering", "metallurgy", "extractive metallurgy", "physical metallurgy", "metal processing"],
+            "response": "Metallurgical engineering focuses on metals and alloys, including extraction from ores (extractive metallurgy), processing (physical metallurgy), and development of metal properties. Metallurgical engineers design processes for mining, refining, alloying, heat treatment, and shaping metals. They improve metal strength, corrosion resistance, and other properties for applications in construction, manufacturing, transportation, and energy industries."
+        },
+
+        "polymer_engineering": {
+            "keywords": ["polymer engineering", "plastics engineering", "polymer science", "rubber technology", "polymer processing"],
+            "response": "Polymer engineering deals with plastics, rubbers, fibers, and other polymeric materials. It includes polymer synthesis, characterization, processing (injection molding, extrusion), and application development. Polymer engineers design materials with specific properties (flexibility, strength, thermal stability) for products like packaging, automotive parts, medical devices, textiles, and electronics. The field addresses recycling and sustainability of plastic materials."
         },
 
         "biomedical_engineering": {
-            "keywords": ["biomedical engineering", "biomedical", "medical devices"],
-            "response": "Biomedical engineering combines engineering principles with medical sciences to design and create equipment, devices, and software used in healthcare."
+            "keywords": ["biomedical engineering", "biomedical", "medical devices", "biomedical technology", "healthcare engineering"],
+            "response": "Biomedical engineering applies engineering principles to biology and medicine for healthcare purposes. It includes designing medical devices (pacemakers, MRI machines), developing biomaterials (implants, tissue scaffolds), biomechanics (human movement analysis), and biomedical imaging (ultrasound, X-ray). Biomedical engineers collaborate with healthcare professionals to create technologies for diagnosis, treatment, and rehabilitation, improving patient care and quality of life."
+        },
+
+        "bioinstrumentation": {
+            "keywords": ["bioinstrumentation", "medical instruments", "biomedical sensors", "diagnostic equipment", "medical device design"],
+            "response": "Bioinstrumentation focuses on designing and developing instruments and devices for measuring, diagnosing, and treating medical conditions. This includes sensors, monitors, imaging systems (CT, MRI), and therapeutic devices (defibrillators, infusion pumps). Bioinstrumentation engineers combine electronics, signal processing, and medical knowledge to create accurate, reliable, and safe medical equipment that assists in healthcare delivery and medical research."
+        },
+
+        "biomechanics": {
+            "keywords": ["biomechanics", "human movement", "orthopedic engineering", "sports engineering", "rehabilitation engineering"],
+            "response": "Biomechanics applies mechanical principles to biological systems, particularly the human body. It studies forces and motion in living organisms, including gait analysis, muscle mechanics, joint kinematics, and tissue mechanics. Biomechanical engineers design prosthetics, orthotics, ergonomic equipment, sports gear, and rehabilitation devices. They also analyze injuries and develop interventions to improve mobility, performance, and quality of life."
+        },
+
+        "tissue_engineering": {
+            "keywords": ["tissue engineering", "regenerative medicine", "artificial organs", "biomaterials for tissue", "cell culture engineering"],
+            "response": "Tissue engineering combines engineering and life sciences to develop biological substitutes that restore, maintain, or improve tissue function. It involves creating scaffolds (biomaterials), cells (stem cells, differentiated cells), and growth factors to grow tissues in the lab for transplantation. Applications include skin grafts, cartilage repair, bone regeneration, and eventually whole organs. Tissue engineering aims to address organ shortage and improve regenerative therapies."
+        },
+
+        "industrial_engineering": {
+            "keywords": ["industrial engineering", "industrial engineer", "operations research", "systems engineering", "production optimization"],
+            "response": "Industrial engineering focuses on optimizing complex processes, systems, or organizations to improve efficiency, quality, and productivity. It uses mathematical models, statistics, and simulation to analyze and design systems involving people, materials, information, equipment, and energy. Industrial engineers work on supply chain management, logistics, quality control, ergonomics, and operations research in manufacturing, healthcare, service industries, and government."
+        },
+
+        "systems_engineering": {
+            "keywords": ["systems engineering", "systems design", "complex systems", "systems integration", "systems thinking"],
+            "response": "Systems engineering is an interdisciplinary approach to designing, integrating, and managing complex systems over their life cycles. It focuses on defining customer needs, documenting requirements, designing architecture, integrating components, and verifying that the system meets objectives. Systems engineers work on large-scale projects like aerospace systems, defense systems, transportation networks, and software systems, ensuring all parts work together effectively."
+        },
+
+        "operations_research": {
+            "keywords": ["operations research", "optimization", "decision science", "mathematical modeling", "linear programming"],
+            "response": "Operations research (OR) uses advanced analytical methods (mathematical modeling, statistical analysis, optimization) to make better decisions. OR techniques include linear programming, queuing theory, simulation, and game theory. Applications span logistics, supply chain management, resource allocation, scheduling, finance, and healthcare. Operations researchers solve complex problems by developing models that predict outcomes and optimize performance of systems and processes."
+        },
+
+        "ergonomics": {
+            "keywords": ["ergonomics", "human factors engineering", "workplace design", "human machine interaction", "usability engineering"],
+            "response": "Ergonomics (or human factors engineering) designs systems, products, and environments to fit human capabilities and limitations. It considers physical (posture, movement), cognitive (mental workload, decision-making), and organizational factors. Ergonomists improve workplace safety, productivity, and comfort by designing user-friendly interfaces, reducing injury risk, and optimizing human-machine interaction in industries like manufacturing, transportation, healthcare, and computing."
+        },
+
+        "nuclear_engineering": {
+            "keywords": ["nuclear engineering", "nuclear power", "radiation", "nuclear technology", "reactor design"],
+            "response": "Nuclear engineering deals with nuclear reactions and radiation, primarily for power generation, medical applications, and industrial uses. It includes reactor physics, nuclear fuel cycle, radiation protection, and nuclear safety. Nuclear engineers design and operate nuclear power plants, develop radiation therapy equipment for cancer treatment, and work on nuclear waste management and fusion research. The field requires understanding of nuclear physics, thermal hydraulics, and materials science."
+        },
+
+        "marine_engineering": {
+            "keywords": ["marine engineering", "naval architecture", "ship design", "offshore engineering", "marine technology"],
+            "response": "Marine engineering involves designing, building, and maintaining ships, submarines, and offshore structures. It includes naval architecture (hull design, stability), propulsion systems (marine engines), electrical systems, and marine materials. Marine engineers work on commercial vessels, naval ships, oil platforms, and renewable energy installations at sea. The field addresses challenges of corrosion, buoyancy, and harsh marine environments to ensure safe and efficient maritime operations."
+        },
+
+        "ocean_engineering": {
+            "keywords": ["ocean engineering", "coastal engineering", "underwater technology", "offshore structures", "wave energy"],
+            "response": "Ocean engineering applies engineering principles to ocean environments. It includes coastal engineering (shore protection, ports), underwater technology (ROVs, submersibles), offshore engineering (oil platforms, wind farms), and ocean energy (wave, tidal power). Ocean engineers design structures and systems that withstand waves, currents, and corrosion while minimizing environmental impact. The field supports maritime transportation, resource extraction, and environmental monitoring in oceans."
+        },
+
+        "agricultural_engineering": {
+            "keywords": ["agricultural engineering", "farm machinery", "irrigation engineering", "agricultural technology", "biosystems engineering"],
+            "response": "Agricultural engineering (also biosystems engineering) applies technology to agriculture and food production. It includes farm machinery design, irrigation and drainage systems, soil and water conservation, food processing, and controlled environment agriculture (greenhouses). Agricultural engineers develop sustainable farming practices, precision agriculture technologies, and bioenergy systems to increase food production efficiency while protecting natural resources and the environment."
+        },
+
+        "food_engineering": {
+            "keywords": ["food engineering", "food processing", "food technology", "food safety", "food preservation"],
+            "response": "Food engineering focuses on designing and optimizing processes for producing safe, nutritious, and appealing food products. It includes thermal processing (pasteurization, sterilization), freezing, drying, packaging, and storage. Food engineers apply principles of microbiology, chemistry, and engineering to develop food preservation methods, improve food quality, and ensure food safety from production to consumption. The field contributes to reducing food waste and developing novel food products."
+        },
+
+        "acoustical_engineering": {
+            "keywords": ["acoustical engineering", "sound engineering", "noise control", "audio engineering", "acoustic design"],
+            "response": "Acoustical engineering deals with sound and vibration, including noise control, architectural acoustics, audio engineering, and ultrasonics. Acoustical engineers design concert halls with optimal sound quality, reduce noise from machinery or transportation, develop audio equipment (speakers, microphones), and apply ultrasound in medical imaging and industrial testing. The field applies wave physics to solve problems related to sound transmission, absorption, and perception."
+        },
+
+        "optical_engineering": {
+            "keywords": ["optical engineering", "optics", "laser engineering", "photonics", "optical systems"],
+            "response": "Optical engineering focuses on designing devices and systems that use light, including lenses, lasers, fiber optics, and imaging systems. It combines principles of optics, physics, and electrical engineering. Optical engineers work on cameras, telescopes, microscopes, medical imaging devices, communication systems (fiber optics), and laser-based manufacturing. The field is integral to telecommunications, healthcare, astronomy, and consumer electronics."
+        },
+
+        "fire_protection_engineering": {
+            "keywords": ["fire protection engineering", "fire safety", "fire suppression", "fire dynamics", "building fire safety"],
+            "response": "Fire protection engineering designs systems and strategies to protect people, property, and environments from fire. It includes fire detection and alarm systems, automatic suppression (sprinklers), smoke control, fire-resistant construction materials, and egress planning. Fire protection engineers analyze fire dynamics (combustion, heat transfer), conduct risk assessments, and ensure compliance with fire codes to enhance safety in buildings, industrial facilities, and transportation systems."
+        },
+
+        "mining_engineering": {
+            "keywords": ["mining engineering", "mineral extraction", "mine design", "mining safety", "mineral processing"],
+            "response": "Mining engineering involves extracting minerals from the earth efficiently, safely, and sustainably. It includes mine planning and design, drilling and blasting, ventilation, ground control, mineral processing, and mine reclamation. Mining engineers work on surface and underground mines for coal, metals, and industrial minerals. The field addresses challenges of resource depletion, environmental impact, and worker safety while supplying raw materials for industry."
+        },
+
+        "geomatics_engineering": {
+            "keywords": ["geomatics engineering", "surveying", "gis", "remote sensing", "geospatial engineering"],
+            "response": "Geomatics engineering (also geospatial engineering) involves measurement, analysis, and management of spatial data. It includes land surveying, geographic information systems (GIS), remote sensing (satellite imagery), cartography, and global positioning systems (GPS). Geomatics engineers collect and process data about Earth's surface for mapping, urban planning, navigation, natural resource management, and infrastructure development. The field is essential for accurate positioning and spatial decision-making."
+        },
+
+        "railway_engineering": {
+            "keywords": ["railway engineering", "rail transport", "track design", "railway systems", "train technology"],
+            "response": "Railway engineering focuses on designing, constructing, and maintaining railway systems. It includes track design and maintenance, rolling stock (locomotives and cars), signaling and control systems, stations, and electrification. Railway engineers work on high-speed rail, freight networks, and urban transit systems to ensure safety, efficiency, and reliability. The field addresses challenges of capacity, interoperability, and integration with other transport modes."
+        },
+
+        "safety_engineering": {
+            "keywords": ["safety engineering", "risk management", "system safety", "occupational safety", "hazard analysis"],
+            "response": "Safety engineering identifies and mitigates hazards to prevent accidents and injuries in systems and workplaces. It involves risk assessment, hazard analysis (FMEA, FTA), safety standards compliance, and design of protective measures. Safety engineers work across industries (construction, manufacturing, transportation, chemicals) to ensure equipment, processes, and environments are safe for workers and the public. The field applies engineering principles to anticipate and control potential failures."
+        },
+
+        "reliability_engineering": {
+            "keywords": ["reliability engineering", "system reliability", "failure analysis", "maintenance engineering", "product reliability"],
+            "response": "Reliability engineering ensures that systems and components perform their required functions under stated conditions for specified periods. It involves probability and statistics to predict and prevent failures, including techniques like reliability modeling, failure mode analysis, and life testing. Reliability engineers design for durability, plan maintenance strategies, and analyze field data to improve product lifespan and reduce downtime in industries like aerospace, automotive, and electronics."
+        },
+
+        "energy_engineering": {
+            "keywords": ["energy engineering", "energy systems", "renewable energy", "energy efficiency", "power generation"],
+            "response": "Energy engineering focuses on efficient energy use, conversion, and storage. It includes traditional energy systems (fossil fuels, nuclear) and renewable energy (solar, wind, hydro, biomass). Energy engineers design power plants, develop energy-efficient buildings, integrate renewable sources into grids, and work on energy storage (batteries, hydrogen). The field addresses global challenges of energy security, sustainability, and climate change through technological innovation."
+        },
+
+        "renewable_energy_engineering": {
+            "keywords": ["renewable energy engineering", "solar energy", "wind energy", "hydro energy", "sustainable energy"],
+            "response": "Renewable energy engineering specializes in harnessing energy from sustainable sources like sunlight, wind, water, geothermal heat, and biomass. It includes designing solar photovoltaic systems, wind turbines, hydroelectric plants, and bioenergy facilities. Renewable energy engineers work on improving efficiency, reducing costs, integrating renewables into existing grids, and developing storage solutions to transition from fossil fuels to clean energy for a sustainable future."
+        },
+
+        "sustainable_engineering": {
+            "keywords": ["sustainable engineering", "green engineering", "environmentally friendly design", "sustainability", "life cycle assessment"],
+            "response": "Sustainable engineering designs systems and processes that minimize environmental impact while meeting societal needs. It applies principles of life cycle assessment, green chemistry, and circular economy. Sustainable engineers develop products and infrastructure that use resources efficiently, reduce waste and pollution, and promote social equity. The field integrates environmental, economic, and social considerations into engineering decisions for long-term sustainability."
+        },
+
+        "nanotechnology_engineering": {
+            "keywords": ["nanotechnology engineering", "nanomaterials", "nanoscale engineering", "nanotech", "molecular engineering"],
+            "response": "Nanotechnology engineering manipulates matter at the atomic and molecular scale (1-100 nanometers) to create materials, devices, and systems with novel properties. It includes nanomaterials (carbon nanotubes, quantum dots), nanoelectronics, nanomedicine, and nanofabrication. Nanotechnology engineers work on applications in electronics, medicine, energy, and materials science. The field requires understanding of quantum effects and surface phenomena at the nanoscale for innovative solutions."
+        },
+
+        "mechatronics_engineering": {
+            "keywords": ["mechatronics engineering", "mechatronics", "robotics and automation", "electromechanical systems", "control systems mechatronics"],
+            "response": "Mechatronics engineering integrates mechanical, electrical, and computer engineering to design and manufacture intelligent products and systems. It combines sensors, actuators, microcontrollers, and software to create automated systems like industrial robots, CNC machines, automotive systems (ABS, stability control), and consumer electronics. Mechatronics engineers apply control theory and real-time computing to develop smart machines that respond to their environment."
+        },
+
+        "automation_engineering": {
+            "keywords": ["automation engineering", "industrial automation", "plc programming", "process automation", "factory automation"],
+            "response": "Automation engineering focuses on designing and implementing automated systems for manufacturing and process industries. It includes programmable logic controllers (PLCs), supervisory control and data acquisition (SCADA), robotics, and human-machine interfaces (HMIs). Automation engineers program control systems, integrate sensors and actuators, and optimize production lines for efficiency, quality, and safety. The field drives Industry 4.0 with smart factories and IoT connectivity."
+        },
+
+        "instrumentation_engineering": {
+            "keywords": ["instrumentation engineering", "measurement systems", "sensors and transducers", "control instrumentation", "industrial instrumentation"],
+            "response": "Instrumentation engineering deals with designing, developing, and maintaining instruments and systems for measurement and control in industrial processes. It includes sensors (temperature, pressure, flow), transducers, signal conditioning, data acquisition, and calibration. Instrumentation engineers ensure accurate monitoring and control of variables in industries like oil and gas, chemical plants, power generation, and healthcare for process optimization and safety."
+        },
+
+        "corrosion_engineering": {
+            "keywords": ["corrosion engineering", "corrosion control", "materials degradation", "protective coatings", "cathodic protection"],
+            "response": "Corrosion engineering focuses on preventing and controlling degradation of materials due to chemical or electrochemical reactions with their environment. It includes selecting corrosion-resistant materials, designing protective coatings, applying cathodic protection, and using inhibitors. Corrosion engineers work in industries like oil and gas, marine, infrastructure, and manufacturing to extend asset life, ensure safety, and reduce maintenance costs caused by corrosion."
+        },
+
+        "pipeline_engineering": {
+            "keywords": ["pipeline engineering", "pipeline design", "oil and gas pipelines", "pipeline integrity", "fluid transportation"],
+            "response": "Pipeline engineering involves designing, constructing, and maintaining pipelines for transporting fluids (oil, gas, water) over long distances. It includes hydraulic analysis, route selection, material selection, corrosion protection, and integrity management. Pipeline engineers ensure safe and efficient operation, comply with regulations, and address challenges like leaks, pressure fluctuations, and environmental impact. The field is critical for energy distribution and water supply infrastructure."
+        },
+
+        "HVAC_engineering": {
+            "keywords": ["hvac engineering", "heating ventilation air conditioning", "building services", "thermal comfort", "hvac design"],
+            "response": "HVAC (Heating, Ventilation, and Air Conditioning) engineering designs systems to control indoor environmental conditions for comfort and air quality. It includes heating (boilers, heat pumps), cooling (chillers, air conditioners), ventilation (air distribution, filtration), and building automation. HVAC engineers calculate heating/cooling loads, select equipment, design ductwork and piping, and ensure energy efficiency and compliance with codes in residential, commercial, and industrial buildings."
+        },
+
+        "plumbing_engineering": {
+            "keywords": ["plumbing engineering", "plumbing systems", "water supply", "sanitary engineering", "fire protection plumbing"],
+            "response": "Plumbing engineering designs systems for potable water supply, wastewater removal, and sometimes fire protection in buildings. It includes pipe sizing, fixture selection, drainage design, and water heating. Plumbing engineers ensure adequate water pressure, proper sanitation, and compliance with health and safety codes. The field addresses water conservation, greywater reuse, and sustainable plumbing practices to manage water resources efficiently in built environments."
+        },
+
+        "construction_technology": {
+            "keywords": ["construction technology", "building technology", "construction methods", "prefabrication", "smart construction"],
+            "response": "Construction technology involves applying innovative methods, materials, and equipment to improve the construction process. It includes prefabrication and modular construction, 3D printing of buildings, drones for surveying, Building Information Modeling (BIM), and smart construction tools. Construction technologists aim to increase productivity, reduce costs, enhance safety, and improve sustainability in building projects through technological advancements and digitalization."
+        },
+
+        "earthquake_engineering": {
+            "keywords": ["earthquake engineering", "seismic design", "earthquake resistant structures", "seismic analysis", "structural dynamics"],
+            "response": "Earthquake engineering focuses on designing structures to withstand seismic activity and protecting human life during earthquakes. It involves understanding ground motion, structural dynamics, and material behavior under cyclic loading. Earthquake engineers use seismic codes, base isolation, damping systems, and retrofitting techniques to enhance building resilience. The field combines civil engineering, geotechnical engineering, and seismology to mitigate earthquake risks in prone regions."
+        },
+
+        "forensic_engineering": {
+            "keywords": ["forensic engineering", "failure analysis", "engineering investigation", "accident reconstruction", "expert witness"],
+            "response": "Forensic engineering investigates failures, accidents, and performance issues in engineering systems to determine causes and responsibilities. It applies engineering principles to analyze structural collapses, vehicle accidents, product malfunctions, and fire origins. Forensic engineers collect evidence, conduct tests, simulate scenarios, and provide expert testimony in legal proceedings. The field helps improve safety standards, prevent future failures, and resolve disputes through technical analysis."
         },
 
         # Programming Languages

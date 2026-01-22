@@ -13,3 +13,5 @@ Real-time voice feedback and responses
 Wi-Fi-enabled control via NODE MCU and Python
 Expandable storage for logs and data
 Offline voice recognition capability
+
+License: MIT
